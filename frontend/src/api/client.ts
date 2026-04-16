@@ -12,9 +12,11 @@ api.interceptors.response.use(
   r => r,
   err => {
     if (err.response?.status === 401 && window.location.pathname !== '/login') {
+      // Clear storage directly (avoids importing the store, which would create a
+      // circular dependency: api → store → api)
       localStorage.removeItem('bcl_token');
       localStorage.removeItem('bcl_user');
-      window.location.href = '/login';
+      window.location.replace('/login');
     }
     return Promise.reject(err);
   }

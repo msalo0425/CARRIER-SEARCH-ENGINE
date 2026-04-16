@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { useAuthStore } from './store/authStore';
@@ -42,7 +42,26 @@ function AppLayout({ children }: { children: React.ReactNode }) {
   );
 }
 
+function BootSpinner() {
+  return (
+    <div className="min-h-screen bg-ink-950 flex flex-col items-center justify-center gap-4">
+      <div className="w-12 h-12 bg-gold-500 rounded-2xl flex items-center justify-center text-2xl text-ink-950 font-black gold-glow">♣</div>
+      <div className="w-6 h-6 border-2 border-gold-500 border-t-transparent rounded-full animate-spin" />
+    </div>
+  );
+}
+
 export default function App() {
+  const { initialized, initialize } = useAuthStore();
+
+  useEffect(() => {
+    initialize();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Block ALL rendering until the server has confirmed (or denied) the session.
+  // This prevents any flash of protected content with an expired token.
+  if (!initialized) return <BootSpinner />;
+
   return (
     <>
       <Toaster position="top-right" toastOptions={{

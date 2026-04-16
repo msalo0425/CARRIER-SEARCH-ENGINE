@@ -200,12 +200,13 @@ router.post('/settings/trigger-fmcsa-sync', requireAuth, requireAdmin, async (_r
   runFmcsaSync().catch(console.error);
 });
 
-// ─── Health ───────────────────────────────────────────────────────────────────
+// ─── Health ─────────────────────────────────────────────────────────────────
+// Returns only liveness status — no business data — intentionally unauthenticated
+// so load-balancers and Docker health checks can probe without credentials.
 router.get('/health', async (_req, res) => {
   try {
     await pool.query('SELECT 1');
-    const count = (await pool.query('SELECT COUNT(*) c FROM carriers')).rows[0]?.c;
-    res.json({ status: 'ok', carrier_count: parseInt(count||'0'), timestamp: new Date().toISOString() });
+    res.json({ status: 'ok', timestamp: new Date().toISOString() });
   } catch { res.status(503).json({ status: 'error' }); }
 });
 
