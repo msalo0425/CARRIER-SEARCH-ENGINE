@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { @apply bg-ink-950 text-white font-sans; }
+  body { @apply bg-ink-950 text-white antialiased; min-height: 100vh; }
+  ::-webkit-scrollbar { width:5px; height:5px; }
+  ::-webkit-scrollbar-track { @apply bg-ink-900; }
+  ::-webkit-scrollbar-thumb { @apply bg-ink-400 rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-gold-600; }
+}
+
+@layer components {
+  .btn { @apply inline-flex items-center justify-center gap-2 font-semibold rounded-lg px-4 py-2 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm; }
+  .btn-gold { @apply btn bg-gold-500 hover:bg-gold-400 text-ink-950; }
+  .btn-ghost { @apply btn bg-ink-700 hover:bg-ink-600 text-white border border-ink-500; }
+  .btn-danger { @apply btn bg-red-700 hover:bg-red-600 text-white; }
+  .btn-outline { @apply btn border border-gold-600 text-gold-400 hover:bg-gold-900/30; }
+
+  .card { @apply bg-ink-800 border border-ink-600 rounded-xl; }
+  .card-sm { @apply card p-4; }
+  .card-md { @apply card p-6; }
+
+  .input { @apply w-full bg-ink-700 border border-ink-500 text-white placeholder-ink-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-transparent transition-colors; }
+  .select { @apply input cursor-pointer; }
+  .label { @apply block text-xs font-medium text-ink-300 mb-1 uppercase tracking-wide; }
+  .field { @apply space-y-1; }
+
+  /* Status badges */
+  .badge { @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold border; }
+  .badge-active { @apply badge bg-green-900/50 text-green-400 border-green-800; }
+  .badge-inactive { @apply badge bg-ink-700 text-ink-300 border-ink-600; }
+  .badge-oos { @apply badge bg-red-900/50 text-red-400 border-red-800; }
+  .badge-interstate { @apply badge bg-blue-900/50 text-blue-400 border-blue-800; }
+  .badge-intrastate { @apply badge bg-amber-900/50 text-amber-400 border-amber-800; }
+  .badge-satisfactory { @apply badge bg-green-900/40 text-green-400 border-green-800; }
+  .badge-conditional { @apply badge bg-yellow-900/40 text-yellow-400 border-yellow-800; }
+  .badge-unsatisfactory { @apply badge bg-red-900/40 text-red-400 border-red-800; }
+  .badge-gold { @apply badge bg-gold-900/40 text-gold-400 border-gold-800; }
+  .badge-wosb { @apply badge bg-gold-900/50 text-gold-300 border-gold-700; }
+  .badge-new { @apply badge bg-blue-900/40 text-blue-300 border-blue-800; }
+
+  /* CRM status */
+  .crm-new          { @apply badge bg-blue-900/40 text-blue-400 border-blue-800; }
+  .crm-contacted    { @apply badge bg-purple-900/40 text-purple-400 border-purple-800; }
+  .crm-negotiation  { @apply badge bg-amber-900/40 text-amber-400 border-amber-800; }
+  .crm-subcontractor { @apply badge bg-green-900/40 text-green-400 border-green-800; }
+  .crm-dnc          { @apply badge bg-red-900/40 text-red-400 border-red-800; }
+
+  .stat-card { @apply card p-5; }
+  .page-header { @apply flex items-start justify-between mb-6; }
+  .page-title { @apply text-2xl font-bold text-white; }
+  .page-sub { @apply text-sm text-ink-300 mt-1; }
+
+  .table-wrapper { @apply card overflow-hidden; }
+  .table { @apply w-full text-sm; }
+  .th { @apply px-4 py-3 text-left text-xs font-semibold text-ink-300 uppercase tracking-wider bg-ink-700 border-b border-ink-600; }
+  .td { @apply px-4 py-3 text-white border-b border-ink-700 last:border-0; }
+  .tr-hover { @apply hover:bg-ink-700/50 transition-colors; }
+
+  .nav-item { @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-ink-300 hover:text-white hover:bg-ink-700 transition-all duration-150 text-sm font-medium cursor-pointer; }
+  .nav-item.active { @apply text-gold-400 bg-gold-900/20 border border-gold-900/40; }
+
+  .pill { @apply inline-flex items-center px-2 py-0.5 rounded-md text-xs bg-ink-600 text-ink-200 border border-ink-500; }
+
+  .gold-divider { @apply border-gold-900/50; }
+  .gold-text { @apply text-gold-400; }
+  .gold-glow { @apply shadow-lg shadow-gold-900/20; }
+}
+
+@layer utilities {
+  .text-gradient { background: linear-gradient(135deg, #D4AF37, #f5e98f); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+}

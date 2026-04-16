@@ -1,0 +1,51 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: bcl_bos
+      POSTGRES_USER: bcl_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-changeme_secure_password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bcl_user -d bcl_bos"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      DATABASE_URL: postgresql://bcl_user:${DB_PASSWORD:-changeme_secure_password}@postgres:5432/bcl_bos
+      JWT_SECRET: ${JWT_SECRET:-change_this_to_a_long_random_secret_string}
+      JWT_EXPIRES_IN: 7d
+      FMCSA_API_URL: https://data.transportation.gov/resource/az4n-8mr2.json
+      FMCSA_API_TOKEN: ${FMCSA_API_TOKEN:-}
+      SAM_GOV_API_KEY: ${SAM_GOV_API_KEY:-}
+      UPLOAD_DIR: /app/uploads
+      SYNC_ENABLED: "true"
+    volumes:
+      - uploads:/app/uploads
+    ports:
+      - "3001:3001"
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+
+volumes:
+  postgres_data:
+  uploads:
