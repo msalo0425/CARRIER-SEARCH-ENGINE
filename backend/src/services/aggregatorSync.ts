@@ -117,6 +117,33 @@ async function syncSamGov(settings: Record<string,string>, logId: number): Promi
             ]
           );
           if (result.rows[0]?.inserted) newCount++; else updatedCount++;
+
+          // Auto-insert Sources Sought notices into sources_sought table
+          const isSS = opp.baseType?.toLowerCase().includes('sources sought') ||
+                       opp.title?.toLowerCase().includes('sources sought');
+          if (isSS && opp.noticeId) {
+            await pool.query(
+              `INSERT INTO sources_sought
+                 (title, agency_name, notice_number, naics_code, date_posted, response_due_date,
+                  co_name, co_email, co_phone, outcome, status, source, external_id, original_url, notes)
+               VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,'Identified','From SAM.gov','sam.gov',$10,$11,$12)
+               ON CONFLICT (external_id) DO UPDATE SET
+                 title=EXCLUDED.title, response_due_date=EXCLUDED.response_due_date,
+                 updated_at=NOW()`,
+              [
+                opp.title||null,
+                opp.fullParentPathName?.split('::')[0]||null,
+                opp.solicitationNumber||null,
+                naics,
+                opp.postedDate ? opp.postedDate.split('T')[0] : null,
+                opp.responseDeadLine ? opp.responseDeadLine.split('T')[0] : null,
+                poc?.fullName||null, poc?.email||null, poc?.phone||null,
+                opp.noticeId,
+                opp.uiLink||null,
+                opp.description?.slice(0,500)||null,
+              ]
+            ).catch(() => {/* ignore if column doesn't exist yet */});
+          }
         }
 
         if (opps.length < 100) break;
@@ -233,6 +260,28 @@ async function syncFema(settings: Record<string,string>, logId: number): Promise
           ]
         );
         if (result.rows[0]?.inserted) newCount++; else updatedCount++;
+
+          const isSS = opp.baseType?.toLowerCase().includes('sources sought') ||
+                       opp.title?.toLowerCase().includes('sources sought');
+          if (isSS && opp.noticeId) {
+            await pool.query(
+              `INSERT INTO sources_sought
+                 (title, agency_name, notice_number, naics_code, date_posted, response_due_date,
+                  co_name, co_email, co_phone, outcome, status, source, external_id, original_url, notes)
+               VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,'Identified','From FEMA','fema',$10,$11,$12)
+               ON CONFLICT (external_id) DO UPDATE SET
+                 title=EXCLUDED.title, response_due_date=EXCLUDED.response_due_date, updated_at=NOW()`,
+              [
+                opp.title||null, 'FEDERAL EMERGENCY MANAGEMENT AGENCY',
+                opp.solicitationNumber||null, opp.naicsCode||null,
+                opp.postedDate ? opp.postedDate.split('T')[0] : null,
+                opp.responseDeadLine ? opp.responseDeadLine.split('T')[0] : null,
+                poc?.fullName||null, poc?.email||null, poc?.phone||null,
+                opp.noticeId, opp.uiLink||null,
+                opp.description?.slice(0,500)||null,
+              ]
+            ).catch(() => {});
+          }
       }
 
       if (opps.length < 100) break;
