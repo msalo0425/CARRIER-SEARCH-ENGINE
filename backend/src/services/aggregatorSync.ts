@@ -73,8 +73,9 @@ async function syncSamGov(settings: Record<string,string>, logId: number): Promi
           postedFrom: getDateDaysAgo(30),
           postedTo: getToday(),
         });
-        const url = `https://api.sam.gov/opportunities/v2/search?${params}&ptype=o,p,k,r,s,g`;
-        if (page === 1) console.log(`[SAM] URL (no key): https://api.sam.gov/opportunities/v2/search?naicsCode=${naics}&limit=100&offset=0&postedFrom=${getDateDaysAgo(30)}&postedTo=${getToday()}&ptype=o,p,k,r,s,g`);
+        // Try both prod and non-prod paths
+        const url = `https://api.sam.gov/prod/opportunities/v2/search?${params}&ptype=o,p,k,r,s,g`;
+        if (page === 1) console.log(`[SAM] Trying: https://api.sam.gov/prod/opportunities/v2/search?naicsCode=${naics}&postedFrom=${getDateDaysAgo(30)}&postedTo=${getToday()}`);
 
         const resp = await fetch(url, { headers: { 'Accept': 'application/json', 'X-Api-Key': apiKey } });
         if (!resp.ok) { const body = await resp.text(); console.error(`SAM API error ${resp.status} for NAICS ${naics}: "${body.slice(0,500)}"`); break; }
@@ -190,9 +191,8 @@ async function syncFema(settings: Record<string,string>, logId: number): Promise
         offset: String((page-1)*100),
         postedFrom: getDateDaysAgo(60),
         postedTo: getToday(),
-        ptype: 'o,p,k,r,s,g',
       });
-      const url = `https://api.sam.gov/opportunities/v2/search?${params}`;
+      const url = `https://api.sam.gov/prod/opportunities/v2/search?${params}&ptype=o,p,k,r,s,g`;
 
       const resp = await fetch(url, { headers: { 'Accept': 'application/json', 'X-Api-Key': apiKey } });
       if (!resp.ok) { const body = await resp.text(); console.error(`FEMA sync API error ${resp.status}:`, body.slice(0,500)); break; }
