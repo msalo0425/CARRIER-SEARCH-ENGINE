@@ -69,8 +69,8 @@ async function syncSamGov(settings: Record<string,string>, logId: number): Promi
           `api_key=${encodeURIComponent(apiKey)}&` +
           `naicsCode=${naics}&` +
           `limit=100&offset=${(page-1)*100}&` +
-          `status=active&` +
           `postedFrom=${getDateDaysAgo(30)}&` +
+          `postedTo=${getToday()}&` +
           `ptype=o,p,k,r,s,g`;
 
         const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
@@ -184,8 +184,8 @@ async function syncFema(settings: Record<string,string>, logId: number): Promise
         `api_key=${encodeURIComponent(apiKey)}&` +
         `subtier=${encodeURIComponent('FEDERAL EMERGENCY MANAGEMENT AGENCY')}&` +
         `limit=100&offset=${(page-1)*100}&` +
-        `status=active&` +
         `postedFrom=${getDateDaysAgo(60)}&` +
+        `postedTo=${getToday()}&` +
         `ptype=o,p,k,r,s,g`;
 
       const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
