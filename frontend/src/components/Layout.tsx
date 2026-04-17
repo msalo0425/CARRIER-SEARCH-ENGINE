@@ -40,12 +40,8 @@ export default function Layout({ children }: Props) {
   const Sidebar = () => (
     <div className="flex flex-col h-full overflow-hidden">
       {/* Logo */}
-      <div className="flex items-center gap-3 px-5 py-4 border-b border-[#E55A20] flex-shrink-0">
-        <img src="/logo.png" className="w-14 h-14 flex-shrink-0 rounded-full" alt="BCL" />
-        <div>
-          <div className="text-sm font-bold text-white leading-tight">Black Clover</div>
-          <div className="text-xs text-white/90 leading-tight font-medium">Logistics</div>
-        </div>
+      <div className="flex items-center justify-center px-4 py-5 border-b border-[#E55A20] flex-shrink-0">
+        <img src="/logo.png" className="w-40 h-40 rounded-full" alt="BCL" />
       </div>
 
       {/* Nav */}
