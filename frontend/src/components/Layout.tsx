@@ -40,13 +40,13 @@ export default function Layout({ children }: Props) {
   const Sidebar = () => (
     <div className="flex flex-col h-full overflow-hidden">
       {/* Logo */}
-      <div className="flex items-center gap-3 px-5 py-4 border-b border-orange-800 flex-shrink-0">
+      <div className="flex items-center gap-3 px-5 py-4 border-b border-orange-600 flex-shrink-0">
         <div className="w-10 h-10 bg-white rounded-full flex-shrink-0 p-0.5 shadow-sm">
           <img src="/logo.png" className="w-full h-full" alt="BCL" />
         </div>
         <div>
           <div className="text-sm font-bold text-white leading-tight">Black Clover</div>
-          <div className="text-xs text-orange-400 leading-tight font-medium">Logistics</div>
+          <div className="text-xs text-orange-100 leading-tight font-medium">Logistics</div>
         </div>
       </div>
 
@@ -57,7 +57,7 @@ export default function Layout({ children }: Props) {
         </NavLink>
 
         <div className="pt-2 pb-1 px-3">
-          <span className="text-[10px] font-bold text-orange-300/60 uppercase tracking-widest">Carriers</span>
+          <span className="text-[10px] font-bold text-white/50 uppercase tracking-widest">Carriers</span>
         </div>
         <NavLink to="/carriers" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
           <MagnifyingGlassIcon className="w-4 h-4 flex-shrink-0" /><span>Carrier Search</span>
@@ -71,7 +71,7 @@ export default function Layout({ children }: Props) {
 
         <div className="pt-2 pb-1 px-3">
           <button
-            className="flex items-center justify-between w-full text-[10px] font-bold text-orange-300/60 uppercase tracking-widest hover:text-gold-400 transition-colors"
+            className="flex items-center justify-between w-full text-[10px] font-bold text-white/50 uppercase tracking-widest hover:text-gold-400 transition-colors"
             onClick={() => setGovExpanded(!govExpanded)}
           >
             <span>Gov Contracting</span>
@@ -87,7 +87,7 @@ export default function Layout({ children }: Props) {
         {user?.role === 'admin' && (
           <>
             <div className="pt-2 pb-1 px-3">
-              <span className="text-[10px] font-bold text-orange-300/60 uppercase tracking-widest">Admin</span>
+              <span className="text-[10px] font-bold text-white/50 uppercase tracking-widest">Admin</span>
             </div>
             <NavLink to="/settings" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
               <Cog6ToothIcon className="w-4 h-4 flex-shrink-0" /><span>Settings</span>
@@ -97,14 +97,14 @@ export default function Layout({ children }: Props) {
       </nav>
 
       {/* User footer */}
-      <div className="px-2 py-3 border-t border-orange-800 flex-shrink-0">
-        <div className="flex items-center gap-2 px-3 py-2 mb-1 rounded-lg bg-orange-800/50">
-          <div className="w-7 h-7 rounded-full bg-orange-700 flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
+      <div className="px-2 py-3 border-t border-orange-600 flex-shrink-0">
+        <div className="flex items-center gap-2 px-3 py-2 mb-1 rounded-lg bg-orange-600/50">
+          <div className="w-7 h-7 rounded-full bg-orange-600 flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
             {(user?.full_name || user?.email || 'U')[0].toUpperCase()}
           </div>
           <div className="flex-1 min-w-0">
             <div className="text-xs font-medium text-white truncate">{user?.full_name || user?.email}</div>
-            <div className="text-[10px] text-orange-300/70 capitalize">{user?.role?.replace('_',' ')}</div>
+            <div className="text-[10px] text-white/60 capitalize">{user?.role?.replace('_',' ')}</div>
           </div>
         </div>
         <button onClick={handleLogout} className="nav-item w-full text-red-300 hover:text-red-200 hover:bg-red-900/20">
@@ -117,7 +117,7 @@ export default function Layout({ children }: Props) {
   return (
     <div className="flex h-screen bg-ink-950 overflow-hidden">
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex flex-col w-56 xl:w-60 bg-orange-900 border-r border-orange-800 flex-shrink-0">
+      <aside className="hidden lg:flex flex-col w-56 xl:w-60 bg-orange-500 border-r border-orange-600 flex-shrink-0">
         <Sidebar />
       </aside>
 
@@ -125,9 +125,9 @@ export default function Layout({ children }: Props) {
       {sidebarOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div className="absolute inset-0 bg-black/80" onClick={() => setSidebarOpen(false)} />
-          <aside className="absolute left-0 top-0 h-full w-60 bg-orange-900 border-r border-orange-800 shadow-2xl">
+          <aside className="absolute left-0 top-0 h-full w-60 bg-orange-500 border-r border-orange-600 shadow-2xl">
             <div className="absolute top-3 right-3 z-10">
-              <button onClick={() => setSidebarOpen(false)} className="p-1.5 rounded-lg bg-orange-800 text-orange-200 hover:text-white">
+              <button onClick={() => setSidebarOpen(false)} className="p-1.5 rounded-lg bg-orange-600 text-orange-200 hover:text-white">
                 <XMarkIcon className="w-4 h-4" />
               </button>
             </div>
@@ -138,8 +138,8 @@ export default function Layout({ children }: Props) {
 
       {/* Main */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        <header className="lg:hidden flex items-center justify-between px-4 py-3 bg-orange-900 border-b border-orange-800 flex-shrink-0">
-          <button onClick={() => setSidebarOpen(true)} className="p-2 rounded-lg text-orange-200 hover:text-white hover:bg-orange-800">
+        <header className="lg:hidden flex items-center justify-between px-4 py-3 bg-orange-500 border-b border-orange-600 flex-shrink-0">
+          <button onClick={() => setSidebarOpen(true)} className="p-2 rounded-lg text-orange-200 hover:text-white hover:bg-orange-600">
             <Bars3Icon className="w-5 h-5" />
           </button>
           <div className="flex items-center gap-2">
