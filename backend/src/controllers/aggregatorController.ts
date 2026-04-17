@@ -45,6 +45,7 @@ export async function listSolicitations(req: Request, res: Response): Promise<vo
     if (set_aside_type) { conds.push(`set_aside_type ILIKE $${i++}`); params.push(`%${set_aside_type}%`); }
     if (source) { conds.push(`source = $${i++}`); params.push(source); }
     if (status) { conds.push(`status = $${i++}`); params.push(status); }
+    else { conds.push(`status != 'Expired'`); }
     if (posted_after) { conds.push(`posted_date >= $${i++}`); params.push(posted_after); }
     if (posted_before) { conds.push(`posted_date <= $${i++}`); params.push(posted_before); }
     if (due_after) { conds.push(`response_due_date >= $${i++}`); params.push(due_after); }
