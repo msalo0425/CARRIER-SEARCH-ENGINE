@@ -113,7 +113,7 @@ export default function CrmPage() {
           const count = carriers.filter(c => c.crm_status === s).length;
           return (
             <button key={s} onClick={() => setStatusFilter(statusFilter === s ? '' : s)} className={`card p-4 text-left transition-all ${statusFilter === s ? 'border-gold-600' : ''}`}>
-              <div className="text-2xl font-bold text-white">{count}</div>
+              <div className="text-2xl font-bold text-ink-50">{count}</div>
               <CrmBadge status={s} />
             </button>
           );
@@ -123,11 +123,11 @@ export default function CrmPage() {
       {/* Tabs */}
       <div className="border-b border-ink-700">
         <nav className="flex gap-4">
-          <button onClick={() => setTab('today')} className={`pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-1.5 ${tab === 'today' ? 'border-gold-500 text-gold-400' : 'border-transparent text-ink-400 hover:text-white'}`}>
+          <button onClick={() => setTab('today')} className={`pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-1.5 ${tab === 'today' ? 'border-gold-500 text-gold-400' : 'border-transparent text-ink-400 hover:text-ink-50'}`}>
             <ClockIcon className="w-4 h-4" /> Follow-Ups Today
-            {followUps.length > 0 && <span className="bg-red-600 text-white text-[10px] px-1.5 rounded-full">{followUps.length}</span>}
+            {followUps.length > 0 && <span className="bg-red-600 text-ink-50 text-[10px] px-1.5 rounded-full">{followUps.length}</span>}
           </button>
-          <button onClick={() => setTab('all')} className={`pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-1.5 ${tab === 'all' ? 'border-gold-500 text-gold-400' : 'border-transparent text-ink-400 hover:text-white'}`}>
+          <button onClick={() => setTab('all')} className={`pb-3 text-sm font-medium border-b-2 transition-colors flex items-center gap-1.5 ${tab === 'all' ? 'border-gold-500 text-gold-400' : 'border-transparent text-ink-400 hover:text-ink-50'}`}>
             <PhoneIcon className="w-4 h-4" /> All CRM Records ({total})
           </button>
         </nav>
@@ -139,7 +139,7 @@ export default function CrmPage() {
           {followUps.length === 0 ? (
             <div className="card p-12 text-center">
               <CheckCircleIcon className="w-10 h-10 mx-auto mb-3 text-green-600/50" />
-              <p className="text-white font-medium">All caught up!</p>
+              <p className="text-ink-50 font-medium">All caught up!</p>
               <p className="text-ink-400 text-sm mt-1">No follow-ups due today.</p>
             </div>
           ) : followUps.map(fu => (
@@ -148,7 +148,7 @@ export default function CrmPage() {
                 <ClockIcon className="w-5 h-5 text-red-400" />
               </div>
               <div className="flex-1 min-w-0">
-                <Link to={`/carriers/${fu.dot_number}`} className="font-medium text-white hover:text-gold-400">
+                <Link to={`/carriers/${fu.dot_number}`} className="font-medium text-ink-50 hover:text-gold-400">
                   {fu.carrier_name || `DOT ${fu.dot_number}`}
                 </Link>
                 <p className="text-xs text-ink-400">{fu.due_time ? `Due at ${fu.due_time}` : 'All day'}{fu.notes && ` · ${fu.notes}`}</p>
@@ -198,7 +198,7 @@ export default function CrmPage() {
                 {carriers.map(c => (
                   <tr key={c.dot_number} className="tr-hover">
                     <td className="td">
-                      <Link to={`/carriers/${c.dot_number}`} className="font-medium text-white hover:text-gold-400">{c.legal_name}</Link>
+                      <Link to={`/carriers/${c.dot_number}`} className="font-medium text-ink-50 hover:text-gold-400">{c.legal_name}</Link>
                       {c.crm_notes && <p className="text-[10px] text-ink-400 truncate max-w-[200px]">{c.crm_notes}</p>}
                     </td>
                     <td className="td text-center text-ink-300 text-xs">{c.phy_city}{c.phy_state ? `, ${c.phy_state}` : ''}</td>
@@ -233,7 +233,7 @@ export default function CrmPage() {
       {logModal && !isViewer && (
         <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
           <div className="card w-full max-w-md p-6 space-y-4">
-            <h2 className="text-lg font-bold text-white">Log Call — {logModal.carrier_name}</h2>
+            <h2 className="text-lg font-bold text-ink-50">Log Call — {logModal.carrier_name}</h2>
             <div className="field">
               <label className="label">Outcome</label>
               <select className="select" value={callOutcome} onChange={e => setCallOutcome(e.target.value)}>

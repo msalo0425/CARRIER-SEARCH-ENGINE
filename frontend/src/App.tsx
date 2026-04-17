@@ -45,7 +45,7 @@ function AppLayout({ children }: { children: React.ReactNode }) {
 function BootSpinner() {
   return (
     <div className="min-h-screen bg-ink-950 flex flex-col items-center justify-center gap-4">
-      <div className="w-12 h-12 bg-gold-500 rounded-2xl flex items-center justify-center text-2xl text-ink-950 font-black gold-glow">♣</div>
+      <img src="/logo.png" className="w-16 h-16 drop-shadow-sm" alt="Black Clover Logistics" />
       <div className="w-6 h-6 border-2 border-gold-500 border-t-transparent rounded-full animate-spin" />
     </div>
   );
@@ -65,8 +65,8 @@ export default function App() {
   return (
     <>
       <Toaster position="top-right" toastOptions={{
-        style: { background: '#1c1c1c', color: '#fff', border: '1px solid #3a3a3a' },
-        success: { iconTheme: { primary: '#D4AF37', secondary: '#0d0d0d' } },
+        style: { background: '#ffffff', color: '#0f172a', border: '1px solid #e2e8f0' },
+        success: { iconTheme: { primary: '#D4AF37', secondary: '#ffffff' } },
       }} />
       <Routes>
         <Route path="/login" element={<LoginPage />} />

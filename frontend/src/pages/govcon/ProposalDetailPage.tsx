@@ -104,7 +104,7 @@ export default function ProposalDetailPage() {
       <div className="flex items-start justify-between gap-4">
         <div>
           <Link to="/proposals" className="text-xs text-ink-400 hover:text-gold-400 mb-1 flex items-center gap-1"><ArrowLeftIcon className="w-3 h-3" />Back to Proposals</Link>
-          <h1 className="text-2xl font-bold text-white">{isNew ? 'New Proposal' : (proposal.contract_name || 'Proposal Detail')}</h1>
+          <h1 className="text-2xl font-bold text-ink-50">{isNew ? 'New Proposal' : (proposal.contract_name || 'Proposal Detail')}</h1>
           {!isNew && proposal.agency && <p className="text-ink-400 text-sm mt-0.5">{proposal.agency}</p>}
           {!isNew && proposal.status && (
             <div className="flex items-center gap-3 mt-2">
@@ -128,7 +128,7 @@ export default function ProposalDetailPage() {
       {!isNew && !isViewer && !editing && (
         <div className="flex flex-wrap gap-2">
           {PROPOSAL_STATUSES.map(s => (
-            <button key={s} onClick={() => updateStatus(s)} className={`text-xs px-2.5 py-1 rounded-full border transition-all ${proposal.status === s ? 'bg-gold-600 border-gold-500 text-white' : 'border-ink-600 text-ink-400 hover:border-gold-700 hover:text-gold-400'}`}>{s}</button>
+            <button key={s} onClick={() => updateStatus(s)} className={`text-xs px-2.5 py-1 rounded-full border transition-all ${proposal.status === s ? 'bg-gold-600 border-gold-500 text-ink-50' : 'border-ink-600 text-ink-400 hover:border-gold-700 hover:text-gold-400'}`}>{s}</button>
           ))}
         </div>
       )}
@@ -138,8 +138,8 @@ export default function ProposalDetailPage() {
         <div className="border-b border-ink-700">
           <nav className="flex gap-4">
             {(['details', 'subquotes', 'activity'] as const).map(t => (
-              <button key={t} onClick={() => setTab(t)} className={`pb-3 text-sm font-medium capitalize border-b-2 transition-colors flex items-center gap-1.5 ${tab === t ? 'border-gold-500 text-gold-400' : 'border-transparent text-ink-400 hover:text-white'}`}>
-                {t === 'subquotes' ? <>Sub Quotes {pendingSQ > 0 && <span className="bg-orange-600 text-white text-[10px] px-1.5 rounded-full">{pendingSQ}</span>}</> : t === 'activity' ? 'Activity Log' : 'Details'}
+              <button key={t} onClick={() => setTab(t)} className={`pb-3 text-sm font-medium capitalize border-b-2 transition-colors flex items-center gap-1.5 ${tab === t ? 'border-gold-500 text-gold-400' : 'border-transparent text-ink-400 hover:text-ink-50'}`}>
+                {t === 'subquotes' ? <>Sub Quotes {pendingSQ > 0 && <span className="bg-orange-600 text-ink-50 text-[10px] px-1.5 rounded-full">{pendingSQ}</span>}</> : t === 'activity' ? 'Activity Log' : 'Details'}
               </button>
             ))}
           </nav>
@@ -229,7 +229,7 @@ export default function ProposalDetailPage() {
           )}
           {sqForm && (
             <div className="card p-5 space-y-4 max-w-xl">
-              <h3 className="text-sm font-semibold text-white">Sub Quote</h3>
+              <h3 className="text-sm font-semibold text-ink-50">Sub Quote</h3>
               <div className="grid sm:grid-cols-2 gap-3">
                 <div className="field">
                   <label className="label">Vendor Name</label>
@@ -277,7 +277,7 @@ export default function ProposalDetailPage() {
                   <tr><td colSpan={6} className="text-center py-12 text-ink-400 text-sm">No sub quotes yet.</td></tr>
                 ) : subQuotes.map(sq => (
                   <tr key={sq.id} className="tr-hover">
-                    <td className="td font-medium text-white">{sq.company_name}</td>
+                    <td className="td font-medium text-ink-50">{sq.company_name}</td>
                     <td className="td text-center">
                       <span className={`badge text-xs ${sq.quote_received ? 'bg-green-900/50 text-green-400 border-green-800' : sq.status === 'Rejected' ? 'bg-red-900/30 text-red-400 border-red-800' : 'bg-orange-900/30 text-orange-400 border-orange-800'}`}>{sq.status || (sq.quote_received ? 'Received' : 'Pending')}</span>
                     </td>
@@ -311,7 +311,7 @@ export default function ProposalDetailPage() {
                 {(a.user_name || '?')[0].toUpperCase()}
               </div>
               <div className="flex-1">
-                <p className="text-sm text-white">
+                <p className="text-sm text-ink-50">
                   <span className="font-medium">{a.user_name || 'System'}</span>
                   {' — '}<span className="text-ink-300">{a.action.replace(/_/g, ' ')}</span>
                 </p>

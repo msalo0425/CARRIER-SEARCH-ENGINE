@@ -141,7 +141,7 @@ export default function AggregatorPage() {
       <div className="border-b border-ink-700">
         <nav className="flex gap-4">
           {(['solicitations', 'intelligence', 'sync'] as const).map(t => (
-            <button key={t} onClick={() => setTab(t)} className={`pb-3 text-sm font-medium capitalize border-b-2 transition-colors flex items-center gap-1.5 ${tab === t ? 'border-gold-500 text-gold-400' : 'border-transparent text-ink-400 hover:text-white'}`}>
+            <button key={t} onClick={() => setTab(t)} className={`pb-3 text-sm font-medium capitalize border-b-2 transition-colors flex items-center gap-1.5 ${tab === t ? 'border-gold-500 text-gold-400' : 'border-transparent text-ink-400 hover:text-ink-50'}`}>
               {t === 'solicitations' && <BoltIcon className="w-4 h-4" />}
               {t === 'intelligence' && <ChartBarIcon className="w-4 h-4" />}
               {t === 'sync' && <ArrowPathIcon className="w-4 h-4" />}
@@ -181,7 +181,7 @@ export default function AggregatorPage() {
             {solicitations.length === 0 ? (
               <div className="card p-16 text-center">
                 <BoltIcon className="w-12 h-12 mx-auto mb-4 text-ink-600" />
-                <p className="text-white font-medium">No solicitations found</p>
+                <p className="text-ink-50 font-medium">No solicitations found</p>
                 <p className="text-ink-400 text-sm mt-1">Try adjusting your filters or trigger a sync.</p>
               </div>
             ) : solicitations.map(sol => (
@@ -199,7 +199,7 @@ export default function AggregatorPage() {
                       {sol.set_aside_type && <span className="badge bg-purple-900/30 text-purple-300 border-purple-800 text-[10px]">{sol.set_aside_type}</span>}
                       {sol.status === 'Added to Proposals' && <span className="badge bg-green-900/30 text-green-400 border-green-800 text-[10px]">In Proposals</span>}
                     </div>
-                    <h3 className="text-sm font-semibold text-white leading-snug">{sol.title}</h3>
+                    <h3 className="text-sm font-semibold text-ink-50 leading-snug">{sol.title}</h3>
                     <p className="text-xs text-gold-400 mt-0.5">{sol.agency}</p>
                     <div className="flex flex-wrap gap-3 mt-2 text-xs text-ink-400">
                       {sol.naics_code && <span>NAICS {sol.naics_code}</span>}
@@ -242,7 +242,7 @@ export default function AggregatorPage() {
           {intel.length === 0 ? (
             <div className="card p-12 text-center">
               <ChartBarIcon className="w-12 h-12 mx-auto mb-4 text-ink-600" />
-              <p className="text-white font-medium">No intelligence data yet</p>
+              <p className="text-ink-50 font-medium">No intelligence data yet</p>
               <p className="text-ink-400 text-sm mt-1">Run a sync to pull USASpending data</p>
             </div>
           ) : (
@@ -261,7 +261,7 @@ export default function AggregatorPage() {
                 <tbody>
                   {intel.map((row, i) => (
                     <tr key={i} className="tr-hover">
-                      <td className="td font-medium text-white truncate max-w-[200px]">{row.agency}</td>
+                      <td className="td font-medium text-ink-50 truncate max-w-[200px]">{row.agency}</td>
                       <td className="td text-center font-mono text-xs text-ink-300">{row.naics_code}</td>
                       <td className="td text-center text-ink-200">{row.total_awards?.toLocaleString()}</td>
                       <td className="td text-center text-green-400">{formatCurrency(row.total_value)}</td>

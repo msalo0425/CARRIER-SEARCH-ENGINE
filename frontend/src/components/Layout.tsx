@@ -4,7 +4,7 @@ import { useAuthStore } from '../store/authStore';
 import api from '../api/client';
 import toast from 'react-hot-toast';
 import {
-  HomeIcon, TruckIcon, PhoneIcon, UserGroupIcon, FolderIcon,
+  HomeIcon, TruckIcon, PhoneIcon,
   DocumentTextIcon, BuildingOfficeIcon, ShieldCheckIcon,
   CalendarIcon, Cog6ToothIcon, ArrowRightOnRectangleIcon,
   Bars3Icon, XMarkIcon, ChevronDownIcon, GlobeAltIcon,
@@ -40,11 +40,13 @@ export default function Layout({ children }: Props) {
   const Sidebar = () => (
     <div className="flex flex-col h-full overflow-hidden">
       {/* Logo */}
-      <div className="flex items-center gap-3 px-5 py-4 border-b border-ink-700 flex-shrink-0">
-        <div className="w-9 h-9 bg-gold-500 rounded-xl flex items-center justify-center text-xl text-ink-950 font-black flex-shrink-0 gold-glow">♣</div>
+      <div className="flex items-center gap-3 px-5 py-4 border-b border-emerald-800 flex-shrink-0">
+        <div className="w-10 h-10 bg-white rounded-full flex-shrink-0 p-0.5 shadow-sm">
+          <img src="/logo.png" className="w-full h-full" alt="BCL" />
+        </div>
         <div>
           <div className="text-sm font-bold text-white leading-tight">Black Clover</div>
-          <div className="text-xs text-gold-400 leading-tight font-medium">Logistics</div>
+          <div className="text-xs text-emerald-400 leading-tight font-medium">Logistics</div>
         </div>
       </div>
 
@@ -55,7 +57,7 @@ export default function Layout({ children }: Props) {
         </NavLink>
 
         <div className="pt-2 pb-1 px-3">
-          <span className="text-[10px] font-bold text-ink-400 uppercase tracking-widest">Carriers</span>
+          <span className="text-[10px] font-bold text-emerald-300/60 uppercase tracking-widest">Carriers</span>
         </div>
         <NavLink to="/carriers" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
           <MagnifyingGlassIcon className="w-4 h-4 flex-shrink-0" /><span>Carrier Search</span>
@@ -69,7 +71,7 @@ export default function Layout({ children }: Props) {
 
         <div className="pt-2 pb-1 px-3">
           <button
-            className="flex items-center justify-between w-full text-[10px] font-bold text-ink-400 uppercase tracking-widest hover:text-gold-400 transition-colors"
+            className="flex items-center justify-between w-full text-[10px] font-bold text-emerald-300/60 uppercase tracking-widest hover:text-gold-400 transition-colors"
             onClick={() => setGovExpanded(!govExpanded)}
           >
             <span>Gov Contracting</span>
@@ -85,7 +87,7 @@ export default function Layout({ children }: Props) {
         {user?.role === 'admin' && (
           <>
             <div className="pt-2 pb-1 px-3">
-              <span className="text-[10px] font-bold text-ink-400 uppercase tracking-widest">Admin</span>
+              <span className="text-[10px] font-bold text-emerald-300/60 uppercase tracking-widest">Admin</span>
             </div>
             <NavLink to="/settings" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
               <Cog6ToothIcon className="w-4 h-4 flex-shrink-0" /><span>Settings</span>
@@ -95,17 +97,17 @@ export default function Layout({ children }: Props) {
       </nav>
 
       {/* User footer */}
-      <div className="px-2 py-3 border-t border-ink-700 flex-shrink-0">
-        <div className="flex items-center gap-2 px-3 py-2 mb-1 rounded-lg bg-ink-700/50">
-          <div className="w-7 h-7 rounded-full bg-gold-800 flex items-center justify-center text-xs font-bold text-gold-200 flex-shrink-0">
+      <div className="px-2 py-3 border-t border-emerald-800 flex-shrink-0">
+        <div className="flex items-center gap-2 px-3 py-2 mb-1 rounded-lg bg-emerald-800/50">
+          <div className="w-7 h-7 rounded-full bg-emerald-700 flex items-center justify-center text-xs font-bold text-white flex-shrink-0">
             {(user?.full_name || user?.email || 'U')[0].toUpperCase()}
           </div>
           <div className="flex-1 min-w-0">
             <div className="text-xs font-medium text-white truncate">{user?.full_name || user?.email}</div>
-            <div className="text-[10px] text-ink-400 capitalize">{user?.role?.replace('_',' ')}</div>
+            <div className="text-[10px] text-emerald-300/70 capitalize">{user?.role?.replace('_',' ')}</div>
           </div>
         </div>
-        <button onClick={handleLogout} className="nav-item w-full text-red-400 hover:text-red-300 hover:bg-red-900/20">
+        <button onClick={handleLogout} className="nav-item w-full text-red-300 hover:text-red-200 hover:bg-red-900/20">
           <ArrowRightOnRectangleIcon className="w-4 h-4 flex-shrink-0" /><span>Sign Out</span>
         </button>
       </div>
@@ -115,7 +117,7 @@ export default function Layout({ children }: Props) {
   return (
     <div className="flex h-screen bg-ink-950 overflow-hidden">
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex flex-col w-56 xl:w-60 bg-ink-900 border-r border-ink-700 flex-shrink-0">
+      <aside className="hidden lg:flex flex-col w-56 xl:w-60 bg-emerald-900 border-r border-emerald-800 flex-shrink-0">
         <Sidebar />
       </aside>
 
@@ -123,9 +125,9 @@ export default function Layout({ children }: Props) {
       {sidebarOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div className="absolute inset-0 bg-black/80" onClick={() => setSidebarOpen(false)} />
-          <aside className="absolute left-0 top-0 h-full w-60 bg-ink-900 border-r border-ink-700 shadow-2xl">
+          <aside className="absolute left-0 top-0 h-full w-60 bg-emerald-900 border-r border-emerald-800 shadow-2xl">
             <div className="absolute top-3 right-3 z-10">
-              <button onClick={() => setSidebarOpen(false)} className="p-1.5 rounded-lg bg-ink-700 text-ink-300 hover:text-white">
+              <button onClick={() => setSidebarOpen(false)} className="p-1.5 rounded-lg bg-emerald-800 text-emerald-200 hover:text-white">
                 <XMarkIcon className="w-4 h-4" />
               </button>
             </div>
@@ -136,12 +138,14 @@ export default function Layout({ children }: Props) {
 
       {/* Main */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        <header className="lg:hidden flex items-center justify-between px-4 py-3 bg-ink-900 border-b border-ink-700 flex-shrink-0">
-          <button onClick={() => setSidebarOpen(true)} className="p-2 rounded-lg text-ink-400 hover:text-white hover:bg-ink-700">
+        <header className="lg:hidden flex items-center justify-between px-4 py-3 bg-emerald-900 border-b border-emerald-800 flex-shrink-0">
+          <button onClick={() => setSidebarOpen(true)} className="p-2 rounded-lg text-emerald-200 hover:text-white hover:bg-emerald-800">
             <Bars3Icon className="w-5 h-5" />
           </button>
           <div className="flex items-center gap-2">
-            <span className="text-gold-400 font-black text-lg">♣</span>
+            <div className="w-6 h-6 bg-white rounded-full p-0.5">
+              <img src="/logo.png" className="w-full h-full" alt="BCL" />
+            </div>
             <span className="text-white font-bold text-sm">Black Clover</span>
           </div>
           <div className="w-9" />

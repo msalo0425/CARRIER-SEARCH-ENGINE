@@ -137,7 +137,7 @@ export default function ProposalsPage() {
                         className={`bg-ink-900 border border-ink-700 rounded-lg p-3 cursor-pointer hover:border-gold-700 transition-all ${dragging === p.id ? 'opacity-50' : ''}`}
                       >
                         <Link to={`/proposals/${p.id}`} className="block" onClick={e => dragging !== null && e.preventDefault()}>
-                          <p className="text-xs font-medium text-white leading-snug line-clamp-2 mb-2">{p.contract_name}</p>
+                          <p className="text-xs font-medium text-ink-50 leading-snug line-clamp-2 mb-2">{p.contract_name}</p>
                           <p className="text-[10px] text-gold-400 truncate mb-1">{p.agency}</p>
                           <div className="flex items-center justify-between mt-2">
                             <DaysCountdown date={p.proposal_due_date || null} />
@@ -177,7 +177,7 @@ export default function ProposalsPage() {
               {proposals.filter(p => !statusFilter || p.status === statusFilter).map(p => (
                 <tr key={p.id} className="tr-hover">
                   <td className="td">
-                    <Link to={`/proposals/${p.id}`} className="font-medium text-white hover:text-gold-400 block max-w-[220px] truncate">{p.contract_name}</Link>
+                    <Link to={`/proposals/${p.id}`} className="font-medium text-ink-50 hover:text-gold-400 block max-w-[220px] truncate">{p.contract_name}</Link>
                     {p.solicitation_number && <div className="text-xs text-ink-400 font-mono">{p.solicitation_number}</div>}
                   </td>
                   <td className="td text-center text-xs text-ink-300"><span className="truncate block max-w-[140px]">{p.agency}</span></td>

@@ -110,9 +110,9 @@ export default function SearchPage() {
       {/* Filter sidebar */}
       <aside className={`${sidebarOpen ? 'w-64 xl:w-72' : 'w-0'} transition-all flex-shrink-0 overflow-hidden bg-ink-900 border-r border-ink-700 flex flex-col`}>
         <div className="flex items-center justify-between px-4 py-3 border-b border-ink-700 flex-shrink-0">
-          <span className="text-sm font-semibold text-white flex items-center gap-1.5">
+          <span className="text-sm font-semibold text-ink-50 flex items-center gap-1.5">
             <FunnelIcon className="w-4 h-4 text-gold-400" /> Filters
-            {activeFilters > 0 && <span className="bg-gold-600 text-white text-[10px] px-1.5 rounded-full">{activeFilters}</span>}
+            {activeFilters > 0 && <span className="bg-gold-600 text-ink-50 text-[10px] px-1.5 rounded-full">{activeFilters}</span>}
           </span>
           <button onClick={clearFilters} className="text-xs text-ink-400 hover:text-gold-400">Clear all</button>
         </div>
@@ -200,7 +200,7 @@ export default function SearchPage() {
       <div className="flex-1 flex flex-col overflow-hidden">
         <div className="flex-shrink-0 p-4 border-b border-ink-700 bg-ink-950">
           <div className="flex items-center gap-3">
-            <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-2 rounded-lg text-ink-400 hover:text-white hover:bg-ink-700 flex-shrink-0">
+            <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-2 rounded-lg text-ink-400 hover:text-ink-50 hover:bg-ink-700 flex-shrink-0">
               <FunnelIcon className="w-4 h-4" />
             </button>
             <form onSubmit={handleSearch} className="flex-1 flex gap-2">
@@ -213,7 +213,7 @@ export default function SearchPage() {
                   value={q}
                   onChange={e => setQ(e.target.value)}
                 />
-                {q && <button type="button" onClick={() => setQ('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-400 hover:text-white">
+                {q && <button type="button" onClick={() => setQ('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-400 hover:text-ink-50">
                   <XMarkIcon className="w-4 h-4" />
                 </button>}
               </div>
@@ -256,7 +256,7 @@ export default function SearchPage() {
               ) : carriers.map(c => (
                 <tr key={c.dot_number} className="tr-hover cursor-pointer" onClick={() => navigate(`/carriers/${c.dot_number}`)}>
                   <td className="td">
-                    <div className="font-medium text-white truncate max-w-[200px]">{c.legal_name}</div>
+                    <div className="font-medium text-ink-50 truncate max-w-[200px]">{c.legal_name}</div>
                     {c.dba_name && <div className="text-xs text-ink-400 truncate">{c.dba_name}</div>}
                   </td>
                   <td className="td text-center font-mono text-xs">{c.dot_number}</td>

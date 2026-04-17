@@ -155,7 +155,7 @@ export default function AgenciesPage() {
             ) : agencies.map(a => (
               <button key={a.id} onClick={() => selectAgency(a)} className={`w-full text-left px-4 py-3 hover:bg-ink-700/50 transition-colors ${selected?.id === a.id ? 'bg-ink-700/80' : ''}`}>
                 <div className="flex items-center justify-between gap-2">
-                  <span className="font-medium text-white text-sm truncate">{a.agency_name}</span>
+                  <span className="font-medium text-ink-50 text-sm truncate">{a.agency_name}</span>
                   {a.acronym && <span className="text-xs text-ink-400 flex-shrink-0">{a.acronym}</span>}
                 </div>
                 <div className="flex items-center gap-2 mt-1">
@@ -172,7 +172,7 @@ export default function AgenciesPage() {
           {!selected ? (
             <div className="card p-16 text-center">
               <BuildingOfficeIcon className="w-12 h-12 mx-auto mb-4 text-ink-600" />
-              <p className="text-white font-medium">Select an agency</p>
+              <p className="text-ink-50 font-medium">Select an agency</p>
               <p className="text-ink-400 text-sm mt-1">Click an agency from the list to view details</p>
             </div>
           ) : (
@@ -180,7 +180,7 @@ export default function AgenciesPage() {
               <div className="card p-5">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h2 className="text-xl font-bold text-white">{selected.agency_name}</h2>
+                    <h2 className="text-xl font-bold text-ink-50">{selected.agency_name}</h2>
                     {selected.department && <p className="text-ink-400 text-sm">{selected.department}</p>}
                     {selected.acronym && <p className="text-ink-500 text-xs">{selected.acronym}</p>}
                     <div className="mt-2"><span className={`badge ${statusColor(selected.relationship_status)}`}>{selected.relationship_status}</span></div>
@@ -193,7 +193,7 @@ export default function AgenciesPage() {
                   {selected.sb_contact_name && (
                     <div>
                       <p className="text-ink-400 text-xs">Small Business Contact</p>
-                      <p className="text-white font-medium">{selected.sb_contact_name}</p>
+                      <p className="text-ink-50 font-medium">{selected.sb_contact_name}</p>
                       {selected.primary_contact_title && <p className="text-ink-400 text-xs">{selected.primary_contact_title}</p>}
                       {selected.sb_contact_email && <a href={`mailto:${selected.sb_contact_email}`} className="text-gold-400 text-xs hover:underline block">{selected.sb_contact_email}</a>}
                       {selected.sb_contact_phone && <a href={`tel:${selected.sb_contact_phone}`} className="text-xs text-ink-300 flex items-center gap-1 mt-0.5"><PhoneIcon className="w-3 h-3" />{selected.sb_contact_phone}</a>}
@@ -210,7 +210,7 @@ export default function AgenciesPage() {
               {/* Interactions */}
               <div className="card">
                 <div className="flex items-center justify-between p-4 border-b border-ink-700">
-                  <h3 className="text-sm font-semibold text-white">Interactions ({(selected.interactions || []).length})</h3>
+                  <h3 className="text-sm font-semibold text-ink-50">Interactions ({(selected.interactions || []).length})</h3>
                   {!isViewer && <button onClick={() => setInteractionForm(!interactionForm)} className="btn btn-outline text-xs flex items-center gap-1"><PlusIcon className="w-3.5 h-3.5" />Log Interaction</button>}
                 </div>
                 {interactionForm && (
@@ -261,7 +261,7 @@ export default function AgenciesPage() {
       {modal && !isViewer && (
         <div className="fixed inset-0 bg-black/70 z-50 flex items-start justify-center p-4 overflow-y-auto">
           <div className="card w-full max-w-2xl p-6 space-y-4 my-8">
-            <h2 className="text-lg font-bold text-white">{modal.id ? 'Edit Agency' : 'Add Agency'}</h2>
+            <h2 className="text-lg font-bold text-ink-50">{modal.id ? 'Edit Agency' : 'Add Agency'}</h2>
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="field">
                 <label className="label">Agency Name *</label>

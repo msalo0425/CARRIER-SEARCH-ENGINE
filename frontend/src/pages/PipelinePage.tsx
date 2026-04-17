@@ -105,7 +105,7 @@ export default function PipelinePage() {
       {filtered.length === 0 ? (
         <div className="card p-16 text-center">
           <TruckIcon className="w-12 h-12 mx-auto mb-4 text-ink-600" />
-          <p className="text-white font-medium text-lg mb-2">Pipeline is empty</p>
+          <p className="text-ink-50 font-medium text-lg mb-2">Pipeline is empty</p>
           <p className="text-ink-400 text-sm mb-4">Add carriers to your pipeline from the Carrier Search page.</p>
           <Link to="/carriers" className="btn btn-gold">Search Carriers</Link>
         </div>
@@ -117,7 +117,7 @@ export default function PipelinePage() {
                 <div className="flex-1 min-w-0 space-y-2">
                   <div className="flex flex-wrap items-center gap-2">
                     <StarIcon className="w-4 h-4 text-gold-400 flex-shrink-0 fill-gold-400" />
-                    <Link to={`/carriers/${c.dot_number}`} className="font-semibold text-white hover:text-gold-400 text-base">{c.legal_name}</Link>
+                    <Link to={`/carriers/${c.dot_number}`} className="font-semibold text-ink-50 hover:text-gold-400 text-base">{c.legal_name}</Link>
                     <StatusBadge status={c.operating_status || null} />
                     <SafetyBadge rating={c.safety_rating || null} />
                   </div>

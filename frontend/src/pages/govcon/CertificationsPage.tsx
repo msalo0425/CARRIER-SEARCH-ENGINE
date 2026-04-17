@@ -164,7 +164,7 @@ export default function CertificationsPage() {
             ) : certs.map(c => (
               <tr key={c.id} className={`tr-hover ${getDaysUntil(c.expiration_date) !== null && (getDaysUntil(c.expiration_date) || 0) < 0 ? 'bg-red-950/10' : getDaysUntil(c.expiration_date) !== null && (getDaysUntil(c.expiration_date) || 0) <= 60 ? 'bg-amber-950/10' : ''}`}>
                 <td className="td">
-                  <div className="font-medium text-white">{c.name}</div>
+                  <div className="font-medium text-ink-50">{c.name}</div>
                   {c.notes && <div className="text-xs text-ink-400 truncate max-w-[200px]">{c.notes}</div>}
                 </td>
                 <td className="td text-center text-xs text-ink-300">{c.issuing_body || '—'}</td>
@@ -198,7 +198,7 @@ export default function CertificationsPage() {
       {modal && !isViewer && (
         <div className="fixed inset-0 bg-black/70 z-50 flex items-start justify-center p-4 overflow-y-auto">
           <div className="card w-full max-w-xl p-6 space-y-4 my-8">
-            <h2 className="text-lg font-bold text-white">{modal.id ? 'Edit Certification' : 'Add Certification'}</h2>
+            <h2 className="text-lg font-bold text-ink-50">{modal.id ? 'Edit Certification' : 'Add Certification'}</h2>
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="field sm:col-span-2">
                 <label className="label">Certification Name *</label>

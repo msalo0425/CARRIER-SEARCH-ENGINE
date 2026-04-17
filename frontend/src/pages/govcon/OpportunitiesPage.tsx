@@ -126,7 +126,7 @@ export default function OpportunitiesPage() {
             ) : opps.map(o => (
               <tr key={o.id} className="tr-hover">
                 <td className="td">
-                  <div className="font-medium text-white max-w-[250px] truncate">{o.title}</div>
+                  <div className="font-medium text-ink-50 max-w-[250px] truncate">{o.title}</div>
                   {o.naics_code && <div className="text-xs text-ink-400">NAICS {o.naics_code}{o.set_aside_type ? ` · ${o.set_aside_type}` : ''}</div>}
                 </td>
                 <td className="td text-center text-xs text-ink-300 max-w-[140px]"><span className="truncate block">{o.agency_name}</span></td>
@@ -163,7 +163,7 @@ export default function OpportunitiesPage() {
       {modal && !isViewer && (
         <div className="fixed inset-0 bg-black/70 z-50 flex items-start justify-center p-4 overflow-y-auto">
           <div className="card w-full max-w-2xl p-6 space-y-4 my-8">
-            <h2 className="text-lg font-bold text-white">{modal.id ? 'Edit Opportunity' : 'New Opportunity'}</h2>
+            <h2 className="text-lg font-bold text-ink-50">{modal.id ? 'Edit Opportunity' : 'New Opportunity'}</h2>
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="field sm:col-span-2">
                 <label className="label">Title *</label>

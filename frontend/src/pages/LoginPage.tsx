@@ -31,18 +31,18 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-ink-950 flex items-center justify-center px-4 relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-gold-900/8 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-gold-900/5 rounded-full blur-3xl" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-emerald-900/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-gold-500/5 rounded-full blur-3xl" />
       </div>
       <div className="relative w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gold-500 rounded-2xl text-3xl mb-4 gold-glow text-ink-950 font-black shadow-2xl">♣</div>
-          <h1 className="text-xl font-bold text-white">Black Clover Logistics</h1>
+          <img src="/logo.png" className="w-20 h-20 mx-auto mb-4 drop-shadow-sm" alt="Black Clover Logistics" />
+          <h1 className="text-xl font-bold text-ink-50">Black Clover Logistics</h1>
           <p className="text-ink-400 text-sm mt-1">Business Operating System</p>
         </div>
 
-        <div className="card p-8 shadow-2xl border-ink-600">
-          <p className="text-white font-semibold mb-1">Sign in</p>
+        <div className="card p-8 shadow-lg border-ink-600">
+          <p className="text-ink-50 font-semibold mb-1">Sign in</p>
           <p className="text-ink-400 text-xs mb-6">Restricted access — authorized users only</p>
           <form onSubmit={submit} className="space-y-4">
             <div className="field">
@@ -59,11 +59,11 @@ export default function LoginPage() {
               </div>
             </div>
             <button type="submit" className="btn btn-gold w-full py-2.5" disabled={loading}>
-              {loading ? <><span className="w-4 h-4 border-2 border-ink-950 border-t-transparent rounded-full animate-spin" />Signing in...</> : 'Sign In'}
+              {loading ? <><span className="w-4 h-4 border-2 border-ink-50 border-t-transparent rounded-full animate-spin" />Signing in...</> : 'Sign In'}
             </button>
           </form>
         </div>
-        <p className="text-center text-ink-500 text-xs mt-5">Contact your administrator to request access.</p>
+        <p className="text-center text-ink-400 text-xs mt-5">Contact your administrator to request access.</p>
       </div>
     </div>
   );

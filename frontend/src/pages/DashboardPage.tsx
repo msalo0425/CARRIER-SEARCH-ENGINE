@@ -80,9 +80,9 @@ export default function DashboardPage() {
         {/* Follow-ups */}
         <div className="card lg:col-span-1">
           <div className="flex items-center justify-between p-4 border-b border-ink-700">
-            <h2 className="font-semibold text-white flex items-center gap-2">
+            <h2 className="font-semibold text-ink-50 flex items-center gap-2">
               <ClockIcon className="w-4 h-4 text-red-400" /> Follow-Ups Today
-              {followUps.length > 0 && <span className="bg-red-600 text-white text-xs px-1.5 rounded-full">{followUps.length}</span>}
+              {followUps.length > 0 && <span className="bg-red-600 text-ink-50 text-xs px-1.5 rounded-full">{followUps.length}</span>}
             </h2>
             <Link to="/crm" className="text-xs text-gold-400 hover:text-gold-300">View all →</Link>
           </div>
@@ -95,7 +95,7 @@ export default function DashboardPage() {
             ) : (followUps as {id:number;dot_number:string;carrier_name?:string;telephone?:string;due_time?:string;notes?:string}[]).slice(0,6).map(fu => (
               <div key={fu.id} className="flex gap-3 p-3 hover:bg-ink-700/40">
                 <div className="flex-1 min-w-0">
-                  <Link to={`/carriers/${fu.dot_number}`} className="text-xs font-medium text-white hover:text-gold-400 truncate block">{fu.carrier_name||`DOT ${fu.dot_number}`}</Link>
+                  <Link to={`/carriers/${fu.dot_number}`} className="text-xs font-medium text-ink-50 hover:text-gold-400 truncate block">{fu.carrier_name||`DOT ${fu.dot_number}`}</Link>
                   <p className="text-[10px] text-ink-400">{fu.due_time||'All day'}{fu.notes&&` · ${fu.notes}`}</p>
                 </div>
                 <div className="flex gap-1 flex-shrink-0">
@@ -110,7 +110,7 @@ export default function DashboardPage() {
         {/* Proposals due */}
         <div className="card lg:col-span-1">
           <div className="flex items-center justify-between p-4 border-b border-ink-700">
-            <h2 className="font-semibold text-white flex items-center gap-2">
+            <h2 className="font-semibold text-ink-50 flex items-center gap-2">
               <DocumentTextIcon className="w-4 h-4 text-amber-400" /> Proposals Due This Week
             </h2>
             <Link to="/proposals" className="text-xs text-gold-400 hover:text-gold-300">View all →</Link>
@@ -121,7 +121,7 @@ export default function DashboardPage() {
             ) : (proposalsDueThisWeek as {contract_name:string;agency?:string;proposal_due_date?:string;contract_value?:number}[]).map((p,i) => (
               <div key={i} className="flex items-start gap-3 p-3">
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium text-white truncate">{p.contract_name}</p>
+                  <p className="text-xs font-medium text-ink-50 truncate">{p.contract_name}</p>
                   <p className="text-[10px] text-ink-400 truncate">{p.agency}</p>
                 </div>
                 <div className="text-right flex-shrink-0">
@@ -136,7 +136,7 @@ export default function DashboardPage() {
         {/* Aggregator widget */}
         <div className="card lg:col-span-1">
           <div className="flex items-center justify-between p-4 border-b border-ink-700">
-            <h2 className="font-semibold text-white flex items-center gap-2">
+            <h2 className="font-semibold text-ink-50 flex items-center gap-2">
               <BoltIcon className="w-4 h-4 text-gold-400" /> Solicitation Aggregator
             </h2>
             <Link to="/aggregator" className="text-xs text-gold-400 hover:text-gold-300">View all →</Link>
@@ -146,7 +146,7 @@ export default function DashboardPage() {
               {label:'New Today', val:aggData.new_today||0, color:'text-gold-400'},
               {label:'WOSB Available', val:aggData.wosb_available||0, color:'text-gold-400'},
               {label:'Expiring Soon', val:aggData.expiring_soon||0, color:'text-red-400'},
-              {label:'Total Active', val:aggData.total_solicitations||0, color:'text-white'},
+              {label:'Total Active', val:aggData.total_solicitations||0, color:'text-ink-50'},
             ].map(({label,val,color})=>(
               <div key={label} className="bg-ink-700/50 rounded-lg p-3">
                 <div className={`text-lg font-bold ${color}`}>{String(val)}</div>
@@ -167,7 +167,7 @@ export default function DashboardPage() {
         {expiringCerts.length > 0 && (
           <div className="card">
             <div className="flex items-center justify-between p-4 border-b border-ink-700">
-              <h2 className="font-semibold text-white flex items-center gap-2">
+              <h2 className="font-semibold text-ink-50 flex items-center gap-2">
                 <ShieldCheckIcon className="w-4 h-4 text-amber-400" /> Certifications Expiring Soon
               </h2>
               <Link to="/certifications" className="text-xs text-gold-400">Manage →</Link>
@@ -175,7 +175,7 @@ export default function DashboardPage() {
             <div className="divide-y divide-ink-700">
               {(expiringCerts as {name:string;expiration_date?:string;days_until_expiry?:number}[]).map((c,i) => (
                 <div key={i} className="flex items-center justify-between p-3">
-                  <span className="text-xs text-white">{c.name}</span>
+                  <span className="text-xs text-ink-50">{c.name}</span>
                   <span className={`text-xs font-semibold ${(c.days_until_expiry||0)<=30?'text-red-400':'text-amber-400'}`}>
                     {c.expiration_date} ({c.days_until_expiry}d)
                   </span>
@@ -187,7 +187,7 @@ export default function DashboardPage() {
 
         <div className="card">
           <div className="p-4 border-b border-ink-700">
-            <h2 className="font-semibold text-white">Recent Activity</h2>
+            <h2 className="font-semibold text-ink-50">Recent Activity</h2>
           </div>
           <div className="divide-y divide-ink-700">
             {recentActivity.length === 0 ? (
@@ -198,7 +198,7 @@ export default function DashboardPage() {
                   {(item.user_name||'?')[0].toUpperCase()}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs text-white">
+                  <p className="text-xs text-ink-50">
                     <span className="font-medium">{item.user_name||'System'}</span>
                     {' '}{item.action.toLowerCase().replace(/_/g,' ')}
                     {item.carrier_name && <> · <Link to={`/carriers/${item.dot_number}`} className="text-gold-400">{item.carrier_name}</Link></>}
@@ -213,7 +213,7 @@ export default function DashboardPage() {
 
       {/* Quick actions */}
       <div className="card p-5">
-        <p className="text-sm font-semibold text-white mb-3">Quick Actions</p>
+        <p className="text-sm font-semibold text-ink-50 mb-3">Quick Actions</p>
         <div className="flex flex-wrap gap-2">
           <Link to="/carriers" className="btn btn-gold">Search Carriers</Link>
           <Link to="/crm" className="btn btn-ghost">Log a Call</Link>

@@ -108,7 +108,7 @@ export default function CarrierProfilePage() {
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
         <div>
           <Link to="/carriers" className="text-xs text-ink-400 hover:text-gold-400 mb-1 block">← Back to Search</Link>
-          <h1 className="text-2xl font-bold text-white">{carrier.legal_name}</h1>
+          <h1 className="text-2xl font-bold text-ink-50">{carrier.legal_name}</h1>
           {carrier.dba_name && <p className="text-ink-400 text-sm">DBA: {carrier.dba_name}</p>}
           <div className="flex flex-wrap gap-2 mt-2">
             <StatusBadge status={carrier.operating_status || null} />
@@ -129,11 +129,11 @@ export default function CarrierProfilePage() {
       <div className="flex flex-wrap gap-3">
         <div className="bg-ink-800 rounded-lg px-4 py-2">
           <div className="text-[10px] text-ink-400 uppercase tracking-wide">DOT Number</div>
-          <div className="font-mono text-white font-bold">{carrier.dot_number}</div>
+          <div className="font-mono text-ink-50 font-bold">{carrier.dot_number}</div>
         </div>
         {(carrier.mc_mx_ff_number || carrier.mc_number) && <div className="bg-ink-800 rounded-lg px-4 py-2">
           <div className="text-[10px] text-ink-400 uppercase tracking-wide">MC / MX / FF</div>
-          <div className="font-mono text-white font-bold">{carrier.mc_mx_ff_number || carrier.mc_number}</div>
+          <div className="font-mono text-ink-50 font-bold">{carrier.mc_mx_ff_number || carrier.mc_number}</div>
         </div>}
       </div>
 
@@ -141,7 +141,7 @@ export default function CarrierProfilePage() {
       <div className="border-b border-ink-700">
         <nav className="flex gap-4">
           {(['overview','crm','followups'] as const).map(t => (
-            <button key={t} onClick={() => setTab(t)} className={`pb-3 text-sm font-medium capitalize border-b-2 transition-colors ${tab === t ? 'border-gold-500 text-gold-400' : 'border-transparent text-ink-400 hover:text-white'}`}>
+            <button key={t} onClick={() => setTab(t)} className={`pb-3 text-sm font-medium capitalize border-b-2 transition-colors ${tab === t ? 'border-gold-500 text-gold-400' : 'border-transparent text-ink-400 hover:text-ink-50'}`}>
               {t === 'followups' ? `Follow-Ups (${followUps.length})` : t === 'crm' ? `Calls (${callLogs.length})` : 'Overview'}
             </button>
           ))}
@@ -152,7 +152,7 @@ export default function CarrierProfilePage() {
       {tab === 'overview' && (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div className="card p-4 space-y-3">
-            <h3 className="text-sm font-semibold text-white flex items-center gap-2"><MapPinIcon className="w-4 h-4 text-gold-400" />Contact & Location</h3>
+            <h3 className="text-sm font-semibold text-ink-50 flex items-center gap-2"><MapPinIcon className="w-4 h-4 text-gold-400" />Contact & Location</h3>
             <div className="space-y-2 text-sm">
               <Row label="Phone" val={formatPhone(carrier.telephone || null)} />
               <Row label="City" val={carrier.phy_city} />
@@ -163,7 +163,7 @@ export default function CarrierProfilePage() {
           </div>
 
           <div className="card p-4 space-y-3">
-            <h3 className="text-sm font-semibold text-white flex items-center gap-2"><TruckIcon className="w-4 h-4 text-gold-400" />Fleet & Operations</h3>
+            <h3 className="text-sm font-semibold text-ink-50 flex items-center gap-2"><TruckIcon className="w-4 h-4 text-gold-400" />Fleet & Operations</h3>
             <div className="space-y-2 text-sm">
               <Row label="Power Units" val={carrier.nbr_power_unit} />
               <Row label="Drivers" val={carrier.drivers} />
@@ -177,7 +177,7 @@ export default function CarrierProfilePage() {
           </div>
 
           <div className="card p-4 space-y-3">
-            <h3 className="text-sm font-semibold text-white flex items-center gap-2"><ShieldCheckIcon className="w-4 h-4 text-gold-400" />Safety & Insurance</h3>
+            <h3 className="text-sm font-semibold text-ink-50 flex items-center gap-2"><ShieldCheckIcon className="w-4 h-4 text-gold-400" />Safety & Insurance</h3>
             <div className="space-y-2 text-sm">
               <Row label="Safety Rating" val={carrier.safety_rating} />
               <Row label="Review Date" val={carrier.safety_review_date} />
@@ -190,7 +190,7 @@ export default function CarrierProfilePage() {
           </div>
 
           <div className="card p-4 md:col-span-2 lg:col-span-3">
-            <h3 className="text-sm font-semibold text-white mb-3">Cargo Types</h3>
+            <h3 className="text-sm font-semibold text-ink-50 mb-3">Cargo Types</h3>
             <CargoTags carrier={carrier} max={30} />
           </div>
         </div>
@@ -201,7 +201,7 @@ export default function CarrierProfilePage() {
         <div className="grid lg:grid-cols-3 gap-6">
           {!isViewer && (
             <div className="card p-5 space-y-4">
-              <h3 className="text-sm font-semibold text-white">CRM Status</h3>
+              <h3 className="text-sm font-semibold text-ink-50">CRM Status</h3>
               <div className="field">
                 <label className="label">Status</label>
                 <select className="select" value={crmStatus} onChange={e => setCrmStatus(e.target.value)}>
@@ -224,7 +224,7 @@ export default function CarrierProfilePage() {
                 </button>
               ) : (
                 <div className="space-y-3 border-t border-ink-700 pt-4">
-                  <p className="text-sm font-medium text-white">Log Call</p>
+                  <p className="text-sm font-medium text-ink-50">Log Call</p>
                   <div className="field">
                     <label className="label">Outcome</label>
                     <select className="select" value={callOutcome} onChange={e => setCallOutcome(e.target.value)}>
@@ -248,7 +248,7 @@ export default function CarrierProfilePage() {
 
           <div className={`card ${!isViewer ? 'lg:col-span-2' : 'lg:col-span-3'}`}>
             <div className="flex items-center justify-between p-4 border-b border-ink-700">
-              <h3 className="text-sm font-semibold text-white">Call History ({callLogs.length})</h3>
+              <h3 className="text-sm font-semibold text-ink-50">Call History ({callLogs.length})</h3>
             </div>
             <div className="divide-y divide-ink-700 max-h-[500px] overflow-y-auto">
               {callLogs.length === 0 ? (
@@ -280,7 +280,7 @@ export default function CarrierProfilePage() {
             </button>
           ) : (
             <div className="card p-5 max-w-md space-y-4">
-              <h3 className="text-sm font-semibold text-white">New Follow-Up</h3>
+              <h3 className="text-sm font-semibold text-ink-50">New Follow-Up</h3>
               <div className="field">
                 <label className="label">Date</label>
                 <input type="date" className="input" value={fuDate} onChange={e => setFuDate(e.target.value)} min={format(new Date(), 'yyyy-MM-dd')} />
@@ -302,7 +302,7 @@ export default function CarrierProfilePage() {
 
           <div className="card">
             <div className="p-4 border-b border-ink-700">
-              <h3 className="text-sm font-semibold text-white">Scheduled Follow-Ups ({followUps.length})</h3>
+              <h3 className="text-sm font-semibold text-ink-50">Scheduled Follow-Ups ({followUps.length})</h3>
             </div>
             <div className="divide-y divide-ink-700">
               {followUps.length === 0 ? (
@@ -310,7 +310,7 @@ export default function CarrierProfilePage() {
               ) : (followUps as FollowUp[]).map(fu => (
                 <div key={fu.id} className="flex items-center justify-between p-4">
                   <div>
-                    <p className="text-sm text-white font-medium">{fu.due_date}{fu.due_time ? ` at ${fu.due_time}` : ' (All day)'}</p>
+                    <p className="text-sm text-ink-50 font-medium">{fu.due_date}{fu.due_time ? ` at ${fu.due_time}` : ' (All day)'}</p>
                     {fu.notes && <p className="text-xs text-ink-400 mt-0.5">{fu.notes}</p>}
                   </div>
                   {!isViewer && (

@@ -110,7 +110,7 @@ export default function DocumentsPage() {
       {/* Upload panel */}
       {showUpload && !isViewer && (
         <div className="card p-5 space-y-4">
-          <h3 className="text-sm font-semibold text-white">Upload Document</h3>
+          <h3 className="text-sm font-semibold text-ink-50">Upload Document</h3>
           <div className="grid sm:grid-cols-3 gap-4">
             <div className="field sm:col-span-3">
               <label className="label">File *</label>
@@ -159,14 +159,14 @@ export default function DocumentsPage() {
           {docs.length === 0 ? (
             <div className="card p-16 text-center">
               <FolderIcon className="w-12 h-12 mx-auto mb-4 text-ink-600" />
-              <p className="text-white font-medium">No documents yet</p>
+              <p className="text-ink-50 font-medium">No documents yet</p>
               <p className="text-ink-400 text-sm mt-1">Upload your first document to get started</p>
             </div>
           ) : byCategory.map(({ cat, docs: catDocs }) => (
             <div key={cat} className="card overflow-hidden">
               <div className="flex items-center gap-2 px-4 py-3 border-b border-ink-700 bg-ink-800/50">
                 <FolderIcon className="w-4 h-4 text-gold-400" />
-                <h3 className="text-sm font-semibold text-white">{cat}</h3>
+                <h3 className="text-sm font-semibold text-ink-50">{cat}</h3>
                 <span className="text-xs text-ink-400 ml-auto">{catDocs.length} file{catDocs.length !== 1 ? 's' : ''}</span>
               </div>
               <DocTable docs={catDocs} onDownload={download} onDelete={del} formatSize={formatSize} fmtDate={fmtDate} isViewer={isViewer} />
@@ -201,7 +201,7 @@ function DocTable({ docs, onDownload, onDelete, formatSize, fmtDate, isViewer }:
             <td className="td">
               <div className="flex items-center gap-2">
                 <DocumentTextIcon className="w-4 h-4 text-ink-400 flex-shrink-0" />
-                <span className="text-white font-medium text-xs truncate max-w-[180px]">{d.original_filename || d.filename}</span>
+                <span className="text-ink-50 font-medium text-xs truncate max-w-[180px]">{d.original_filename || d.filename}</span>
               </div>
             </td>
             <td className="td text-center text-xs text-ink-400"><span className="truncate block max-w-[160px]">{d.description || '—'}</span></td>

@@ -133,7 +133,7 @@ export default function SettingsPage() {
       <div className="border-b border-ink-700">
         <nav className="flex gap-4">
           {(['users', 'aggregator', 'sync'] as const).map(t => (
-            <button key={t} onClick={() => setTab(t)} className={`pb-3 text-sm font-medium capitalize border-b-2 transition-colors ${tab === t ? 'border-gold-500 text-gold-400' : 'border-transparent text-ink-400 hover:text-white'}`}>
+            <button key={t} onClick={() => setTab(t)} className={`pb-3 text-sm font-medium capitalize border-b-2 transition-colors ${tab === t ? 'border-gold-500 text-gold-400' : 'border-transparent text-ink-400 hover:text-ink-50'}`}>
               {t === 'aggregator' ? 'Aggregator Config' : t === 'sync' ? 'Sync History' : 'User Management'}
             </button>
           ))}
@@ -165,7 +165,7 @@ export default function SettingsPage() {
                 {users.map(u => (
                   <tr key={u.id} className={`tr-hover ${!u.is_active ? 'opacity-50' : ''}`}>
                     <td className="td">
-                      <div className="font-medium text-white">{u.full_name || u.email}</div>
+                      <div className="font-medium text-ink-50">{u.full_name || u.email}</div>
                       {u.full_name && <div className="text-xs text-ink-400">{u.email}</div>}
                     </td>
                     <td className="td text-center">
@@ -201,7 +201,7 @@ export default function SettingsPage() {
       {tab === 'aggregator' && (
         <div className="space-y-6">
           <div className="card p-5 space-y-4">
-            <h3 className="text-sm font-semibold text-white">Data Sources</h3>
+            <h3 className="text-sm font-semibold text-ink-50">Data Sources</h3>
             <div className="grid sm:grid-cols-2 gap-3">
               {SOURCES.map(src => (
                 <label key={src.id} className="flex items-center gap-3 p-3 bg-ink-800/50 rounded-lg cursor-pointer">
@@ -214,14 +214,14 @@ export default function SettingsPage() {
                       enabled_sources: e.target.checked ? [...(s.enabled_sources || []), src.id] : (s.enabled_sources || []).filter(x => x !== src.id)
                     }))}
                   />
-                  <span className="text-sm text-white font-medium">{src.label}</span>
+                  <span className="text-sm text-ink-50 font-medium">{src.label}</span>
                 </label>
               ))}
             </div>
           </div>
 
           <div className="card p-5 space-y-4">
-            <h3 className="text-sm font-semibold text-white">NAICS Codes to Monitor</h3>
+            <h3 className="text-sm font-semibold text-ink-50">NAICS Codes to Monitor</h3>
             <p className="text-xs text-ink-400">Solicitations matching these NAICS codes will be pulled. Common freight/logistics codes: 484110, 484121, 484122, 484220, 488510, 488991</p>
             <div className="flex gap-2">
               <input className="input flex-1" placeholder="e.g. 484110" value={newNaics} onChange={e => setNewNaics(e.target.value)} onKeyDown={e => e.key === 'Enter' && addNaics()} maxLength={10} />
@@ -239,7 +239,7 @@ export default function SettingsPage() {
           </div>
 
           <div className="card p-5 space-y-4">
-            <h3 className="text-sm font-semibold text-white">Value Filter (Optional)</h3>
+            <h3 className="text-sm font-semibold text-ink-50">Value Filter (Optional)</h3>
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="field">
                 <label className="label">Min Contract Value ($)</label>
@@ -253,7 +253,7 @@ export default function SettingsPage() {
           </div>
 
           <div className="card p-5 space-y-4">
-            <h3 className="text-sm font-semibold text-white">Keyword Filter (Optional)</h3>
+            <h3 className="text-sm font-semibold text-ink-50">Keyword Filter (Optional)</h3>
             <div className="field">
               <label className="label">Keywords (comma separated)</label>
               <input className="input" value={aggSettings.keywords || ''} onChange={e => setAggSettings(s => ({ ...s, keywords: e.target.value }))} placeholder="freight, logistics, transportation, trucking" />
@@ -318,7 +318,7 @@ export default function SettingsPage() {
       {userModal && (
         <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
           <div className="card w-full max-w-md p-6 space-y-4">
-            <h2 className="text-lg font-bold text-white">{userModal.id ? 'Edit User' : 'Create User'}</h2>
+            <h2 className="text-lg font-bold text-ink-50">{userModal.id ? 'Edit User' : 'Create User'}</h2>
             <div className="field">
               <label className="label">Full Name</label>
               <input className="input" value={userModal.full_name || ''} onChange={e => setUserModal(m => ({ ...m!, full_name: e.target.value }))} />

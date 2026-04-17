@@ -110,7 +110,7 @@ export default function SourcesSoughtPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="card p-4 text-center">
-          <div className="text-2xl font-bold text-white">{items.length}</div>
+          <div className="text-2xl font-bold text-ink-50">{items.length}</div>
           <div className="text-xs text-ink-400 mt-0.5">Total</div>
         </div>
         <div className="card p-4 text-center">
@@ -165,7 +165,7 @@ export default function SourcesSoughtPage() {
             ) : items.map(item => (
               <tr key={item.id} className="tr-hover">
                 <td className="td">
-                  <div className="font-medium text-white max-w-[220px] truncate">{item.title}</div>
+                  <div className="font-medium text-ink-50 max-w-[220px] truncate">{item.title}</div>
                   {item.naics_code && <div className="text-xs text-ink-400">NAICS {item.naics_code}</div>}
                   {item.notes && <div className="text-xs text-ink-500 truncate max-w-[220px]">{item.notes}</div>}
                 </td>
@@ -198,7 +198,7 @@ export default function SourcesSoughtPage() {
       {modal && !isViewer && (
         <div className="fixed inset-0 bg-black/70 z-50 flex items-start justify-center p-4 overflow-y-auto">
           <div className="card w-full max-w-2xl p-6 space-y-4 my-8">
-            <h2 className="text-lg font-bold text-white">{modal.id ? 'Edit Entry' : 'New Sources Sought Entry'}</h2>
+            <h2 className="text-lg font-bold text-ink-50">{modal.id ? 'Edit Entry' : 'New Sources Sought Entry'}</h2>
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="field sm:col-span-2">
                 <label className="label">Title *</label>

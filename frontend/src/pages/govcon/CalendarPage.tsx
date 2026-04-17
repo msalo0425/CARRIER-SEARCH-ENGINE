@@ -102,7 +102,7 @@ export default function CalendarPage() {
       {/* Month navigation */}
       <div className="flex items-center gap-4">
         <button onClick={() => setCurrentMonth(m => subMonths(m, 1))} className="btn btn-ghost p-2"><ChevronLeftIcon className="w-4 h-4" /></button>
-        <h2 className="text-lg font-bold text-white w-48 text-center">{format(currentMonth, 'MMMM yyyy')}</h2>
+        <h2 className="text-lg font-bold text-ink-50 w-48 text-center">{format(currentMonth, 'MMMM yyyy')}</h2>
         <button onClick={() => setCurrentMonth(m => addMonths(m, 1))} className="btn btn-ghost p-2"><ChevronRightIcon className="w-4 h-4" /></button>
         <button onClick={() => setCurrentMonth(new Date())} className="btn btn-outline text-xs px-3">Today</button>
       </div>
@@ -141,12 +141,12 @@ export default function CalendarPage() {
                       onClick={() => setSelectedDay(isSelected ? null : day)}
                       className={`aspect-square border-r border-b border-ink-700/50 p-1 text-left hover:bg-ink-700/30 transition-colors ${isSelected ? 'bg-gold-900/20' : ''} ${isToday(day) ? 'bg-gold-950/30' : ''}`}
                     >
-                      <span className={`text-xs font-medium block mb-1 w-6 h-6 flex items-center justify-center rounded-full ${isToday(day) ? 'bg-gold-500 text-ink-950 font-bold' : isSameMonth(day, currentMonth) ? 'text-white' : 'text-ink-600'}`}>
+                      <span className={`text-xs font-medium block mb-1 w-6 h-6 flex items-center justify-center rounded-full ${isToday(day) ? 'bg-gold-500 text-ink-950 font-bold' : isSameMonth(day, currentMonth) ? 'text-ink-50' : 'text-ink-600'}`}>
                         {format(day, 'd')}
                       </span>
                       <div className="space-y-0.5">
                         {dayEvents.slice(0, 2).map(e => (
-                          <div key={e.id} className={`${TYPE_COLORS[e.event_type] || 'bg-ink-500'} rounded text-[9px] text-white px-1 py-0.5 truncate`}>{e.title}</div>
+                          <div key={e.id} className={`${TYPE_COLORS[e.event_type] || 'bg-ink-500'} rounded text-[9px] text-ink-50 px-1 py-0.5 truncate`}>{e.title}</div>
                         ))}
                         {dayEvents.length > 2 && <div className="text-[9px] text-ink-400">+{dayEvents.length - 2} more</div>}
                       </div>
@@ -162,7 +162,7 @@ export default function CalendarPage() {
             {selectedDay ? (
               <>
                 <div className="flex items-center justify-between p-4 border-b border-ink-700">
-                  <h3 className="font-semibold text-white text-sm">{format(selectedDay, 'EEEE, MMMM d')}</h3>
+                  <h3 className="font-semibold text-ink-50 text-sm">{format(selectedDay, 'EEEE, MMMM d')}</h3>
                   {!isViewer && (
                     <button onClick={() => setModal({ ...EMPTY, start_date: format(selectedDay, 'yyyy-MM-dd') })} className="btn btn-ghost p-1 text-gold-400">
                       <PlusIcon className="w-4 h-4" />
@@ -178,7 +178,7 @@ export default function CalendarPage() {
                         <div>
                           <div className="flex items-center gap-2 mb-0.5">
                             <span className={`w-2 h-2 rounded-full flex-shrink-0 ${TYPE_COLORS[e.event_type] || 'bg-ink-500'}`} />
-                            <span className="text-sm font-medium text-white">{e.title}</span>
+                            <span className="text-sm font-medium text-ink-50">{e.title}</span>
                           </div>
                           <span className="text-xs text-ink-400 ml-4">{e.event_type}</span>
                           {e.notes && <p className="text-xs text-ink-400 mt-1 ml-4">{e.notes}</p>}
@@ -217,9 +217,9 @@ export default function CalendarPage() {
                 <tr><td colSpan={6} className="text-center py-12 text-ink-400 text-sm">No events this month.</td></tr>
               ) : events.sort((a, b) => (a.start_date||'').localeCompare(b.start_date||'')).map(e => (
                 <tr key={e.id} className="tr-hover">
-                  <td className="td font-medium text-white">{e.title}</td>
+                  <td className="td font-medium text-ink-50">{e.title}</td>
                   <td className="td text-center">
-                    <span className={`inline-block px-2 py-0.5 rounded text-[10px] text-white ${TYPE_COLORS[e.event_type] || 'bg-ink-500'}`}>{e.event_type}</span>
+                    <span className={`inline-block px-2 py-0.5 rounded text-[10px] text-ink-50 ${TYPE_COLORS[e.event_type] || 'bg-ink-500'}`}>{e.event_type}</span>
                   </td>
                   <td className="td text-center text-xs text-ink-300">{e.start_date ? format(parseISO(e.start_date), 'MMM d, yyyy') : '—'}</td>
                   <td className="td text-center text-xs text-ink-400">{e.end_date ? format(parseISO(e.end_date), 'MMM d') : '—'}</td>
@@ -240,7 +240,7 @@ export default function CalendarPage() {
       {modal && !isViewer && (
         <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
           <div className="card w-full max-w-md p-6 space-y-4">
-            <h2 className="text-lg font-bold text-white">Add Event</h2>
+            <h2 className="text-lg font-bold text-ink-50">Add Event</h2>
             <div className="field">
               <label className="label">Title *</label>
               <input className="input" value={modal.title || ''} onChange={e => setModal(m => ({ ...m!, title: e.target.value }))} />
