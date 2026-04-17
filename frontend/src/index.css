@@ -59,7 +59,7 @@
   .td { @apply px-4 py-3 text-ink-50 border-b border-ink-700 last:border-0; }
   .tr-hover { @apply hover:bg-ink-800 transition-colors; }
 
-  .nav-item { @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-emerald-100/70 hover:text-white hover:bg-emerald-800/60 transition-all duration-150 text-sm font-medium cursor-pointer; }
+  .nav-item { @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-orange-100/70 hover:text-white hover:bg-orange-800/60 transition-all duration-150 text-sm font-medium cursor-pointer; }
   .nav-item.active { @apply text-gold-300 bg-gold-500/20 border border-gold-500/30; }
 
   .pill { @apply inline-flex items-center px-2 py-0.5 rounded-md text-xs bg-ink-700 text-ink-200 border border-ink-600; }
