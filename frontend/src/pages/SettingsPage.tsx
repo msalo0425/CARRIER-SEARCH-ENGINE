@@ -98,7 +98,7 @@ export default function SettingsPage() {
   const triggerFmcsaSync = async () => {
     setSyncing(true);
     try {
-      await api.post('/carriers/sync');
+      await api.post('/settings/trigger-fmcsa-sync');
       toast.success('FMCSA sync started');
       setTimeout(() => setSyncing(false), 3000);
     } catch { toast.error('Failed to start sync'); setSyncing(false); }
