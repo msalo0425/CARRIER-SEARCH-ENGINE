@@ -72,12 +72,12 @@ async function syncSamGov(settings: Record<string,string>, logId: number): Promi
           offset: String((page-1)*100),
           postedFrom: getDateDaysAgo(30),
           postedTo: getToday(),
-          ptype: 'o,p,k,r,s,g',
         });
-        const url = `https://api.sam.gov/opportunities/v2/search?${params}`;
+        const url = `https://api.sam.gov/opportunities/v2/search?${params}&ptype=o,p,k,r,s,g`;
+        if (page === 1) console.log(`[SAM] URL (no key): https://api.sam.gov/opportunities/v2/search?naicsCode=${naics}&limit=100&offset=0&postedFrom=${getDateDaysAgo(30)}&postedTo=${getToday()}&ptype=o,p,k,r,s,g`);
 
         const resp = await fetch(url, { headers: { 'Accept': 'application/json', 'X-Api-Key': apiKey } });
-        if (!resp.ok) { const body = await resp.text(); console.error(`SAM API error ${resp.status} for NAICS ${naics}:`, body.slice(0,500)); break; }
+        if (!resp.ok) { const body = await resp.text(); console.error(`SAM API error ${resp.status} for NAICS ${naics}: "${body.slice(0,500)}"`); break; }
 
         const data = await resp.json() as { opportunitiesData?: SamOpportunity[]; totalRecords?: number };
         const opps = data.opportunitiesData || [];
