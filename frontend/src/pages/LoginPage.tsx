@@ -36,7 +36,7 @@ export default function LoginPage() {
       </div>
       <div className="relative w-full max-w-sm">
         <div className="text-center mb-8">
-          <img src="/logo.png" className="w-20 h-20 mx-auto mb-4 drop-shadow-sm" alt="Black Clover Logistics" />
+          <img src="/logo.png" className="w-40 h-40 mx-auto mb-4 rounded-full" alt="Black Clover Logistics" />
           <h1 className="text-xl font-bold text-ink-50">Black Clover Logistics</h1>
           <p className="text-ink-400 text-sm mt-1">Business Operating System</p>
         </div>
