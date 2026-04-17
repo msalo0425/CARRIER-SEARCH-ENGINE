@@ -167,6 +167,80 @@ async function syncUsaSpending(settings: Record<string,string>): Promise<void> {
   }
 }
 
+// ─── FEMA / DHS Sync ─────────────────────────────────────────────────────────
+
+async function syncFema(settings: Record<string,string>, logId: number): Promise<{new_count:number;updated_count:number}> {
+  const apiKey = settings['sam_api_key'] || '';
+  if (!apiKey) {
+    console.log('[Aggregator] SAM.gov API key not configured, skipping FEMA sync');
+    return {new_count:0, updated_count:0};
+  }
+
+  let newCount = 0, updatedCount = 0, page = 1;
+
+  while (true) {
+    try {
+      const url = `https://api.sam.gov/opportunities/v2/search?` +
+        `api_key=${encodeURIComponent(apiKey)}&` +
+        `subtier=${encodeURIComponent('FEDERAL EMERGENCY MANAGEMENT AGENCY')}&` +
+        `limit=100&offset=${(page-1)*100}&` +
+        `status=active&` +
+        `postedFrom=${getDateDaysAgo(60)}&` +
+        `ptype=o,p,k,r,s,g`;
+
+      const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
+      if (!resp.ok) { console.error(`FEMA sync API error ${resp.status}`); break; }
+
+      const data = await resp.json() as { opportunitiesData?: SamOpportunity[] };
+      const opps = data.opportunitiesData || [];
+      if (opps.length === 0) break;
+
+      for (const opp of opps) {
+        if (!opp.noticeId) continue;
+        const poc = opp.pointOfContact?.[0];
+        const setAside = opp.typeOfSetAsideDescription || opp.typeOfSetAside || null;
+
+        const result = await pool.query(
+          `INSERT INTO aggregated_solicitations
+             (source, external_id, solicitation_number, title, agency_name, naics_code,
+              set_aside_type, posted_date, response_due_date,
+              contract_value_max, poc_name, poc_email, poc_phone,
+              description, original_url, is_wosb_eligible, is_edwosb_eligible, last_updated_at)
+           VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,NOW())
+           ON CONFLICT (source, external_id) DO UPDATE SET
+             title=EXCLUDED.title, response_due_date=EXCLUDED.response_due_date,
+             is_wosb_eligible=EXCLUDED.is_wosb_eligible, is_edwosb_eligible=EXCLUDED.is_edwosb_eligible,
+             last_updated_at=NOW()
+           RETURNING (xmax = 0) AS inserted`,
+          [
+            'fema', opp.noticeId,
+            opp.solicitationNumber||null, opp.title||null,
+            'FEDERAL EMERGENCY MANAGEMENT AGENCY',
+            opp.naicsCode||null, setAside,
+            opp.postedDate ? opp.postedDate.split('T')[0] : null,
+            opp.responseDeadLine ? opp.responseDeadLine.split('T')[0] : null,
+            opp.award?.amount||null,
+            poc?.fullName||null, poc?.email||null, poc?.phone||null,
+            opp.description?.slice(0,2000)||null,
+            opp.uiLink||null,
+            isWosbEligible(setAside), isEdwosbEligible(setAside),
+          ]
+        );
+        if (result.rows[0]?.inserted) newCount++; else updatedCount++;
+      }
+
+      if (opps.length < 100) break;
+      page++;
+    } catch (err) {
+      console.error('[Aggregator] FEMA sync error:', err);
+      break;
+    }
+  }
+
+  await pool.query(`UPDATE aggregator_sync_log SET new_count=new_count+$1, updated_count=updated_count+$2 WHERE id=$3`, [newCount, updatedCount, logId]);
+  return {new_count: newCount, updated_count: updatedCount};
+}
+
 // ─── Expire old solicitations ─────────────────────────────────────────────────
 
 async function markExpired(): Promise<void> {
@@ -190,6 +264,11 @@ export async function runAggregatorSync(): Promise<void> {
       const { new_count, updated_count } = await syncSamGov(settings, logId);
       totalNew += new_count; totalUpdated += updated_count;
       console.log(`[Aggregator] SAM.gov: ${new_count} new, ${updated_count} updated`);
+    }
+    if (settings['fema_enabled'] !== 'false') {
+      const { new_count, updated_count } = await syncFema(settings, logId);
+      totalNew += new_count; totalUpdated += updated_count;
+      console.log(`[Aggregator] FEMA: ${new_count} new, ${updated_count} updated`);
     }
     if (settings['usaspending_enabled'] === 'true') {
       await syncUsaSpending(settings);
