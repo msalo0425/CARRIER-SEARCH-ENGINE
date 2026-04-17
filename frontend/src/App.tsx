@@ -21,6 +21,7 @@ const Calendar = lazy(() => import('./pages/govcon/CalendarPage'));
 const Aggregator = lazy(() => import('./pages/govcon/AggregatorPage'));
 const Settings = lazy(() => import('./pages/SettingsPage'));
 const Tasks = lazy(() => import('./pages/TasksPage'));
+const GamePlan = lazy(() => import('./pages/GamePlanPage'));
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuthStore();
@@ -86,6 +87,7 @@ export default function App() {
         <Route path="/calendar" element={<AppLayout><Calendar /></AppLayout>} />
         <Route path="/aggregator" element={<AppLayout><Aggregator /></AppLayout>} />
         <Route path="/tasks" element={<AppLayout><Tasks /></AppLayout>} />
+        <Route path="/game-plan" element={<AppLayout><GamePlan /></AppLayout>} />
         <Route path="/settings" element={<AppLayout><Settings /></AppLayout>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

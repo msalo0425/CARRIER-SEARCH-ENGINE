@@ -118,11 +118,16 @@ async function fetchPage(offset: number): Promise<FmcsaRecord[]> {
   const headers: Record<string,string> = { 'Accept': 'application/json' };
   if (API_TOKEN) headers['X-App-Token'] = API_TOKEN;
 
-  const url = `${API_URL}?$limit=${PAGE_SIZE}&$offset=${offset}&$order=dot_number`;
+  const url = `${API_URL}?$limit=${PAGE_SIZE}&$offset=${offset}&$order=:id`;
   const resp = await fetch(url, { headers });
 
   if (!resp.ok) throw new Error(`FMCSA API error ${resp.status}: ${await resp.text()}`);
-  return resp.json() as Promise<FmcsaRecord[]>;
+  const data = await resp.json();
+  if (!Array.isArray(data)) {
+    console.error('[FMCSA Sync] Unexpected response:', JSON.stringify(data).slice(0, 300));
+    throw new Error('FMCSA API returned unexpected format');
+  }
+  return data as FmcsaRecord[];
 }
 
 const UPSERT_SQL = `

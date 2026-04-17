@@ -253,6 +253,84 @@ router.delete('/tasks/:id', requireAuth, async (req, res) => {
   } catch { res.status(500).json({ error: 'Server error' }); }
 });
 
+// ─── Game Plan ────────────────────────────────────────────────────────────────
+
+function getWeekStart(date = new Date()): string {
+  const d = new Date(date);
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  d.setDate(diff);
+  return d.toISOString().split('T')[0];
+}
+
+router.get('/game-plan/goals', requireAuth, async (req: any, res) => {
+  try {
+    const week = (req.query.week as string) || getWeekStart();
+    const rows = (await pool.query(
+      `SELECT g.*,
+         COUNT(l.id)::int AS completed_count,
+         json_agg(json_build_object('id',l.id,'note',l.note,'logged_at',l.logged_at) ORDER BY l.logged_at DESC) FILTER (WHERE l.id IS NOT NULL) AS logs
+       FROM game_plan_goals g
+       LEFT JOIN goal_log l ON l.goal_id = g.id AND l.week_start = $1
+       WHERE g.is_active = TRUE
+       GROUP BY g.id
+       ORDER BY g.sort_order, g.id`,
+      [week]
+    )).rows;
+    res.json({ goals: rows, week_start: week });
+  } catch { res.status(500).json({ error: 'Server error' }); }
+});
+
+router.post('/game-plan/goals', requireAuth, async (req: any, res) => {
+  try {
+    const { title, category, target_per_week, notes } = req.body;
+    if (!title?.trim()) { res.status(400).json({ error: 'Title required' }); return; }
+    const maxOrder = (await pool.query(`SELECT COALESCE(MAX(sort_order),0) AS m FROM game_plan_goals`)).rows[0].m;
+    const row = (await pool.query(
+      `INSERT INTO game_plan_goals (title, category, target_per_week, notes, sort_order) VALUES ($1,$2,$3,$4,$5) RETURNING *`,
+      [title.trim(), category||null, parseInt(target_per_week)||1, notes||null, maxOrder+1]
+    )).rows[0];
+    res.status(201).json(row);
+  } catch { res.status(500).json({ error: 'Server error' }); }
+});
+
+router.put('/game-plan/goals/:id', requireAuth, async (req, res) => {
+  try {
+    const { title, category, target_per_week, notes } = req.body;
+    const row = (await pool.query(
+      `UPDATE game_plan_goals SET title=$1, category=$2, target_per_week=$3, notes=$4 WHERE id=$5 RETURNING *`,
+      [title, category||null, parseInt(target_per_week)||1, notes||null, req.params.id]
+    )).rows[0];
+    if (!row) { res.status(404).json({ error: 'Not found' }); return; }
+    res.json(row);
+  } catch { res.status(500).json({ error: 'Server error' }); }
+});
+
+router.delete('/game-plan/goals/:id', requireAuth, requireAdmin, async (req, res) => {
+  try {
+    await pool.query(`DELETE FROM game_plan_goals WHERE id=$1`, [req.params.id]);
+    res.json({ message: 'Deleted' });
+  } catch { res.status(500).json({ error: 'Server error' }); }
+});
+
+router.post('/game-plan/goals/:id/log', requireAuth, async (req: any, res) => {
+  try {
+    const week = req.body.week_start || getWeekStart();
+    const row = (await pool.query(
+      `INSERT INTO goal_log (goal_id, week_start, note, logged_by) VALUES ($1,$2,$3,$4) RETURNING *`,
+      [req.params.id, week, req.body.note||null, req.user?.id||null]
+    )).rows[0];
+    res.status(201).json(row);
+  } catch { res.status(500).json({ error: 'Server error' }); }
+});
+
+router.delete('/game-plan/log/:id', requireAuth, async (req, res) => {
+  try {
+    await pool.query(`DELETE FROM goal_log WHERE id=$1`, [req.params.id]);
+    res.json({ message: 'Deleted' });
+  } catch { res.status(500).json({ error: 'Server error' }); }
+});
+
 // ─── Health ─────────────────────────────────────────────────────────────────
 // Returns only liveness status — no business data — intentionally unauthenticated
 // so load-balancers and Docker health checks can probe without credentials.
