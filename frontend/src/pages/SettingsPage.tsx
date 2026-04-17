@@ -10,7 +10,16 @@ interface AggSettings { enabled_sources: string[]; naics_codes: string[]; sync_s
 interface SyncLog { id: number; sync_type: string; status: string; records_fetched?: number; records_upserted?: number; started_at: string; completed_at?: string; error?: string; }
 
 const ROLES = ['admin', 'sales_rep', 'viewer'];
-const SOURCES = [{ id: 'sam.gov', label: 'SAM.gov' }, { id: 'usaspending', label: 'USASpending.gov' }, { id: 'fema', label: 'FEMA (DHS)' }, { id: 'dla_dibbs', label: 'DLA DIBBS' }, { id: 'gsa_ebuy', label: 'GSA eBuy' }];
+const SOURCES = [
+  { id: 'sam.gov',      label: 'SAM.gov (All NAICS)' },
+  { id: 'fema',        label: 'FEMA (DHS)' },
+  { id: 'dot',         label: 'DOT / FHWA' },
+  { id: 'ustranscom',  label: 'USTRANSCOM' },
+  { id: 'dla',         label: 'DLA (Defense Logistics)' },
+  { id: 'gsa',         label: 'GSA' },
+  { id: 'grants',      label: 'Grants.gov' },
+  { id: 'usaspending', label: 'USASpending.gov' },
+];
 
 export default function SettingsPage() {
   const { user } = useAuthStore();
@@ -38,9 +47,13 @@ export default function SettingsPage() {
     ]).then(([u, s, l]) => {
       setUsers(u.data || []);
       const raw = s.data || {};
-      const sourceKeyMap: Record<string,string> = { 'sam.gov': 'sam_enabled', 'usaspending': 'usaspending_enabled', 'fema': 'fema_enabled', 'dla_dibbs': 'dla_dibbs_enabled', 'gsa_ebuy': 'gsa_ebuy_enabled' };
+      const sourceKeyMap: Record<string,string> = {
+        'sam.gov': 'sam_enabled', 'fema': 'fema_enabled', 'dot': 'dot_enabled',
+        'ustranscom': 'ustranscom_enabled', 'dla': 'dla_enabled', 'gsa': 'gsa_enabled',
+        'grants': 'grants_enabled', 'usaspending': 'usaspending_enabled',
+      };
       setAggSettings({
-        enabled_sources: ['sam.gov','usaspending','fema','dla_dibbs','gsa_ebuy'].filter(src => raw[sourceKeyMap[src]] !== 'false'),
+        enabled_sources: ['sam.gov','fema','dot','ustranscom','dla','gsa','grants','usaspending'].filter(src => raw[sourceKeyMap[src]] !== 'false'),
         naics_codes: raw.naics_codes ? raw.naics_codes.split(',').map((c: string) => c.trim()).filter(Boolean) : [],
         sync_schedule: raw.sync_schedule || '0 6,18 * * *',
         min_value: raw.min_value ? Number(raw.min_value) : undefined,
@@ -92,10 +105,13 @@ export default function SettingsPage() {
     try {
       const payload: Record<string,string> = {
         sam_enabled: aggSettings.enabled_sources.includes('sam.gov') ? 'true' : 'false',
-        usaspending_enabled: aggSettings.enabled_sources.includes('usaspending') ? 'true' : 'false',
         fema_enabled: aggSettings.enabled_sources.includes('fema') ? 'true' : 'false',
-        dla_dibbs_enabled: aggSettings.enabled_sources.includes('dla_dibbs') ? 'true' : 'false',
-        gsa_ebuy_enabled: aggSettings.enabled_sources.includes('gsa_ebuy') ? 'true' : 'false',
+        dot_enabled: aggSettings.enabled_sources.includes('dot') ? 'true' : 'false',
+        ustranscom_enabled: aggSettings.enabled_sources.includes('ustranscom') ? 'true' : 'false',
+        dla_enabled: aggSettings.enabled_sources.includes('dla') ? 'true' : 'false',
+        gsa_enabled: aggSettings.enabled_sources.includes('gsa') ? 'true' : 'false',
+        grants_enabled: aggSettings.enabled_sources.includes('grants') ? 'true' : 'false',
+        usaspending_enabled: aggSettings.enabled_sources.includes('usaspending') ? 'true' : 'false',
         naics_codes: aggSettings.naics_codes.join(','),
         sync_schedule: aggSettings.sync_schedule,
         min_value: aggSettings.min_value?.toString() || '',
