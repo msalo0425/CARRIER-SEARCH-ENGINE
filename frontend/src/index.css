@@ -70,7 +70,7 @@
 }
 
 @layer utilities {
-  .text-gradient { background: linear-gradient(135deg, #D4AF37, #f5e98f); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .text-gradient { background: linear-gradient(135deg, #F96B2F, #fdba74); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
   .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
   .scrollbar-hide::-webkit-scrollbar { display: none; }
 }
