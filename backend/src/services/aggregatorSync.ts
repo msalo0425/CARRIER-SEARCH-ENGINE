@@ -65,16 +65,19 @@ async function syncSamGov(settings: Record<string,string>, logId: number): Promi
     let page = 1;
     while (true) {
       try {
-        const url = `https://api.sam.gov/opportunities/v2/search?` +
-          `api_key=${encodeURIComponent(apiKey)}&` +
-          `naicsCode=${naics}&` +
-          `limit=100&offset=${(page-1)*100}&` +
-          `postedFrom=${getDateDaysAgo(30)}&` +
-          `postedTo=${getToday()}&` +
-          `ptype=o,p,k,r,s,g`;
+        const params = new URLSearchParams({
+          api_key: apiKey,
+          naicsCode: naics,
+          limit: '100',
+          offset: String((page-1)*100),
+          postedFrom: getDateDaysAgo(30),
+          postedTo: getToday(),
+          ptype: 'o,p,k,r,s,g',
+        });
+        const url = `https://api.sam.gov/opportunities/v2/search?${params}`;
 
-        const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
-        if (!resp.ok) { const body = await resp.text(); console.error(`SAM API error ${resp.status} for NAICS ${naics}:`, body.slice(0,300)); break; }
+        const resp = await fetch(url, { headers: { 'Accept': 'application/json', 'X-Api-Key': apiKey } });
+        if (!resp.ok) { const body = await resp.text(); console.error(`SAM API error ${resp.status} for NAICS ${naics}:`, body.slice(0,500)); break; }
 
         const data = await resp.json() as { opportunitiesData?: SamOpportunity[]; totalRecords?: number };
         const opps = data.opportunitiesData || [];
@@ -180,16 +183,19 @@ async function syncFema(settings: Record<string,string>, logId: number): Promise
 
   while (true) {
     try {
-      const url = `https://api.sam.gov/opportunities/v2/search?` +
-        `api_key=${encodeURIComponent(apiKey)}&` +
-        `subtier=${encodeURIComponent('FEDERAL EMERGENCY MANAGEMENT AGENCY')}&` +
-        `limit=100&offset=${(page-1)*100}&` +
-        `postedFrom=${getDateDaysAgo(60)}&` +
-        `postedTo=${getToday()}&` +
-        `ptype=o,p,k,r,s,g`;
+      const params = new URLSearchParams({
+        api_key: apiKey,
+        subtier: 'FEDERAL EMERGENCY MANAGEMENT AGENCY',
+        limit: '100',
+        offset: String((page-1)*100),
+        postedFrom: getDateDaysAgo(60),
+        postedTo: getToday(),
+        ptype: 'o,p,k,r,s,g',
+      });
+      const url = `https://api.sam.gov/opportunities/v2/search?${params}`;
 
-      const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
-      if (!resp.ok) { const body = await resp.text(); console.error(`FEMA sync API error ${resp.status}:`, body.slice(0,300)); break; }
+      const resp = await fetch(url, { headers: { 'Accept': 'application/json', 'X-Api-Key': apiKey } });
+      if (!resp.ok) { const body = await resp.text(); console.error(`FEMA sync API error ${resp.status}:`, body.slice(0,500)); break; }
 
       const data = await resp.json() as { opportunitiesData?: SamOpportunity[] };
       const opps = data.opportunitiesData || [];
