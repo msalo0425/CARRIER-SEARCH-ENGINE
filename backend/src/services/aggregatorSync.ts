@@ -74,7 +74,7 @@ async function syncSamGov(settings: Record<string,string>, logId: number): Promi
           `ptype=o,p,k,r,s,g`;
 
         const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
-        if (!resp.ok) { console.error(`SAM API error ${resp.status} for NAICS ${naics}`); break; }
+        if (!resp.ok) { const body = await resp.text(); console.error(`SAM API error ${resp.status} for NAICS ${naics}:`, body.slice(0,300)); break; }
 
         const data = await resp.json() as { opportunitiesData?: SamOpportunity[]; totalRecords?: number };
         const opps = data.opportunitiesData || [];
@@ -189,7 +189,7 @@ async function syncFema(settings: Record<string,string>, logId: number): Promise
         `ptype=o,p,k,r,s,g`;
 
       const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
-      if (!resp.ok) { console.error(`FEMA sync API error ${resp.status}`); break; }
+      if (!resp.ok) { const body = await resp.text(); console.error(`FEMA sync API error ${resp.status}:`, body.slice(0,300)); break; }
 
       const data = await resp.json() as { opportunitiesData?: SamOpportunity[] };
       const opps = data.opportunitiesData || [];
