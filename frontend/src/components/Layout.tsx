@@ -8,7 +8,7 @@ import {
   DocumentTextIcon, BuildingOfficeIcon, ShieldCheckIcon,
   CalendarIcon, Cog6ToothIcon, ArrowRightOnRectangleIcon,
   Bars3Icon, XMarkIcon, ChevronDownIcon, GlobeAltIcon,
-  MagnifyingGlassIcon,
+  MagnifyingGlassIcon, ClipboardDocumentListIcon,
 } from '@heroicons/react/24/outline';
 
 interface Props { children: React.ReactNode; }
@@ -61,6 +61,9 @@ export default function Layout({ children }: Props) {
         </NavLink>
         <NavLink to="/crm" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
           <PhoneIcon className="w-4 h-4 flex-shrink-0" /><span>Cold Call CRM</span>
+        </NavLink>
+        <NavLink to="/tasks" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
+          <ClipboardDocumentListIcon className="w-4 h-4 flex-shrink-0" /><span>Tasks</span>
         </NavLink>
 
         <div className="pt-2 pb-1 px-3">

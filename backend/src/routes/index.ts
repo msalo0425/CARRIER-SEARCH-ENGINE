@@ -200,6 +200,59 @@ router.post('/settings/trigger-fmcsa-sync', requireAuth, requireAdmin, async (_r
   runFmcsaSync().catch(console.error);
 });
 
+// ─── Tasks ────────────────────────────────────────────────────────────────────
+router.get('/tasks', requireAuth, async (req: any, res) => {
+  try {
+    const rows = (await pool.query(
+      `SELECT t.*, u.full_name as created_by_name FROM tasks t LEFT JOIN users u ON t.created_by=u.id ORDER BY t.is_done ASC, t.priority DESC, t.due_date ASC NULLS LAST, t.created_at DESC`
+    )).rows;
+    res.json(rows);
+  } catch { res.status(500).json({ error: 'Server error' }); }
+});
+
+router.post('/tasks', requireAuth, async (req: any, res) => {
+  try {
+    const { title, notes, due_date, priority } = req.body;
+    if (!title?.trim()) { res.status(400).json({ error: 'Title required' }); return; }
+    const row = (await pool.query(
+      `INSERT INTO tasks (title, notes, due_date, priority, created_by) VALUES ($1,$2,$3,$4,$5) RETURNING *`,
+      [title.trim(), notes||null, due_date||null, priority||'normal', req.user?.id||null]
+    )).rows[0];
+    res.status(201).json(row);
+  } catch { res.status(500).json({ error: 'Server error' }); }
+});
+
+router.patch('/tasks/:id/toggle', requireAuth, async (req, res) => {
+  try {
+    const row = (await pool.query(
+      `UPDATE tasks SET is_done=NOT is_done, done_at=CASE WHEN NOT is_done THEN NOW() ELSE NULL END, updated_at=NOW() WHERE id=$1 RETURNING *`,
+      [req.params.id]
+    )).rows[0];
+    if (!row) { res.status(404).json({ error: 'Not found' }); return; }
+    res.json(row);
+  } catch { res.status(500).json({ error: 'Server error' }); }
+});
+
+router.put('/tasks/:id', requireAuth, async (req, res) => {
+  try {
+    const { title, notes, due_date, priority } = req.body;
+    if (!title?.trim()) { res.status(400).json({ error: 'Title required' }); return; }
+    const row = (await pool.query(
+      `UPDATE tasks SET title=$1, notes=$2, due_date=$3, priority=$4, updated_at=NOW() WHERE id=$5 RETURNING *`,
+      [title.trim(), notes||null, due_date||null, priority||'normal', req.params.id]
+    )).rows[0];
+    if (!row) { res.status(404).json({ error: 'Not found' }); return; }
+    res.json(row);
+  } catch { res.status(500).json({ error: 'Server error' }); }
+});
+
+router.delete('/tasks/:id', requireAuth, async (req, res) => {
+  try {
+    await pool.query(`DELETE FROM tasks WHERE id=$1`, [req.params.id]);
+    res.json({ message: 'Deleted' });
+  } catch { res.status(500).json({ error: 'Server error' }); }
+});
+
 // ─── Health ─────────────────────────────────────────────────────────────────
 // Returns only liveness status — no business data — intentionally unauthenticated
 // so load-balancers and Docker health checks can probe without credentials.
