@@ -66,7 +66,7 @@ export default function App() {
     <>
       <Toaster position="top-right" toastOptions={{
         style: { background: '#ffffff', color: '#0f172a', border: '1px solid #e2e8f0' },
-        success: { iconTheme: { primary: '#D4AF37', secondary: '#ffffff' } },
+        success: { iconTheme: { primary: '#F96B2F', secondary: '#ffffff' } },
       }} />
       <Routes>
         <Route path="/login" element={<LoginPage />} />
