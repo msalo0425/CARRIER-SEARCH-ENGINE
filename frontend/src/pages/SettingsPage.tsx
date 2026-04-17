@@ -6,7 +6,7 @@ import { format, parseISO } from 'date-fns';
 import { useAuthStore } from '../store/authStore';
 
 interface AppUser { id: number; email: string; full_name?: string; role: string; is_active: boolean; created_at: string; last_login?: string; }
-interface AggSettings { enabled_sources: string[]; naics_codes: string[]; sync_schedule: string; min_value?: number; max_value?: number; keywords?: string; }
+interface AggSettings { enabled_sources: string[]; naics_codes: string[]; sync_schedule: string; min_value?: number; max_value?: number; keywords?: string; sam_api_key?: string; }
 interface SyncLog { id: number; sync_type: string; status: string; records_fetched?: number; records_upserted?: number; started_at: string; completed_at?: string; error?: string; }
 
 const ROLES = ['admin', 'sales_rep', 'viewer'];
@@ -37,7 +37,17 @@ export default function SettingsPage() {
       api.get('/aggregator/sync-logs'),
     ]).then(([u, s, l]) => {
       setUsers(u.data || []);
-      setAggSettings(s.data || aggSettings);
+      const raw = s.data || {};
+      const sourceKeyMap: Record<string,string> = { 'sam.gov': 'sam_enabled', 'usaspending': 'usaspending_enabled', 'dla_dibbs': 'dla_dibbs_enabled', 'gsa_ebuy': 'gsa_ebuy_enabled' };
+      setAggSettings({
+        enabled_sources: ['sam.gov','usaspending','dla_dibbs','gsa_ebuy'].filter(src => raw[sourceKeyMap[src]] !== 'false'),
+        naics_codes: raw.naics_codes ? raw.naics_codes.split(',').map((c: string) => c.trim()).filter(Boolean) : [],
+        sync_schedule: raw.sync_schedule || '0 6,18 * * *',
+        min_value: raw.min_value ? Number(raw.min_value) : undefined,
+        max_value: raw.max_value ? Number(raw.max_value) : undefined,
+        keywords: raw.keywords || '',
+        sam_api_key: raw.sam_api_key || '',
+      });
       setSyncLogs(l.data || []);
     }).catch(() => toast.error('Failed to load settings'))
     .finally(() => setLoading(false));
@@ -80,7 +90,19 @@ export default function SettingsPage() {
 
   const saveAggSettings = async () => {
     try {
-      await api.put('/aggregator/settings', aggSettings);
+      const payload: Record<string,string> = {
+        sam_enabled: aggSettings.enabled_sources.includes('sam.gov') ? 'true' : 'false',
+        usaspending_enabled: aggSettings.enabled_sources.includes('usaspending') ? 'true' : 'false',
+        dla_dibbs_enabled: aggSettings.enabled_sources.includes('dla_dibbs') ? 'true' : 'false',
+        gsa_ebuy_enabled: aggSettings.enabled_sources.includes('gsa_ebuy') ? 'true' : 'false',
+        naics_codes: aggSettings.naics_codes.join(','),
+        sync_schedule: aggSettings.sync_schedule,
+        min_value: aggSettings.min_value?.toString() || '',
+        max_value: aggSettings.max_value?.toString() || '',
+        keywords: aggSettings.keywords || '',
+        sam_api_key: aggSettings.sam_api_key || '',
+      };
+      await api.put('/aggregator/settings', payload);
       toast.success('Settings saved');
     } catch { toast.error('Failed to save'); }
   };
@@ -200,6 +222,14 @@ export default function SettingsPage() {
       {/* Aggregator Settings */}
       {tab === 'aggregator' && (
         <div className="space-y-6">
+          <div className="card p-5 space-y-4">
+            <h3 className="text-sm font-semibold text-ink-50">SAM.gov API Key</h3>
+            <p className="text-xs text-ink-400">Required to sync federal contract opportunities. Get a free key at <strong>api.data.gov/signup</strong></p>
+            <div className="field">
+              <label className="label">API Key</label>
+              <input type="password" className="input font-mono" placeholder="Paste your SAM.gov API key here" value={aggSettings.sam_api_key || ''} onChange={e => setAggSettings(s => ({ ...s, sam_api_key: e.target.value }))} />
+            </div>
+          </div>
           <div className="card p-5 space-y-4">
             <h3 className="text-sm font-semibold text-ink-50">Data Sources</h3>
             <div className="grid sm:grid-cols-2 gap-3">
