@@ -17,6 +17,7 @@ const SOURCES = [
   { id: 'ustranscom',  label: 'USTRANSCOM' },
   { id: 'dla',         label: 'DLA (Defense Logistics)' },
   { id: 'gsa',         label: 'GSA' },
+  { id: 'usps',        label: 'USPS' },
   { id: 'grants',      label: 'Grants.gov' },
   { id: 'usaspending', label: 'USASpending.gov' },
 ];
@@ -50,10 +51,10 @@ export default function SettingsPage() {
       const sourceKeyMap: Record<string,string> = {
         'sam.gov': 'sam_enabled', 'fema': 'fema_enabled', 'dot': 'dot_enabled',
         'ustranscom': 'ustranscom_enabled', 'dla': 'dla_enabled', 'gsa': 'gsa_enabled',
-        'grants': 'grants_enabled', 'usaspending': 'usaspending_enabled',
+        'usps': 'usps_enabled', 'grants': 'grants_enabled', 'usaspending': 'usaspending_enabled',
       };
       setAggSettings({
-        enabled_sources: ['sam.gov','fema','dot','ustranscom','dla','gsa','grants','usaspending'].filter(src => raw[sourceKeyMap[src]] !== 'false'),
+        enabled_sources: ['sam.gov','fema','dot','ustranscom','dla','gsa','usps','grants','usaspending'].filter(src => raw[sourceKeyMap[src]] !== 'false'),
         naics_codes: raw.naics_codes ? raw.naics_codes.split(',').map((c: string) => c.trim()).filter(Boolean) : [],
         sync_schedule: raw.sync_schedule || '0 6,18 * * *',
         min_value: raw.min_value ? Number(raw.min_value) : undefined,
@@ -110,6 +111,7 @@ export default function SettingsPage() {
         ustranscom_enabled: aggSettings.enabled_sources.includes('ustranscom') ? 'true' : 'false',
         dla_enabled: aggSettings.enabled_sources.includes('dla') ? 'true' : 'false',
         gsa_enabled: aggSettings.enabled_sources.includes('gsa') ? 'true' : 'false',
+        usps_enabled: aggSettings.enabled_sources.includes('usps') ? 'true' : 'false',
         grants_enabled: aggSettings.enabled_sources.includes('grants') ? 'true' : 'false',
         usaspending_enabled: aggSettings.enabled_sources.includes('usaspending') ? 'true' : 'false',
         naics_codes: aggSettings.naics_codes.join(','),

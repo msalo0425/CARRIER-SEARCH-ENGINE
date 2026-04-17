@@ -506,6 +506,13 @@ export async function runAggregatorSync(): Promise<void> {
         daysBack: 45, naicsFilter: true,
       }));
     }
+    if (settings['usps_enabled'] !== 'false') {
+      log('USPS', await syncSamGovAgency(settings, logId, {
+        source: 'usps', label: 'USPS',
+        agencyParam: { subtier: 'POSTAL SERVICE' },
+        daysBack: 45, naicsFilter: false,
+      }));
+    }
     if (settings['grants_enabled'] !== 'false') {
       log('Grants.gov', await syncGrantsGov(settings, logId));
     }
