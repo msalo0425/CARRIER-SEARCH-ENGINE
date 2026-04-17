@@ -290,13 +290,14 @@ export async function runAggregatorSync(): Promise<void> {
 }
 
 function getToday(): string {
-  return new Date().toISOString().split('T')[0];
+  const d = new Date();
+  return `${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}/${d.getFullYear()}`;
 }
 
 function getDateDaysAgo(days: number): string {
   const d = new Date();
   d.setDate(d.getDate() - days);
-  return d.toISOString().split('T')[0];
+  return `${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}/${d.getFullYear()}`;
 }
 
 if (require.main === module) {
