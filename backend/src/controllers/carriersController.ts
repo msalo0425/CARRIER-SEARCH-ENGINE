@@ -72,6 +72,7 @@ export async function searchCarriers(req: Request, res: Response): Promise<void>
     if (max_power_units) { conditions.push(`c.nbr_power_unit <= $${i++}`); params.push(parseInt(max_power_units)); }
     if (crm_status) { conditions.push(`crm.crm_status = $${i++}`); params.push(crm_status); }
     if (in_pipeline === 'true') conditions.push(`crm.is_in_pipeline = true`);
+    if (req.query.has_phone === 'true') conditions.push(`c.telephone IS NOT NULL AND c.telephone != ''`);
 
     const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
     const baseFrom = `FROM carriers c LEFT JOIN carrier_crm crm ON c.dot_number = crm.dot_number ${where}`;

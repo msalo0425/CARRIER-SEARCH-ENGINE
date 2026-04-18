@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../../api/client';
-import { StatusBadge, SafetyBadge, CrmBadge, OpTypeBadge } from '../../components/StatusBadge';
+import { StatusBadge, SafetyBadge, CrmBadge, OpTypeBadge, formatPhone } from '../../components/StatusBadge';
 import { US_STATES, CARGO_TYPES, CRM_STATUSES } from '../../types';
-import { MagnifyingGlassIcon, FunnelIcon, XMarkIcon, ChevronLeftIcon, ChevronRightIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline';
+import { MagnifyingGlassIcon, FunnelIcon, XMarkIcon, ChevronLeftIcon, ChevronRightIcon, ArrowDownTrayIcon, PhoneIcon } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '../../store/authStore';
 
@@ -13,6 +13,7 @@ interface CarrierRow {
   dba_name?: string;
   phy_state?: string;
   phy_city?: string;
+  telephone?: string | null;
   operating_status?: string;
   safety_rating?: string;
   carrier_operation?: string;
@@ -42,6 +43,7 @@ export default function SearchPage() {
   const [minUnits, setMinUnits] = useState('');
   const [maxUnits, setMaxUnits] = useState('');
   const [insuranceOnly, setInsuranceOnly] = useState(false);
+  const [hasPhone, setHasPhone] = useState(false);
   const [crmStatus, setCrmStatus] = useState('');
   const [inPipeline, setInPipeline] = useState(false);
   const [selectedCargo, setSelectedCargo] = useState<string[]>([]);
@@ -61,6 +63,7 @@ export default function SearchPage() {
       if (minUnits) params.min_power_units = minUnits;
       if (maxUnits) params.max_power_units = maxUnits;
       if (insuranceOnly) params.insurance_on_file = 'true';
+      if (hasPhone) params.has_phone = 'true';
       if (crmStatus) params.crm_status = crmStatus;
       if (inPipeline) params.in_pipeline = 'true';
       if (selectedCargo.length === 1) params.cargo_type = selectedCargo[0];
@@ -74,7 +77,7 @@ export default function SearchPage() {
     } finally {
       setLoading(false);
     }
-  }, [q, stateFilter, operatingStatus, safetyRating, carrierOperation, minUnits, maxUnits, insuranceOnly, crmStatus, inPipeline, selectedCargo]);
+  }, [q, stateFilter, operatingStatus, safetyRating, carrierOperation, minUnits, maxUnits, insuranceOnly, hasPhone, crmStatus, inPipeline, selectedCargo]);
 
   useEffect(() => { search(1); }, []);
 
@@ -83,7 +86,7 @@ export default function SearchPage() {
   const clearFilters = () => {
     setQ(''); setStateFilter(''); setOperatingStatus(''); setSafetyRating('');
     setCarrierOperation(''); setMinUnits(''); setMaxUnits('');
-    setInsuranceOnly(false); setCrmStatus(''); setInPipeline(false);
+    setInsuranceOnly(false); setHasPhone(false); setCrmStatus(''); setInPipeline(false);
     setSelectedCargo([]);
   };
 
@@ -103,7 +106,7 @@ export default function SearchPage() {
   };
 
   const totalPages = Math.ceil(total / PAGE_SIZE);
-  const activeFilters = [stateFilter, operatingStatus, safetyRating, carrierOperation, minUnits, maxUnits, crmStatus].filter(Boolean).length + (insuranceOnly ? 1 : 0) + (inPipeline ? 1 : 0) + selectedCargo.length;
+  const activeFilters = [stateFilter, operatingStatus, safetyRating, carrierOperation, minUnits, maxUnits, crmStatus].filter(Boolean).length + (insuranceOnly ? 1 : 0) + (hasPhone ? 1 : 0) + (inPipeline ? 1 : 0) + selectedCargo.length;
 
   return (
     <div className="flex h-full">
@@ -177,6 +180,10 @@ export default function SearchPage() {
               <span className="text-sm text-ink-200">Insurance on File</span>
             </label>
             <label className="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" className="w-4 h-4 rounded border-ink-600 bg-ink-700 text-gold-500" checked={hasPhone} onChange={e => setHasPhone(e.target.checked)} />
+              <span className="text-sm text-ink-200 flex items-center gap-1"><PhoneIcon className="w-3.5 h-3.5 text-gold-400" />Has Phone Number</span>
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" className="w-4 h-4 rounded border-ink-600 bg-ink-700 text-gold-500" checked={inPipeline} onChange={e => setInPipeline(e.target.checked)} />
               <span className="text-sm text-ink-200">In Pipeline Only</span>
             </label>
@@ -240,6 +247,7 @@ export default function SearchPage() {
                 <th className="th">DOT #</th>
                 <th className="th">MC #</th>
                 <th className="th">State</th>
+                <th className="th">Phone</th>
                 <th className="th">Status</th>
                 <th className="th">Safety</th>
                 <th className="th">Op Type</th>
@@ -249,7 +257,7 @@ export default function SearchPage() {
             </thead>
             <tbody>
               {carriers.length === 0 && !loading ? (
-                <tr><td colSpan={9} className="text-center py-16 text-ink-400">
+                <tr><td colSpan={10} className="text-center py-16 text-ink-400">
                   <MagnifyingGlassIcon className="w-8 h-8 mx-auto mb-2 opacity-30" />
                   <p>No carriers found. Try adjusting your filters.</p>
                 </td></tr>
@@ -262,6 +270,13 @@ export default function SearchPage() {
                   <td className="td text-center font-mono text-xs">{c.dot_number}</td>
                   <td className="td text-center text-xs text-ink-300">{c.mc_mx_ff_number?.split(',')[0] || c.mc_number || '—'}</td>
                   <td className="td text-center">{c.phy_state || '—'}</td>
+                  <td className="td text-center text-xs" onClick={e => e.stopPropagation()}>
+                    {c.telephone
+                      ? <a href={`tel:${c.telephone}`} className="text-gold-400 hover:text-gold-300 flex items-center justify-center gap-1 whitespace-nowrap">
+                          <PhoneIcon className="w-3 h-3" />{formatPhone(c.telephone)}
+                        </a>
+                      : <span className="text-ink-600">—</span>}
+                  </td>
                   <td className="td text-center"><StatusBadge status={c.operating_status || null} /></td>
                   <td className="td text-center"><SafetyBadge rating={c.safety_rating || null} /></td>
                   <td className="td text-center">
