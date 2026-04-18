@@ -33,7 +33,7 @@ export async function login(req: Request, res: Response): Promise<void> {
     if (!user.is_active) { res.status(401).json({ error: 'Account disabled. Contact your administrator.' }); return; }
 
     const jti = uuidv4();
-    const token = jwt.sign({ sub: user.id, email: user.email, role: user.role, jti }, JWT_SECRET, { expiresIn: TOKEN_EXPIRY });
+    const token = jwt.sign({ sub: user.id, email: user.email, role: user.role, jti }, JWT_SECRET, { expiresIn: TOKEN_EXPIRY } as object);
     const expiresAt = new Date(Date.now() + TOKEN_EXPIRY_MS);
 
     await pool.query(`INSERT INTO sessions (user_id, token_jti, expires_at) VALUES ($1,$2,$3)`, [user.id, jti, expiresAt]);

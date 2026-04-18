@@ -29,7 +29,7 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
   if (!token) { res.status(401).json({ error: 'Authentication required' }); return; }
 
   try {
-    const payload = jwt.verify(token, JWT_SECRET) as JwtPayload;
+    const payload = jwt.verify(token, JWT_SECRET) as unknown as JwtPayload;
 
     const session = await queryOne(
       `SELECT id FROM sessions WHERE token_jti = $1 AND user_id = $2 AND expires_at > NOW()`,
