@@ -41,7 +41,7 @@ export default function Layout({ children }: Props) {
     <div className="flex flex-col h-full overflow-hidden">
       {/* Logo */}
       <div className="flex items-center justify-center px-4 py-5 border-b border-[#E55A20] flex-shrink-0">
-        <img src="/logo.svg" className="w-40 h-40 rounded-full" alt="BCL" />
+        <img src="/logo.png" className="w-40 h-40 rounded-full" alt="BCL" />
       </div>
 
       {/* Nav */}
@@ -140,7 +140,7 @@ export default function Layout({ children }: Props) {
             <Bars3Icon className="w-5 h-5" />
           </button>
           <div className="flex items-center gap-2">
-            <img src="/logo.svg" className="w-8 h-8 rounded-full" alt="BCL" />
+            <img src="/logo.png" className="w-8 h-8 rounded-full" alt="BCL" />
             <span className="text-white font-bold text-sm">Black Clover</span>
           </div>
           <div className="w-9" />

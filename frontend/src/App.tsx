@@ -47,7 +47,7 @@ function AppLayout({ children }: { children: React.ReactNode }) {
 function BootSpinner() {
   return (
     <div className="min-h-screen bg-ink-950 flex flex-col items-center justify-center gap-4">
-      <img src="/logo.svg" className="w-16 h-16 drop-shadow-sm" alt="Black Clover Logistics" />
+      <img src="/logo.png" className="w-16 h-16 drop-shadow-sm" alt="Black Clover Logistics" />
       <div className="w-6 h-6 border-2 border-gold-500 border-t-transparent rounded-full animate-spin" />
     </div>
   );
