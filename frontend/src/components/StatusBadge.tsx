@@ -61,7 +61,7 @@ export function ProposalStatusBadge({ status }: { status: string }) {
 export function CargoTags({ carrier, max = 5 }: { carrier: Carrier; max?: number }) {
   const active: string[] = [];
   for (const [field, label] of Object.entries(CARGO_TYPES)) {
-    if ((carrier as Record<string,unknown>)[field] === true) active.push(label);
+    if ((carrier as unknown as Record<string,unknown>)[field] === true) active.push(label);
   }
   if (!active.length) return <span className="text-ink-500 text-xs">None</span>;
   const visible = active.slice(0, max);

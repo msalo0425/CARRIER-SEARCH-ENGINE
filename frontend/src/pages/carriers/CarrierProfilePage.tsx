@@ -180,12 +180,12 @@ export default function CarrierProfilePage() {
             <h3 className="text-sm font-semibold text-ink-50 flex items-center gap-2"><ShieldCheckIcon className="w-4 h-4 text-gold-400" />Safety & Insurance</h3>
             <div className="space-y-2 text-sm">
               <Row label="Safety Rating" val={carrier.safety_rating} />
-              <Row label="Review Date" val={(carrier as Record<string,unknown>).safety_review_date as string} />
-              <Row label="Review Type" val={(carrier as Record<string,unknown>).safety_review_type as string} />
+              <Row label="Review Date" val={(carrier as unknown as Record<string,unknown>).safety_review_date as string} />
+              <Row label="Review Type" val={(carrier as unknown as Record<string,unknown>).safety_review_type as string} />
               <Row label="Insurance on File" val={carrier.insurance_on_file ? 'Yes' : 'No'} />
               <Row label="BIPD Insurance" val={carrier.bipd_insurance_on_file ? 'Yes' : 'No'} />
               <Row label="Cargo Insurance" val={carrier.cargo_insurance_on_file ? 'Yes' : 'No'} />
-              <Row label="Bond" val={(carrier as Record<string,unknown>).bond_insurance_on_file ? 'Yes' : 'No'} />
+              <Row label="Bond" val={(carrier as unknown as Record<string,unknown>).bond_insurance_on_file ? 'Yes' : 'No'} />
             </div>
           </div>
 
