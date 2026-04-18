@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <!-- Outer black circle -->
+  <circle cx="250" cy="250" r="245" fill="#111111"/>
+  <!-- White ring -->
+  <circle cx="250" cy="250" r="245" fill="none" stroke="white" stroke-width="8"/>
+  <!-- Inner white circle -->
+  <circle cx="250" cy="250" r="165" fill="white"/>
+  <!-- Inner black circle behind clover -->
+  <circle cx="250" cy="250" r="150" fill="#111111"/>
+
+  <!-- Four-leaf clover -->
+  <!-- Top leaf -->
+  <ellipse cx="250" cy="178" rx="48" ry="62" fill="white" transform="rotate(-10 250 220)"/>
+  <!-- Bottom leaf -->
+  <ellipse cx="250" cy="322" rx="48" ry="62" fill="white" transform="rotate(10 250 280)"/>
+  <!-- Left leaf -->
+  <ellipse cx="178" cy="250" rx="62" ry="48" fill="white" transform="rotate(10 220 250)"/>
+  <!-- Right leaf -->
+  <ellipse cx="322" cy="250" rx="62" ry="48" fill="white" transform="rotate(-10 280 250)"/>
+  <!-- Center circle -->
+  <circle cx="250" cy="250" r="22" fill="#111111"/>
+  <!-- Stem -->
+  <rect x="244" y="270" width="12" height="55" rx="6" fill="white"/>
+
+  <!-- BLACK CLOVER text on arc at top -->
+  <path id="topArc" d="M 68,250 A 182,182 0 0,1 432,250" fill="none"/>
+  <text font-family="'Arial Black', Arial, sans-serif" font-size="38" font-weight="900" fill="white" letter-spacing="8">
+    <textPath href="#topArc" startOffset="50%" text-anchor="middle">BLACK CLOVER</textPath>
+  </text>
+
+  <!-- LOGISTICS text on arc at bottom -->
+  <path id="bottomArc" d="M 80,270 A 182,182 0 0,0 420,270" fill="none"/>
+  <text font-family="'Arial Black', Arial, sans-serif" font-size="38" font-weight="900" fill="white" letter-spacing="10">
+    <textPath href="#bottomArc" startOffset="50%" text-anchor="middle">LOGISTICS</textPath>
+  </text>
+</svg>
