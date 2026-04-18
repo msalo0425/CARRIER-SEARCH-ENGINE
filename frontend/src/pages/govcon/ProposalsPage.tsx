@@ -143,8 +143,8 @@ export default function ProposalsPage() {
                             <DaysCountdown date={p.proposal_due_date || null} />
                             <span className="text-[10px] text-ink-400">{formatCurrency(p.contract_value)}</span>
                           </div>
-                          {p.pending_quotes > 0 && (
-                            <div className="mt-1.5 text-[10px] text-orange-400">⚠ {p.pending_quotes} sub quote{p.pending_quotes > 1 ? 's' : ''} pending</div>
+                          {(p.pending_quotes ?? 0) > 0 && (
+                            <div className="mt-1.5 text-[10px] text-orange-400">⚠ {p.pending_quotes} sub quote{(p.pending_quotes ?? 0) > 1 ? 's' : ''} pending</div>
                           )}
                         </Link>
                       </div>
@@ -189,7 +189,7 @@ export default function ProposalsPage() {
                   <td className="td text-center text-ink-300 text-xs">{formatCurrency(p.contract_value)}</td>
                   <td className="td text-center"><ProposalStatusBadge status={p.status} /></td>
                   <td className="td text-center">
-                    {p.pending_quotes > 0 ? <span className="text-orange-400 text-xs">⚠ {p.pending_quotes}</span> : <span className="text-ink-500 text-xs">—</span>}
+                    {(p.pending_quotes ?? 0) > 0 ? <span className="text-orange-400 text-xs">⚠ {p.pending_quotes}</span> : <span className="text-ink-500 text-xs">—</span>}
                   </td>
                 </tr>
               ))}

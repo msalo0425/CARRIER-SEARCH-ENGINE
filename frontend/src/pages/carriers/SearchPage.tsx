@@ -98,7 +98,7 @@ export default function SearchPage() {
     try {
       const params = new URLSearchParams({ format: 'csv' });
       if (q) params.append('q', q);
-      if (state) params.append('state', state);
+      if (stateFilter) params.append('state', stateFilter);
       const res = await api.get(`/carriers/export?${params.toString()}`, { responseType: 'blob' });
       const url = URL.createObjectURL(res.data as Blob);
       const a = document.createElement('a'); a.href = url; a.download = 'carriers.csv'; a.click();
