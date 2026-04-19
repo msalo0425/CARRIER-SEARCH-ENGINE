@@ -73,9 +73,8 @@ async function syncSamGov(settings: Record<string,string>, logId: number): Promi
           postedFrom: getDateDaysAgo(30),
           postedTo: getToday(),
         });
-        // Try both prod and non-prod paths
-        const url = `https://api.sam.gov/prod/opportunities/v2/search?${params}&ptype=o,p,k,r,s,g`;
-        if (page === 1) console.log(`[SAM] Trying: https://api.sam.gov/prod/opportunities/v2/search?naicsCode=${naics}&postedFrom=${getDateDaysAgo(30)}&postedTo=${getToday()}`);
+        const url = `https://sam.gov/api/prod/opportunities/v2/search?${params}&ptype=o,p,k,r,s,g`;
+        if (page === 1) console.log(`[SAM] Trying: https://sam.gov/api/prod/opportunities/v2/search?naicsCode=${naics}&postedFrom=${getDateDaysAgo(30)}&postedTo=${getToday()}`);
 
         const resp = await fetch(url, { headers: { 'Accept': 'application/json', 'X-Api-Key': apiKey } });
         if (!resp.ok) { const body = await resp.text(); console.error(`SAM API error ${resp.status} for NAICS ${naics}: "${body.slice(0,500)}"`); break; }
@@ -219,7 +218,7 @@ async function syncFema(settings: Record<string,string>, logId: number): Promise
         postedFrom: getDateDaysAgo(60),
         postedTo: getToday(),
       });
-      const url = `https://api.sam.gov/prod/opportunities/v2/search?${params}&ptype=o,p,k,r,s,g`;
+      const url = `https://sam.gov/api/prod/opportunities/v2/search?${params}&ptype=o,p,k,r,s,g`;
 
       const resp = await fetch(url, { headers: { 'Accept': 'application/json', 'X-Api-Key': apiKey } });
       if (!resp.ok) { const body = await resp.text(); console.error(`FEMA sync API error ${resp.status}:`, body.slice(0,500)); break; }
@@ -342,7 +341,7 @@ async function syncSamGovAgency(
         };
         if (naics) paramObj.naicsCode = naics;
         const params = new URLSearchParams(paramObj);
-        const url = `https://api.sam.gov/prod/opportunities/v2/search?${params}&ptype=o,p,k,r,s,g`;
+        const url = `https://sam.gov/api/prod/opportunities/v2/search?${params}&ptype=o,p,k,r,s,g`;
 
         const resp = await fetch(url, { headers: { 'Accept': 'application/json', 'X-Api-Key': apiKey } });
         if (!resp.ok) { const b = await resp.text(); console.error(`[${opts.label}] API error ${resp.status}: ${b.slice(0,200)}`); break; }
