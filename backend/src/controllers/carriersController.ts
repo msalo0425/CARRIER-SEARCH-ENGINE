@@ -274,6 +274,51 @@ export async function getTodayFollowUps(_req: Request, res: Response): Promise<v
   } catch { res.status(500).json({ error: 'Server error' }); }
 }
 
+export async function getHotSheet(req: Request, res: Response): Promise<void> {
+  try {
+    const {
+      days = '30', state, has_phone, operating_status,
+      page = '1', limit = '50',
+    } = req.query as Record<string, string>;
+
+    const pageNum = Math.max(1, parseInt(page));
+    const limitNum = Math.min(100, Math.max(1, parseInt(limit)));
+    const offset = (pageNum - 1) * limitNum;
+    const daysNum = Math.min(365, Math.max(1, parseInt(days) || 30));
+
+    const conditions: string[] = [];
+    const params: unknown[] = [];
+    let i = 1;
+
+    conditions.push(`c.added_date >= CURRENT_DATE - ($${i++} * INTERVAL '1 day')`);
+    params.push(daysNum);
+
+    if (state) { conditions.push(`c.phy_state = $${i++}`); params.push(state.toUpperCase()); }
+    if (has_phone === 'true') conditions.push(`c.telephone IS NOT NULL AND c.telephone != ''`);
+    if (operating_status) { conditions.push(`c.operating_status = $${i++}`); params.push(operating_status); }
+
+    const where = `WHERE ${conditions.join(' AND ')}`;
+    const baseFrom = `FROM carriers c LEFT JOIN carrier_crm crm ON c.dot_number = crm.dot_number ${where}`;
+
+    const countRow = await queryOne<{total:string}>(`SELECT COUNT(*) as total ${baseFrom}`, params);
+    const total = parseInt(countRow?.total || '0');
+
+    const rows = await query(
+      `SELECT c.dot_number, c.legal_name, c.dba_name, c.phy_state, c.phy_city,
+              c.telephone, c.mc_mx_ff_number, c.mc_number, c.added_date,
+              c.operating_status, c.nbr_power_unit, c.safety_rating,
+              c.carrier_operation, c.op_carrier_flag,
+              crm.crm_status, crm.is_in_pipeline
+       ${baseFrom}
+       ORDER BY c.added_date DESC NULLS LAST
+       LIMIT $${i++} OFFSET $${i++}`,
+      [...params, limitNum, offset]
+    );
+
+    res.json({ carriers: rows, total, page: pageNum, limit: limitNum, total_pages: Math.ceil(total / limitNum) });
+  } catch (err) { console.error('Hot sheet error:', err); res.status(500).json({ error: 'Server error' }); }
+}
+
 export async function getCrmCarriers(req: Request, res: Response): Promise<void> {
   try {
     const { q, crm_status, page = '1', page_size = '50' } = req.query as Record<string, string>;

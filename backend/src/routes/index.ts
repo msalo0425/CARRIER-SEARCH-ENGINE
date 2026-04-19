@@ -37,6 +37,7 @@ router.get('/carriers/search', requireAuth, carriers.searchCarriers);
 router.get('/carriers/crm', requireAuth, carriers.getCrmCarriers);
 router.get('/carriers/states', requireAuth, carriers.getStates);
 router.get('/carriers/pipeline', requireAuth, carriers.getPipelineCarriers);
+router.get('/carriers/hot-sheet', requireAuth, carriers.getHotSheet);
 router.get('/carriers/dashboard', requireAuth, carriers.getDashboard);
 router.get('/carriers/follow-ups/today', requireAuth, carriers.getTodayFollowUps);
 router.get('/carriers/:dotNumber', requireAuth, carriers.getCarrier);

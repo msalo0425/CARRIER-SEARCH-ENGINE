@@ -8,6 +8,7 @@ import LoginPage from './pages/LoginPage';
 const Dashboard = lazy(() => import('./pages/DashboardPage'));
 const CarriersSearch = lazy(() => import('./pages/carriers/SearchPage'));
 const CarrierProfile = lazy(() => import('./pages/carriers/CarrierProfilePage'));
+const HotSheet = lazy(() => import('./pages/carriers/HotSheetPage'));
 const Pipeline = lazy(() => import('./pages/PipelinePage'));
 const CRM = lazy(() => import('./pages/CrmPage'));
 const Opportunities = lazy(() => import('./pages/govcon/OpportunitiesPage'));
@@ -74,6 +75,7 @@ export default function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={<AppLayout><Dashboard /></AppLayout>} />
         <Route path="/carriers" element={<AppLayout><CarriersSearch /></AppLayout>} />
+        <Route path="/carriers/hot-sheet" element={<AppLayout><HotSheet /></AppLayout>} />
         <Route path="/carriers/:dotNumber" element={<AppLayout><CarrierProfile /></AppLayout>} />
         <Route path="/pipeline" element={<AppLayout><Pipeline /></AppLayout>} />
         <Route path="/crm" element={<AppLayout><CRM /></AppLayout>} />

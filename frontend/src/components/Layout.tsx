@@ -8,7 +8,7 @@ import {
   DocumentTextIcon, BuildingOfficeIcon, ShieldCheckIcon,
   CalendarIcon, Cog6ToothIcon, ArrowRightOnRectangleIcon,
   Bars3Icon, XMarkIcon, ChevronDownIcon, GlobeAltIcon,
-  MagnifyingGlassIcon, ClipboardDocumentListIcon,
+  MagnifyingGlassIcon, ClipboardDocumentListIcon, FireIcon,
 } from '@heroicons/react/24/outline';
 
 interface Props { children: React.ReactNode; }
@@ -74,6 +74,9 @@ export default function Layout({ children }: Props) {
           </button>
         </div>
         {carriersExpanded && <>
+          <NavLink to="/carriers/hot-sheet" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
+            <FireIcon className="w-4 h-4 flex-shrink-0 text-orange-400" /><span>Hot Sheet</span>
+          </NavLink>
           <NavLink to="/carriers" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
             <MagnifyingGlassIcon className="w-4 h-4 flex-shrink-0" /><span>Carrier Search</span>
           </NavLink>
