@@ -23,13 +23,16 @@ interface HotCarrier {
   is_in_pipeline: boolean | null;
 }
 
-// DOT numbers are issued sequentially — higher = more recently registered
-const DOT_RANGE_OPTIONS = [
-  { label: 'Newest ~50K (4,150,000+)', value: '4150000' },
-  { label: 'Newer ~200K (4,000,000+)', value: '4000000' },
-  { label: 'Recent ~500K (3,700,000+)', value: '3700000' },
-  { label: 'Last ~1M (3,200,000+)', value: '3200000' },
-  { label: 'All carriers', value: '0' },
+const RANGE_OPTIONS = [
+  { label: 'Last 7 days (~est)', value: 'days:7' },
+  { label: 'Last 30 days (~est)', value: 'days:30' },
+  { label: 'Last 60 days (~est)', value: 'days:60' },
+  { label: 'Last 90 days (~est)', value: 'days:90' },
+  { label: 'Newest ~50K (DOT 4.15M+)', value: 'dot:4150000' },
+  { label: 'Newer ~200K (DOT 4M+)', value: 'dot:4000000' },
+  { label: 'Recent ~500K (DOT 3.7M+)', value: 'dot:3700000' },
+  { label: 'Last ~1M (DOT 3.2M+)', value: 'dot:3200000' },
+  { label: 'All carriers', value: 'dot:0' },
 ];
 
 function formatPhone(phone: string | null): string {
@@ -47,7 +50,7 @@ export default function HotSheetPage() {
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState<string | null>(null);
 
-  const [minDot, setMinDot] = useState('4150000');
+  const [range, setRange] = useState('dot:4150000');
   const [stateFilter, setStateFilter] = useState('');
   const [hasPhone, setHasPhone] = useState(false);
   const [activeOnly, setActiveOnly] = useState(true);
@@ -55,7 +58,10 @@ export default function HotSheetPage() {
   const load = useCallback(async (p = 1) => {
     setLoading(true);
     try {
-      const params: Record<string, string> = { min_dot: minDot, page: String(p), limit: '50' };
+      const params: Record<string, string> = { page: String(p), limit: '50' };
+      const [type, val] = range.split(':');
+      if (type === 'days') params.days = val;
+      else params.min_dot = val;
       if (stateFilter) params.state = stateFilter;
       if (hasPhone) params.has_phone = 'true';
       if (activeOnly) params.operating_status = 'Active';
@@ -66,9 +72,9 @@ export default function HotSheetPage() {
       setPage(p);
     } catch { toast.error('Failed to load hot sheet'); }
     finally { setLoading(false); }
-  }, [minDot, stateFilter, hasPhone, activeOnly]);
+  }, [range, stateFilter, hasPhone, activeOnly]);
 
-  useEffect(() => { load(1); }, [minDot, stateFilter, hasPhone, activeOnly]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { load(1); }, [range, stateFilter, hasPhone, activeOnly]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const addToCrm = async (dot: string) => {
     setAdding(dot);
@@ -97,10 +103,10 @@ export default function HotSheetPage() {
       <div className="flex flex-wrap items-center gap-3">
         <select
           className="select w-56"
-          value={minDot}
-          onChange={e => setMinDot(e.target.value)}
+          value={range}
+          onChange={e => setRange(e.target.value)}
         >
-          {DOT_RANGE_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+          {RANGE_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
         </select>
         <input
           className="input w-32"

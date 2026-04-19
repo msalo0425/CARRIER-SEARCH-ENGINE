@@ -277,7 +277,7 @@ export async function getTodayFollowUps(_req: Request, res: Response): Promise<v
 export async function getHotSheet(req: Request, res: Response): Promise<void> {
   try {
     const {
-      min_dot, state, has_phone, operating_status,
+      min_dot, days, state, has_phone, operating_status,
       page = '1', limit = '50',
     } = req.query as Record<string, string>;
 
@@ -289,8 +289,18 @@ export async function getHotSheet(req: Request, res: Response): Promise<void> {
     const params: unknown[] = [];
     let i = 1;
 
-    // Default: top 100k most recently registered (by DOT number)
-    const dotFloor = min_dot ? parseInt(min_dot) : 3500000;
+    // Calculate DOT floor — either explicit, by days approximation, or default
+    let dotFloor: number;
+    if (min_dot) {
+      dotFloor = parseInt(min_dot);
+    } else if (days) {
+      const maxDotRow = await queryOne<{max:string}>(`SELECT MAX(dot_number::bigint) as max FROM carriers`);
+      const maxDot = parseInt(maxDotRow?.max || '4500000');
+      const daysNum = Math.min(365, Math.max(1, parseInt(days)));
+      dotFloor = Math.max(0, maxDot - daysNum * 500);
+    } else {
+      dotFloor = 4150000;
+    }
     conditions.push(`c.dot_number::bigint >= $${i++}`);
     params.push(dotFloor);
 
