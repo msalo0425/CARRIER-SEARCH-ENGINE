@@ -51,19 +51,6 @@ export default function Layout({ children }: Props) {
         </NavLink>
 
         <div className="pt-2 pb-1 px-3">
-          <span className="text-[10px] font-bold text-white/50 uppercase tracking-widest">Carriers</span>
-        </div>
-        <NavLink to="/carriers" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
-          <MagnifyingGlassIcon className="w-4 h-4 flex-shrink-0" /><span>Carrier Search</span>
-        </NavLink>
-        <NavLink to="/pipeline" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
-          <TruckIcon className="w-4 h-4 flex-shrink-0" /><span>Pipeline</span>
-        </NavLink>
-        <NavLink to="/crm" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
-          <PhoneIcon className="w-4 h-4 flex-shrink-0" /><span>Cold Call CRM</span>
-        </NavLink>
-
-        <div className="pt-2 pb-1 px-3">
           <button
             className="flex items-center justify-between w-full text-[10px] font-bold text-white/50 uppercase tracking-widest hover:text-gold-400 transition-colors"
             onClick={() => setGovExpanded(!govExpanded)}
@@ -77,6 +64,19 @@ export default function Layout({ children }: Props) {
             <GlobeAltIcon className="w-4 h-4 flex-shrink-0" /><span className="text-xs">{label}</span>
           </NavLink>
         ))}
+
+        <div className="pt-2 pb-1 px-3">
+          <span className="text-[10px] font-bold text-white/50 uppercase tracking-widest">Carriers</span>
+        </div>
+        <NavLink to="/carriers" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
+          <MagnifyingGlassIcon className="w-4 h-4 flex-shrink-0" /><span>Carrier Search</span>
+        </NavLink>
+        <NavLink to="/pipeline" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
+          <TruckIcon className="w-4 h-4 flex-shrink-0" /><span>Pipeline</span>
+        </NavLink>
+        <NavLink to="/crm" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
+          <PhoneIcon className="w-4 h-4 flex-shrink-0" /><span>Cold Call CRM</span>
+        </NavLink>
 
         {user?.role === 'admin' && (
           <>
