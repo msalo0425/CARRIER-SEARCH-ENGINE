@@ -52,7 +52,6 @@ export default function HotSheetPage() {
 
   const [range, setRange] = useState('dot:4150000');
   const [stateFilter, setStateFilter] = useState('');
-  const [hasPhone, setHasPhone] = useState(false);
   const [activeOnly, setActiveOnly] = useState(true);
 
   const load = useCallback(async (p = 1) => {
@@ -63,7 +62,7 @@ export default function HotSheetPage() {
       if (type === 'days') params.days = val;
       else params.min_dot = val;
       if (stateFilter) params.state = stateFilter;
-      if (hasPhone) params.has_phone = 'true';
+
       if (activeOnly) params.operating_status = 'Active';
       const { data } = await api.get('/carriers/hot-sheet', { params });
       setCarriers(data.carriers || []);
@@ -72,9 +71,9 @@ export default function HotSheetPage() {
       setPage(p);
     } catch { toast.error('Failed to load hot sheet'); }
     finally { setLoading(false); }
-  }, [range, stateFilter, hasPhone, activeOnly]);
+  }, [range, stateFilter, activeOnly]);
 
-  useEffect(() => { load(1); }, [range, stateFilter, hasPhone, activeOnly]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { load(1); }, [range, stateFilter, activeOnly]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const addToCrm = async (dot: string) => {
     setAdding(dot);
@@ -115,15 +114,6 @@ export default function HotSheetPage() {
           maxLength={2}
           onChange={e => setStateFilter(e.target.value.toUpperCase())}
         />
-        <label className="flex items-center gap-2 text-sm text-ink-300 cursor-pointer select-none">
-          <input
-            type="checkbox"
-            checked={hasPhone}
-            onChange={e => setHasPhone(e.target.checked)}
-            className="w-4 h-4 accent-[#F96B2F]"
-          />
-          Has Phone
-        </label>
         <label className="flex items-center gap-2 text-sm text-ink-300 cursor-pointer select-none">
           <input
             type="checkbox"

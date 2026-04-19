@@ -94,8 +94,13 @@ function flag(v: string | undefined): boolean {
 
 function parseDate(v: string | undefined): string | null {
   if (!v) return null;
+  const s = String(v).trim();
   try {
-    const d = new Date(v);
+    // Handle YYYYMMDD format (e.g. 19740601)
+    if (/^\d{8}$/.test(s)) {
+      return `${s.slice(0,4)}-${s.slice(4,6)}-${s.slice(6,8)}`;
+    }
+    const d = new Date(s);
     if (isNaN(d.getTime())) return null;
     return d.toISOString().split('T')[0];
   } catch { return null; }
@@ -186,10 +191,10 @@ function buildRow(rec: FmcsaRecord): unknown[] {
     rec.telephone||null, rec.fax||null,
     rec.entity_type||null, rec.carrier_operation||null,
     flag(rec.bi_flag), flag(rec.bi_flag), flag(rec.cf_flag),
-    flag(rec.hm_flag), flag(rec.pc_flag),
-    rec.record_status||null, parseDate(rec.out_of_service_date), deriveStatus(rec),
-    rec.nbr_power_unit ? parseInt(rec.nbr_power_unit) : null,
-    rec.driver_total ? parseInt(rec.driver_total) : null,
+    flag(rec.hm_flag) || flag((rec as any).hm_ind), flag(rec.pc_flag),
+    rec.record_status||(rec as any).status_code||null, parseDate(rec.out_of_service_date), deriveStatus(rec),
+    rec.nbr_power_unit ? parseInt(rec.nbr_power_unit) : ((rec as any).power_units ? parseInt((rec as any).power_units) : null),
+    rec.driver_total ? parseInt(rec.driver_total) : ((rec as any).total_intrastate_drivers ? parseInt((rec as any).total_intrastate_drivers) : null),
     rec.safety_rating||null, parseDate(rec.safety_rtg_date), parseDate(rec.safety_review_date), rec.safety_review_type||null,
     flag(rec.insurance_required), flag(rec.bipd_on_file), flag(rec.cargo_on_file), flag(rec.bond_insurance_on_file),
     flag(rec.cargo_general_freight_flag), flag(rec.cargo_household_goods_flag), flag(rec.cargo_metal_sheets_flag),
