@@ -19,8 +19,6 @@ const govconLinks = [
   { to: '/aggregator', label: 'Solicitation Aggregator' },
   { to: '/agencies', label: 'Agency Relationships' },
   { to: '/certifications', label: 'Certifications' },
-  { to: '/documents', label: 'Document Library' },
-  { to: '/calendar', label: 'Calendar' },
 ];
 
 export default function Layout({ children }: Props) {
@@ -85,6 +83,12 @@ export default function Layout({ children }: Props) {
             <div className="pt-2 pb-1 px-3">
               <span className="text-[10px] font-bold text-white/50 uppercase tracking-widest">Admin</span>
             </div>
+            <NavLink to="/documents" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
+              <DocumentTextIcon className="w-4 h-4 flex-shrink-0" /><span>Document Library</span>
+            </NavLink>
+            <NavLink to="/calendar" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
+              <CalendarIcon className="w-4 h-4 flex-shrink-0" /><span>Calendar</span>
+            </NavLink>
             <NavLink to="/settings" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
               <Cog6ToothIcon className="w-4 h-4 flex-shrink-0" /><span>Settings</span>
             </NavLink>
