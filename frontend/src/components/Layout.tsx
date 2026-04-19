@@ -26,6 +26,8 @@ export default function Layout({ children }: Props) {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [govExpanded, setGovExpanded] = useState(true);
+  const [carriersExpanded, setCarriersExpanded] = useState(true);
+  const [adminExpanded, setAdminExpanded] = useState(true);
 
   const handleLogout = async () => {
     try { await api.post('/auth/logout'); } catch { /* ignore */ }
@@ -66,32 +68,42 @@ export default function Layout({ children }: Props) {
         ))}
 
         <div className="pt-2 pb-1 px-3">
-          <span className="text-[10px] font-bold text-white/50 uppercase tracking-widest">Carriers</span>
+          <button className="flex items-center justify-between w-full text-[10px] font-bold text-white/50 uppercase tracking-widest hover:text-gold-400 transition-colors" onClick={() => setCarriersExpanded(!carriersExpanded)}>
+            <span>Carriers</span>
+            <ChevronDownIcon className={`w-3 h-3 transition-transform ${carriersExpanded?'rotate-180':''}`} />
+          </button>
         </div>
-        <NavLink to="/carriers" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
-          <MagnifyingGlassIcon className="w-4 h-4 flex-shrink-0" /><span>Carrier Search</span>
-        </NavLink>
-        <NavLink to="/pipeline" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
-          <TruckIcon className="w-4 h-4 flex-shrink-0" /><span>Pipeline</span>
-        </NavLink>
-        <NavLink to="/crm" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
-          <PhoneIcon className="w-4 h-4 flex-shrink-0" /><span>Cold Call CRM</span>
-        </NavLink>
+        {carriersExpanded && <>
+          <NavLink to="/carriers" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
+            <MagnifyingGlassIcon className="w-4 h-4 flex-shrink-0" /><span>Carrier Search</span>
+          </NavLink>
+          <NavLink to="/pipeline" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
+            <TruckIcon className="w-4 h-4 flex-shrink-0" /><span>Pipeline</span>
+          </NavLink>
+          <NavLink to="/crm" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
+            <PhoneIcon className="w-4 h-4 flex-shrink-0" /><span>Cold Call CRM</span>
+          </NavLink>
+        </>}
 
         {user?.role === 'admin' && (
           <>
             <div className="pt-2 pb-1 px-3">
-              <span className="text-[10px] font-bold text-white/50 uppercase tracking-widest">Admin</span>
+              <button className="flex items-center justify-between w-full text-[10px] font-bold text-white/50 uppercase tracking-widest hover:text-gold-400 transition-colors" onClick={() => setAdminExpanded(!adminExpanded)}>
+                <span>Admin</span>
+                <ChevronDownIcon className={`w-3 h-3 transition-transform ${adminExpanded?'rotate-180':''}`} />
+              </button>
             </div>
-            <NavLink to="/documents" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
-              <DocumentTextIcon className="w-4 h-4 flex-shrink-0" /><span>Document Library</span>
-            </NavLink>
-            <NavLink to="/calendar" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
-              <CalendarIcon className="w-4 h-4 flex-shrink-0" /><span>Calendar</span>
-            </NavLink>
-            <NavLink to="/settings" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
-              <Cog6ToothIcon className="w-4 h-4 flex-shrink-0" /><span>Settings</span>
-            </NavLink>
+            {adminExpanded && <>
+              <NavLink to="/documents" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
+                <DocumentTextIcon className="w-4 h-4 flex-shrink-0" /><span>Document Library</span>
+              </NavLink>
+              <NavLink to="/calendar" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
+                <CalendarIcon className="w-4 h-4 flex-shrink-0" /><span>Calendar</span>
+              </NavLink>
+              <NavLink to="/settings" className={({isActive})=>`nav-item ${isActive?'active':''}`} onClick={()=>setSidebarOpen(false)}>
+                <Cog6ToothIcon className="w-4 h-4 flex-shrink-0" /><span>Settings</span>
+              </NavLink>
+            </>}
           </>
         )}
       </nav>
