@@ -4,7 +4,6 @@ import api from '../../api/client';
 import { CrmBadge, OpTypeBadge } from '../../components/StatusBadge';
 import { FireIcon, PhoneIcon, PlusIcon, ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import toast from 'react-hot-toast';
-import { format } from 'date-fns';
 
 interface HotCarrier {
   dot_number: string;
@@ -15,7 +14,6 @@ interface HotCarrier {
   telephone: string | null;
   mc_mx_ff_number: string | null;
   mc_number: string | null;
-  added_date: string | null;
   operating_status: string | null;
   nbr_power_unit: number | null;
   safety_rating: string | null;
@@ -25,11 +23,13 @@ interface HotCarrier {
   is_in_pipeline: boolean | null;
 }
 
-const DAYS_OPTIONS = [
-  { label: 'Last 7 days', value: '7' },
-  { label: 'Last 30 days', value: '30' },
-  { label: 'Last 90 days', value: '90' },
-  { label: 'Last 365 days', value: '365' },
+// DOT numbers are issued sequentially — higher = more recently registered
+const DOT_RANGE_OPTIONS = [
+  { label: 'Newest ~50K (4,150,000+)', value: '4150000' },
+  { label: 'Newer ~200K (4,000,000+)', value: '4000000' },
+  { label: 'Recent ~500K (3,700,000+)', value: '3700000' },
+  { label: 'Last ~1M (3,200,000+)', value: '3200000' },
+  { label: 'All carriers', value: '0' },
 ];
 
 function formatPhone(phone: string | null): string {
@@ -47,7 +47,7 @@ export default function HotSheetPage() {
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState<string | null>(null);
 
-  const [days, setDays] = useState('30');
+  const [minDot, setMinDot] = useState('4150000');
   const [stateFilter, setStateFilter] = useState('');
   const [hasPhone, setHasPhone] = useState(true);
   const [activeOnly, setActiveOnly] = useState(true);
@@ -55,7 +55,7 @@ export default function HotSheetPage() {
   const load = useCallback(async (p = 1) => {
     setLoading(true);
     try {
-      const params: Record<string, string> = { days, page: String(p), limit: '50' };
+      const params: Record<string, string> = { min_dot: minDot, page: String(p), limit: '50' };
       if (stateFilter) params.state = stateFilter;
       if (hasPhone) params.has_phone = 'true';
       if (activeOnly) params.operating_status = 'Active';
@@ -66,9 +66,9 @@ export default function HotSheetPage() {
       setPage(p);
     } catch { toast.error('Failed to load hot sheet'); }
     finally { setLoading(false); }
-  }, [days, stateFilter, hasPhone, activeOnly]);
+  }, [minDot, stateFilter, hasPhone, activeOnly]);
 
-  useEffect(() => { load(1); }, [days, stateFilter, hasPhone, activeOnly]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { load(1); }, [minDot, stateFilter, hasPhone, activeOnly]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const addToCrm = async (dot: string) => {
     setAdding(dot);
@@ -82,14 +82,13 @@ export default function HotSheetPage() {
 
   return (
     <div className="p-6 space-y-4">
-      {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
           <h1 className="page-title flex items-center gap-2">
             <FireIcon className="w-6 h-6 text-orange-400" /> Hot Sheet
           </h1>
           <p className="page-sub">
-            {total.toLocaleString()} new carriers · Sorted by registration date
+            {total.toLocaleString()} carriers · Sorted by DOT # (newest registrations first)
           </p>
         </div>
       </div>
@@ -97,11 +96,11 @@ export default function HotSheetPage() {
       {/* Filters */}
       <div className="flex flex-wrap items-center gap-3">
         <select
-          className="select w-44"
-          value={days}
-          onChange={e => setDays(e.target.value)}
+          className="select w-56"
+          value={minDot}
+          onChange={e => setMinDot(e.target.value)}
         >
-          {DAYS_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+          {DOT_RANGE_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
         </select>
         <input
           className="input w-32"
@@ -140,9 +139,8 @@ export default function HotSheetPage() {
           <table className="w-full text-sm">
             <thead className="bg-ink-800 border-b border-ink-700">
               <tr>
-                <th className="th text-left">Registered</th>
+                <th className="th text-left">DOT #</th>
                 <th className="th text-left">Carrier</th>
-                <th className="th">DOT #</th>
                 <th className="th">MC #</th>
                 <th className="th">State</th>
                 <th className="th">Phone</th>
@@ -154,9 +152,7 @@ export default function HotSheetPage() {
             <tbody>
               {carriers.map(c => (
                 <tr key={c.dot_number} className="tr-hover">
-                  <td className="td text-xs text-gold-400 font-medium whitespace-nowrap">
-                    {c.added_date ? format(new Date(c.added_date), 'MMM d, yyyy') : '—'}
-                  </td>
+                  <td className="td text-xs text-gold-400 font-mono font-semibold">{c.dot_number}</td>
                   <td className="td">
                     <Link
                       to={`/carriers/${c.dot_number}`}
@@ -167,8 +163,8 @@ export default function HotSheetPage() {
                     {c.dba_name && (
                       <div className="text-[10px] text-ink-400 truncate max-w-[200px]">{c.dba_name}</div>
                     )}
+                    {c.phy_city && <div className="text-[10px] text-ink-500">{c.phy_city}</div>}
                   </td>
-                  <td className="td text-center font-mono text-xs text-ink-300">{c.dot_number}</td>
                   <td className="td text-center font-mono text-xs text-ink-300">
                     {c.mc_mx_ff_number || c.mc_number || '—'}
                   </td>
@@ -210,8 +206,8 @@ export default function HotSheetPage() {
               ))}
               {carriers.length === 0 && (
                 <tr>
-                  <td colSpan={9} className="text-center py-16 text-ink-400 text-sm">
-                    No new carriers found for this period.
+                  <td colSpan={8} className="text-center py-16 text-ink-400 text-sm">
+                    No carriers found. Try adjusting the filters.
                   </td>
                 </tr>
               )}

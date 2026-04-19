@@ -277,21 +277,22 @@ export async function getTodayFollowUps(_req: Request, res: Response): Promise<v
 export async function getHotSheet(req: Request, res: Response): Promise<void> {
   try {
     const {
-      days = '30', state, has_phone, operating_status,
+      min_dot, state, has_phone, operating_status,
       page = '1', limit = '50',
     } = req.query as Record<string, string>;
 
     const pageNum = Math.max(1, parseInt(page));
     const limitNum = Math.min(100, Math.max(1, parseInt(limit)));
     const offset = (pageNum - 1) * limitNum;
-    const daysNum = Math.min(365, Math.max(1, parseInt(days) || 30));
 
     const conditions: string[] = [];
     const params: unknown[] = [];
     let i = 1;
 
-    conditions.push(`c.added_date >= CURRENT_DATE - ($${i++} * INTERVAL '1 day')`);
-    params.push(daysNum);
+    // Default: top 100k most recently registered (by DOT number)
+    const dotFloor = min_dot ? parseInt(min_dot) : 3500000;
+    conditions.push(`c.dot_number::bigint >= $${i++}`);
+    params.push(dotFloor);
 
     if (state) { conditions.push(`c.phy_state = $${i++}`); params.push(state.toUpperCase()); }
     if (has_phone === 'true') conditions.push(`c.telephone IS NOT NULL AND c.telephone != ''`);
@@ -310,7 +311,7 @@ export async function getHotSheet(req: Request, res: Response): Promise<void> {
               c.carrier_operation, c.op_carrier_flag,
               crm.crm_status, crm.is_in_pipeline
        ${baseFrom}
-       ORDER BY c.added_date DESC NULLS LAST
+       ORDER BY c.dot_number::bigint DESC
        LIMIT $${i++} OFFSET $${i++}`,
       [...params, limitNum, offset]
     );
