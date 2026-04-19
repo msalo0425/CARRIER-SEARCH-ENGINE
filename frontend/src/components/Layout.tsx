@@ -14,7 +14,7 @@ import {
 interface Props { children: React.ReactNode; }
 
 const govconLinks = [
-  { to: '/aggregator', label: 'Solicitation Aggregator' },
+  { to: '/aggregator', label: 'Live Opportunities' },
   { to: '/sources-sought', label: 'Sources Sought' },
   { to: '/proposals', label: 'Proposals' },
   { to: '/agencies', label: 'Agency Relationships' },

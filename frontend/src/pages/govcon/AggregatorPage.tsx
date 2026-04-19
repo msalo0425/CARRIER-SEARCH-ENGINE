@@ -124,7 +124,7 @@ export default function AggregatorPage() {
     <div className="p-6 max-w-7xl mx-auto space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="page-title">Solicitation Aggregator</h1>
+          <h1 className="page-title">Live Opportunities</h1>
           <p className="page-sub">{total.toLocaleString()} solicitations · SAM.gov + USASpending + DLA DIBBS</p>
         </div>
         <div className="flex items-center gap-2">

@@ -137,7 +137,7 @@ export default function DashboardPage() {
         <div className="card lg:col-span-1">
           <div className="flex items-center justify-between p-4 border-b border-ink-700">
             <h2 className="font-semibold text-ink-50 flex items-center gap-2">
-              <BoltIcon className="w-4 h-4 text-gold-400" /> Solicitation Aggregator
+              <BoltIcon className="w-4 h-4 text-gold-400" /> Live Opportunities
             </h2>
             <Link to="/aggregator" className="text-xs text-gold-400 hover:text-gold-300">View all →</Link>
           </div>
