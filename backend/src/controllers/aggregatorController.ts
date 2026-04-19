@@ -45,7 +45,10 @@ export async function listSolicitations(req: Request, res: Response): Promise<vo
     if (set_aside_type) { conds.push(`set_aside_type ILIKE $${i++}`); params.push(`%${set_aside_type}%`); }
     if (source) { conds.push(`source = $${i++}`); params.push(source); }
     if (status) { conds.push(`status = $${i++}`); params.push(status); }
-    else { conds.push(`status != 'Expired'`); }
+    else {
+      conds.push(`status != 'Expired'`);
+      conds.push(`(response_due_date IS NULL OR response_due_date >= CURRENT_DATE)`);
+    }
     if (posted_after) { conds.push(`posted_date >= $${i++}`); params.push(posted_after); }
     if (posted_before) { conds.push(`posted_date <= $${i++}`); params.push(posted_before); }
     if (due_after) { conds.push(`response_due_date >= $${i++}`); params.push(due_after); }
@@ -177,7 +180,7 @@ export async function getMarketIntelligence(req: Request, res: Response): Promis
 export async function getAggregatorDashboard(_req: Request, res: Response): Promise<void> {
   try {
     const [totals, newToday, wosb, expiring, lastSync] = await Promise.all([
-      queryOne<Record<string,string>>(`SELECT COUNT(*) total, SUM(CASE WHEN status='New' THEN 1 ELSE 0 END) new_count, SUM(CASE WHEN (is_wosb_eligible OR is_edwosb_eligible) THEN 1 ELSE 0 END) wosb_count FROM aggregated_solicitations WHERE status NOT IN ('Expired','No Bid')`),
+      queryOne<Record<string,string>>(`SELECT COUNT(*) total, SUM(CASE WHEN status='New' THEN 1 ELSE 0 END) new_count, SUM(CASE WHEN (is_wosb_eligible OR is_edwosb_eligible) THEN 1 ELSE 0 END) wosb_count FROM aggregated_solicitations WHERE status NOT IN ('Expired','No Bid') AND (response_due_date IS NULL OR response_due_date >= CURRENT_DATE)`),
       queryOne<{count:string}>(`SELECT COUNT(*) count FROM aggregated_solicitations WHERE first_seen_at >= NOW() - INTERVAL '24 hours'`),
       queryOne<{count:string}>(`SELECT COUNT(*) count FROM aggregated_solicitations WHERE (is_wosb_eligible OR is_edwosb_eligible) AND status='New'`),
       queryOne<{count:string}>(`SELECT COUNT(*) count FROM aggregated_solicitations WHERE response_due_date <= CURRENT_DATE+7 AND response_due_date >= CURRENT_DATE AND status='New'`),
