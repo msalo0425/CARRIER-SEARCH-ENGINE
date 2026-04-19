@@ -190,19 +190,6 @@ export async function runFmcsaSync(options?: { limit?: number }): Promise<void> 
       if (records.length < PAGE_SIZE) break;
     }
 
-    console.log('\n[FMCSA Sync] Updating search vectors...');
-    await pool.query(`
-      UPDATE carriers SET search_vector =
-        to_tsvector('english',
-          coalesce(legal_name,'') || ' ' ||
-          coalesce(dba_name,'') || ' ' ||
-          coalesce(dot_number,'') || ' ' ||
-          coalesce(mc_number,'') || ' ' ||
-          coalesce(phy_city,'')
-        )
-      WHERE search_vector IS NULL OR updated_at > NOW() - INTERVAL '1 day'
-    `);
-
     await pool.query(
       `UPDATE sync_log SET completed_at=NOW(), records_fetched=$1, records_upserted=$2, status='completed' WHERE id=$3`,
       [totalFetched, totalUpserted, logId]
