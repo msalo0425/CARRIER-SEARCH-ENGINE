@@ -49,7 +49,7 @@ export default function HotSheetPage() {
 
   const [minDot, setMinDot] = useState('4150000');
   const [stateFilter, setStateFilter] = useState('');
-  const [hasPhone, setHasPhone] = useState(true);
+  const [hasPhone, setHasPhone] = useState(false);
   const [activeOnly, setActiveOnly] = useState(true);
 
   const load = useCallback(async (p = 1) => {
