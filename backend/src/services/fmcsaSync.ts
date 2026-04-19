@@ -74,14 +74,24 @@ async function fetchPage(offset: number): Promise<FmcsaRecord[]> {
   const headers: Record<string,string> = { 'Accept': 'application/json' };
   if (API_TOKEN) headers['X-App-Token'] = API_TOKEN;
   const url = `${API_URL}?$limit=${PAGE_SIZE}&$offset=${offset}&$order=:id`;
-  const resp = await fetch(url, { headers });
-  if (!resp.ok) throw new Error(`FMCSA API error ${resp.status}: ${await resp.text()}`);
-  const data = await resp.json();
-  if (!Array.isArray(data)) {
-    console.error('[FMCSA Sync] Unexpected response:', JSON.stringify(data).slice(0, 300));
-    throw new Error('FMCSA API returned unexpected format');
+
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const resp = await fetch(url, { headers });
+    if (resp.status === 429) {
+      const wait = Math.pow(2, attempt + 2) * 1000; // 4s, 8s, 16s, 32s, 64s
+      console.log(`\n[FMCSA Sync] Rate limited. Waiting ${wait/1000}s before retry ${attempt+1}/5...`);
+      await new Promise(r => setTimeout(r, wait));
+      continue;
+    }
+    if (!resp.ok) throw new Error(`FMCSA API error ${resp.status}: ${await resp.text()}`);
+    const data = await resp.json();
+    if (!Array.isArray(data)) {
+      console.error('[FMCSA Sync] Unexpected response:', JSON.stringify(data).slice(0, 300));
+      throw new Error('FMCSA API returned unexpected format');
+    }
+    return data as FmcsaRecord[];
   }
-  return data as FmcsaRecord[];
+  throw new Error('FMCSA API rate limit exceeded after 5 retries');
 }
 
 // Only updates fields present in this dataset; preserves safety/cargo data from prior syncs
