@@ -27,7 +27,7 @@ export async function listSolicitations(req: Request, res: Response): Promise<vo
       q, agency, naics_code, set_aside_type, source, status,
       posted_after, posted_before, due_after, due_before,
       value_min, value_max, wosb_only,
-      sort_by = 'response_due_date', sort_order = 'ASC',
+      sort_by = 'posted_date', sort_order = 'DESC',
       page = '1', limit = '25',
     } = req.query as Record<string,string>;
 
@@ -59,7 +59,7 @@ export async function listSolicitations(req: Request, res: Response): Promise<vo
 
     const where = conds.length ? `WHERE ${conds.join(' AND ')}` : '';
     const validSort = ['response_due_date','posted_date','contract_value_max','agency_name','first_seen_at'];
-    const sf = validSort.includes(sort_by) ? sort_by : 'response_due_date';
+    const sf = validSort.includes(sort_by) ? sort_by : 'posted_date';
     const sd = sort_order.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
 
     const countRow = await queryOne<{total:string}>(`SELECT COUNT(*) total FROM aggregated_solicitations ${where}`, params);
