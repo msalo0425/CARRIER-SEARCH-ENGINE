@@ -41,7 +41,20 @@ export async function listSolicitations(req: Request, res: Response): Promise<vo
       params.push(q);
     }
     if (agency) { conds.push(`agency_name ILIKE $${i++}`); params.push(`%${agency}%`); }
-    if (naics_code) { conds.push(`naics_code = $${i++}`); params.push(naics_code); }
+    if (naics_code) {
+      conds.push(`naics_code = $${i++}`);
+      params.push(naics_code);
+    } else {
+      const configured = await queryOne<{value:string}>(
+        `SELECT value FROM aggregator_settings WHERE key='naics_codes'`
+      );
+      const codes = (configured?.value || '')
+        .split(',').map(s => s.trim()).filter(Boolean);
+      if (codes.length) {
+        conds.push(`naics_code = ANY($${i++}::text[])`);
+        params.push(codes);
+      }
+    }
     if (set_aside_type) { conds.push(`set_aside_type ILIKE $${i++}`); params.push(`%${set_aside_type}%`); }
     if (source) { conds.push(`source = $${i++}`); params.push(source); }
     if (status) { conds.push(`status = $${i++}`); params.push(status); }
