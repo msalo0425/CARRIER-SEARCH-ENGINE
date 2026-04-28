@@ -19,6 +19,7 @@ interface Solicitation {
   estimated_value_max?: number;
   place_of_performance?: string;
   description?: string;
+  original_url?: string;
   status: string;
   is_wosb_eligible: boolean;
   is_edwosb_eligible: boolean;
@@ -199,7 +200,13 @@ export default function AggregatorPage() {
                       {sol.set_aside_type && <span className="badge bg-purple-900/30 text-purple-300 border-purple-800 text-[10px]">{sol.set_aside_type}</span>}
                       {sol.status === 'Added to Proposals' && <span className="badge bg-green-900/30 text-green-400 border-green-800 text-[10px]">In Proposals</span>}
                     </div>
-                    <h3 className="text-sm font-semibold text-ink-50 leading-snug">{sol.title}</h3>
+                    <h3 className="text-sm font-semibold text-ink-50 leading-snug">
+                      {sol.original_url ? (
+                        <a href={sol.original_url} target="_blank" rel="noopener noreferrer" className="hover:text-gold-400 underline-offset-2 hover:underline">
+                          {sol.title}
+                        </a>
+                      ) : sol.title}
+                    </h3>
                     <p className="text-xs text-gold-400 mt-0.5">{sol.agency}</p>
                     <div className="flex flex-wrap gap-3 mt-2 text-xs text-ink-400">
                       {sol.naics_code && <span>NAICS {sol.naics_code}</span>}
