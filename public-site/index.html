@@ -19,7 +19,29 @@
   <header class="site-header" id="top">
     <div class="container nav">
       <a href="#top" class="brand" aria-label="Black Clover Logistics home">
-        <img src="assets/logo.png" alt="Black Clover Logistics" class="brand-logo" />
+        <svg class="brand-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Black Clover Logistics">
+          <defs>
+            <path id="bcl-top" d="M 100,100 m -72,0 a 72,72 0 0,1 144,0" fill="none"/>
+            <path id="bcl-bot" d="M 100,100 m -72,0 a 72,72 0 0,0 144,0" fill="none"/>
+          </defs>
+          <circle cx="100" cy="100" r="98" fill="none" stroke="currentColor" stroke-width="2.5"/>
+          <circle cx="100" cy="100" r="83" fill="none" stroke="currentColor" stroke-width="24"/>
+          <text fill="#fff" font-size="14" font-weight="800" letter-spacing="2.5" font-family="Inter, system-ui, sans-serif">
+            <textPath href="#bcl-top" startOffset="50%" text-anchor="middle">BLACK CLOVER</textPath>
+          </text>
+          <text fill="#fff" font-size="14" font-weight="800" letter-spacing="3" font-family="Inter, system-ui, sans-serif">
+            <textPath href="#bcl-bot" startOffset="50%" text-anchor="middle" side="right">LOGISTICS</textPath>
+          </text>
+          <circle cx="100" cy="100" r="60" fill="#fff"/>
+          <g transform="translate(100,100)" fill="currentColor">
+            <ellipse cx="0" cy="-22" rx="17" ry="22"/>
+            <ellipse cx="22" cy="0" rx="22" ry="17"/>
+            <ellipse cx="0" cy="22" rx="17" ry="22"/>
+            <ellipse cx="-22" cy="0" rx="22" ry="17"/>
+            <circle cx="0" cy="0" r="6"/>
+            <path d="M 4,20 Q 10,32 16,40" stroke="currentColor" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          </g>
+        </svg>
       </a>
 
       <nav class="primary-nav" aria-label="Primary">
@@ -331,7 +353,29 @@
     <div class="container footer-grid">
       <div>
         <a href="#top" class="brand brand-light">
-          <img src="assets/logo.png" alt="Black Clover Logistics" class="brand-logo brand-logo-inverted" />
+          <svg class="brand-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Black Clover Logistics">
+            <defs>
+              <path id="bcl-top-f" d="M 100,100 m -72,0 a 72,72 0 0,1 144,0" fill="none"/>
+              <path id="bcl-bot-f" d="M 100,100 m -72,0 a 72,72 0 0,0 144,0" fill="none"/>
+            </defs>
+            <circle cx="100" cy="100" r="98" fill="none" stroke="#fff" stroke-width="2.5"/>
+            <circle cx="100" cy="100" r="83" fill="none" stroke="#fff" stroke-width="24"/>
+            <text fill="#0b0f0c" font-size="14" font-weight="800" letter-spacing="2.5" font-family="Inter, system-ui, sans-serif">
+              <textPath href="#bcl-top-f" startOffset="50%" text-anchor="middle">BLACK CLOVER</textPath>
+            </text>
+            <text fill="#0b0f0c" font-size="14" font-weight="800" letter-spacing="3" font-family="Inter, system-ui, sans-serif">
+              <textPath href="#bcl-bot-f" startOffset="50%" text-anchor="middle" side="right">LOGISTICS</textPath>
+            </text>
+            <circle cx="100" cy="100" r="60" fill="#0b0f0c"/>
+            <g transform="translate(100,100)" fill="#fff">
+              <ellipse cx="0" cy="-22" rx="17" ry="22"/>
+              <ellipse cx="22" cy="0" rx="22" ry="17"/>
+              <ellipse cx="0" cy="22" rx="17" ry="22"/>
+              <ellipse cx="-22" cy="0" rx="22" ry="17"/>
+              <circle cx="0" cy="0" r="6"/>
+              <path d="M 4,20 Q 10,32 16,40" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            </g>
+          </svg>
         </a>
         <p class="footer-tag">Reliable freight. Vetted carriers. Nationwide coverage.</p>
       </div>
