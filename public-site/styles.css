@@ -10,8 +10,8 @@
   --muted: #5a6660;
   --line: #e3e6e0;
   --brand: #0b0f0c;
-  --accent: #059669;       /* emerald */
-  --accent-bright: #10b981;
+  --accent: #00875a;       /* gemstone emerald */
+  --accent-bright: #00b27a;
   --gold: #c9a14a;
   --shadow: 0 10px 30px rgba(11, 15, 12, 0.08);
   --radius: 14px;
@@ -246,7 +246,7 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   display: flex;
   align-items: center;
   /* Green gradient ALWAYS shows behind the hero (visible whether or not a video is loaded) */
-  background: linear-gradient(135deg, #064e3b 0%, #047857 60%, #10b981 100%);
+  background: linear-gradient(135deg, #013220 0%, #006847 60%, #009b6e 100%);
 }
 
 .hero-video {
@@ -258,7 +258,7 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   z-index: -2;
   pointer-events: none;
   /* Lighter, richer green gradient while video loads (or when no video) */
-  background: linear-gradient(135deg, #064e3b 0%, #047857 60%, #10b981 100%);
+  background: linear-gradient(135deg, #013220 0%, #006847 60%, #009b6e 100%);
 }
 
 /* Kill any browser-injected play button overlay on the hero video */
@@ -278,8 +278,8 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(110deg, rgba(6, 78, 59, 0.55) 0%, rgba(6, 78, 59, 0.30) 55%, rgba(6, 78, 59, 0.15) 100%),
-    radial-gradient(1200px 600px at 80% 30%, rgba(16, 185, 129, 0.30), transparent 60%);
+    linear-gradient(110deg, rgba(1, 50, 32, 0.55) 0%, rgba(1, 50, 32, 0.30) 55%, rgba(1, 50, 32, 0.15) 100%),
+    radial-gradient(1200px 600px at 80% 30%, rgba(0, 178, 122, 0.32), transparent 60%);
 }
 
 .hero h1, .hero p, .hero .eyebrow { color: #fff; }
