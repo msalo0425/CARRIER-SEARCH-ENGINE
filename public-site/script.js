@@ -75,7 +75,14 @@ if (heroVideo) {
     )
   ).then((results) => {
     const playlist = results.filter(Boolean);
-    if (playlist.length === 0) return; // no videos found, leave the gradient fallback
+    if (playlist.length === 0) {
+      // No videos in /assets — hide the <video> element entirely so no
+      // play-button overlay or media chrome can render. The hero-overlay
+      // div behind it still shows the green gradient.
+      heroVideo.style.display = 'none';
+      heroVideo.removeAttribute('src');
+      return;
+    }
 
     let idx = 0;
     const playNext = () => {

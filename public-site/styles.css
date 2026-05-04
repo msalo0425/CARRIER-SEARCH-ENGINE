@@ -245,6 +245,8 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   min-height: 92vh;
   display: flex;
   align-items: center;
+  /* Green gradient ALWAYS shows behind the hero (visible whether or not a video is loaded) */
+  background: linear-gradient(135deg, #2a5e3c 0%, #3d8758 60%, #4ea36a 100%);
 }
 
 .hero-video {
@@ -254,8 +256,21 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   height: 100%;
   object-fit: cover;
   z-index: -2;
+  pointer-events: none;
   /* Lighter, richer green gradient while video loads (or when no video) */
   background: linear-gradient(135deg, #2a5e3c 0%, #3d8758 60%, #4ea36a 100%);
+}
+
+/* Kill any browser-injected play button overlay on the hero video */
+.hero-video::-webkit-media-controls,
+.hero-video::-webkit-media-controls-panel,
+.hero-video::-webkit-media-controls-play-button,
+.hero-video::-webkit-media-controls-start-playback-button,
+.hero-video::-webkit-media-controls-overlay-play-button,
+.hero-video::-internal-media-controls-overlay-cast-button {
+  display: none !important;
+  -webkit-appearance: none !important;
+  opacity: 0 !important;
 }
 
 .hero-overlay {
