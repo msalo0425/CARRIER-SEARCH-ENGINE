@@ -143,15 +143,16 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
 }
 
 .brand-logo {
-  width: 60px;
-  height: 60px;
+  height: 56px;
+  width: auto;
   display: block;
-  color: #0b0f0c; /* black ring + clover on light backgrounds */
+  object-fit: contain;
 }
-.brand-light .brand-logo {
-  width: 72px;
-  height: 72px;
-  color: #fff;
+
+/* Footer / dark backgrounds — invert the black logo to render white */
+.brand-logo-inverted {
+  filter: invert(1);
+  height: 64px;
 }
 
 .brand-text {
