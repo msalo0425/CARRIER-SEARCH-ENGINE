@@ -144,20 +144,18 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
 
 .brand-logo {
   height: 168px;
-  width: 168px;
+  width: auto;
   display: block;
-  object-fit: cover;
-  /* Hard-crop the image to a circle so no rectangular PNG edges show. */
-  clip-path: circle(50% at 50% 50%);
-  -webkit-clip-path: circle(50% at 50% 50%);
+  object-fit: contain;
+  /* Drops the white PNG background on light areas. */
+  mix-blend-mode: multiply;
 }
 
-/* Footer / dark backgrounds — invert the black logo to render white,
-   and crop to a circle for the same reason. */
+/* Footer / dark backgrounds — invert + screen drops the white background. */
 .brand-logo-inverted {
   filter: invert(1);
   height: 192px;
-  width: 192px;
+  mix-blend-mode: screen;
 }
 
 .brand-text {
