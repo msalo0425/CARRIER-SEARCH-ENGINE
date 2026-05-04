@@ -144,20 +144,20 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
 
 .brand-logo {
   height: 168px;
-  width: auto;
+  width: 168px;
   display: block;
-  object-fit: contain;
-  /* Drops the white background from the PNG so the round logo
-     appears to float — no visible square/box edge. */
-  mix-blend-mode: multiply;
+  object-fit: cover;
+  /* Hard-crop the image to a circle so no rectangular PNG edges show. */
+  clip-path: circle(50% at 50% 50%);
+  -webkit-clip-path: circle(50% at 50% 50%);
 }
 
 /* Footer / dark backgrounds — invert the black logo to render white,
-   then use 'screen' blend so the now-black background drops away. */
+   and crop to a circle for the same reason. */
 .brand-logo-inverted {
   filter: invert(1);
   height: 192px;
-  mix-blend-mode: screen;
+  width: 192px;
 }
 
 .brand-text {
