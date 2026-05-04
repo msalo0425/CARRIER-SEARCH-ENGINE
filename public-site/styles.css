@@ -562,6 +562,12 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
 
 .contact-grid { align-items: start; }
 
+/* Desktop only: shrink the quote-form column to 3/4 of its prior width */
+@media (min-width: 881px) {
+  .contact-grid { grid-template-columns: 5fr 3fr; }
+  .contact-grid .quote-form { padding: 1.5rem; }
+}
+
 .contact-info {
   list-style: none;
   padding: 0;
