@@ -147,12 +147,17 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   width: auto;
   display: block;
   object-fit: contain;
+  /* Drops the white background from the PNG so the round logo
+     appears to float — no visible square/box edge. */
+  mix-blend-mode: multiply;
 }
 
-/* Footer / dark backgrounds — invert the black logo to render white */
+/* Footer / dark backgrounds — invert the black logo to render white,
+   then use 'screen' blend so the now-black background drops away. */
 .brand-logo-inverted {
   filter: invert(1);
   height: 192px;
+  mix-blend-mode: screen;
 }
 
 .brand-text {
