@@ -16,47 +16,60 @@ document.querySelectorAll('.primary-nav a').forEach((link) => {
   link.addEventListener('click', () => header.classList.remove('menu-open'));
 });
 
-// Quote form — client-side validation + mailto fallback
-// Replace the action below with your real endpoint (Formspree, Netlify, your API, etc.)
+// Quote form — sends submissions to the Google Apps Script web app
+// which writes a new row to the connected Google Sheet.
+const QUOTE_FORM_ENDPOINT =
+  'https://script.google.com/macros/s/AKfycbzDdKRz_TUJLOLCxKlHDt4f_48x441ay6yFEEmRX6XM-Vqq7g_y8B-wX4MtLS3Y1TMv6A/exec';
+
 const form = document.getElementById('quoteForm');
 const status = document.getElementById('formStatus');
 
-form?.addEventListener('submit', (e) => {
+form?.addEventListener('submit', async (e) => {
   e.preventDefault();
   status.classList.remove('error');
   status.textContent = '';
 
   const data = new FormData(form);
-  const name = (data.get('name') || '').toString().trim();
-  const email = (data.get('email') || '').toString().trim();
-  const message = (data.get('message') || '').toString().trim();
+  const payload = {
+    name: (data.get('name') || '').toString().trim(),
+    company: (data.get('company') || '').toString().trim(),
+    email: (data.get('email') || '').toString().trim(),
+    phone: (data.get('phone') || '').toString().trim(),
+    origin: (data.get('origin') || '').toString().trim(),
+    destination: (data.get('destination') || '').toString().trim(),
+    service: (data.get('service') || '').toString().trim(),
+    message: (data.get('message') || '').toString().trim(),
+  };
 
-  if (!name || !email || !message) {
+  if (!payload.name || !payload.email || !payload.message) {
     status.classList.add('error');
     status.textContent = 'Please fill in name, email, and shipment details.';
     return;
   }
 
-  const subject = `Quote request from ${name}`;
-  const body = [
-    `Name: ${name}`,
-    `Company: ${data.get('company') || ''}`,
-    `Email: ${email}`,
-    `Phone: ${data.get('phone') || ''}`,
-    `Origin: ${data.get('origin') || ''}`,
-    `Destination: ${data.get('destination') || ''}`,
-    `Service: ${data.get('service') || ''}`,
-    '',
-    'Details:',
-    message,
-  ].join('\n');
+  const submitBtn = form.querySelector('button[type="submit"]');
+  submitBtn.disabled = true;
+  status.textContent = 'Sending your request…';
 
-  // Mailto fallback. Swap this for fetch() to your backend when ready.
-  window.location.href =
-    `mailto:dispatch@blackcloverlogistics.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  try {
+    // text/plain avoids the CORS preflight that Google Apps Script
+    // doesn't respond to. The script reads e.postData.contents either way.
+    await fetch(QUOTE_FORM_ENDPOINT, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload),
+    });
 
-  status.textContent = 'Opening your email client to send the request…';
-  form.reset();
+    status.textContent = "Thanks — we got your request and will be in touch shortly.";
+    form.reset();
+  } catch (err) {
+    status.classList.add('error');
+    status.textContent =
+      "Something went wrong. Please try again, or call us at (708) 945-0228.";
+  } finally {
+    submitBtn.disabled = false;
+  }
 });
 
 // Hero video — playlist that cycles through every clip you drop into /assets.
