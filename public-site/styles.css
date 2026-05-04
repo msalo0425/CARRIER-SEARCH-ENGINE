@@ -10,8 +10,8 @@
   --muted: #5a6660;
   --line: #e3e6e0;
   --brand: #0b0f0c;
-  --accent: #1f7a3a;       /* clover green */
-  --accent-bright: #2bbf5e;
+  --accent: #0e7a7a;       /* deep teal */
+  --accent-bright: #2bbfb5;
   --gold: #c9a14a;
   --shadow: 0 10px 30px rgba(11, 15, 12, 0.08);
   --radius: 14px;
@@ -246,7 +246,7 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   display: flex;
   align-items: center;
   /* Green gradient ALWAYS shows behind the hero (visible whether or not a video is loaded) */
-  background: linear-gradient(135deg, #1a3d26 0%, #285a3a 60%, #336e46 100%);
+  background: linear-gradient(135deg, #0d3a3a 0%, #155f5f 60%, #1d7a7a 100%);
 }
 
 .hero-video {
@@ -258,7 +258,7 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   z-index: -2;
   pointer-events: none;
   /* Lighter, richer green gradient while video loads (or when no video) */
-  background: linear-gradient(135deg, #1a3d26 0%, #285a3a 60%, #336e46 100%);
+  background: linear-gradient(135deg, #0d3a3a 0%, #155f5f 60%, #1d7a7a 100%);
 }
 
 /* Kill any browser-injected play button overlay on the hero video */
@@ -278,8 +278,8 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(110deg, rgba(20, 50, 32, 0.55) 0%, rgba(20, 50, 32, 0.30) 55%, rgba(20, 50, 32, 0.15) 100%),
-    radial-gradient(1200px 600px at 80% 30%, rgba(78, 163, 106, 0.25), transparent 60%);
+    linear-gradient(110deg, rgba(13, 58, 58, 0.55) 0%, rgba(13, 58, 58, 0.30) 55%, rgba(13, 58, 58, 0.15) 100%),
+    radial-gradient(1200px 600px at 80% 30%, rgba(45, 191, 181, 0.25), transparent 60%);
 }
 
 .hero h1, .hero p, .hero .eyebrow { color: #fff; }
