@@ -142,6 +142,19 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   color: var(--accent);
 }
 
+.brand-logo {
+  height: 56px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+/* Footer / dark backgrounds — invert the black logo to render white */
+.brand-logo-inverted {
+  filter: invert(1);
+  height: 64px;
+}
+
 .brand-text {
   display: flex;
   flex-direction: column;
