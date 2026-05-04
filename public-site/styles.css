@@ -707,6 +707,18 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   color: rgba(255, 255, 255, 0.5);
 }
 
+.footer-cert {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.cert-badge {
+  height: 56px;
+  width: auto;
+  display: block;
+}
+
 /* ============ Reduced motion ============ */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
