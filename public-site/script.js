@@ -135,16 +135,21 @@ function setupCityAutocomplete(input) {
     if (q.length < 2) { hide(); return; }
     timer = setTimeout(async () => {
       try {
-        const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(q)}&limit=10&layer=city&layer=town&layer=village`;
+        const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(q)}&limit=15`;
         const res = await fetch(url);
+        if (!res.ok) { console.warn('Autocomplete API error:', res.status); hide(); return; }
         const json = await res.json();
         const seen = new Set();
         const hits = [];
+        const ALLOWED_TYPES = new Set(['city', 'town', 'village', 'hamlet', 'municipality']);
         for (const f of json.features || []) {
           const p = f.properties || {};
           if (p.countrycode !== 'US') continue;
+          // Accept anything that looks like a place; many US towns come through as 'osm_value:town'
+          if (p.osm_value && !ALLOWED_TYPES.has(p.osm_value)) continue;
           const state = US_STATES[p.state] || '';
           if (!state) continue;
+          if (!p.name) continue;
           const label = `${p.name}, ${state}`;
           if (seen.has(label)) continue;
           seen.add(label);
@@ -176,7 +181,7 @@ function setupCityAutocomplete(input) {
             applyChoice(currentHits[i]);
           });
         });
-      } catch (err) { hide(); }
+      } catch (err) { console.warn('Autocomplete failed:', err); hide(); }
     }, 220);
   });
 
