@@ -1,7 +1,8 @@
 // Black Clover Logistics — public site interactions
 
-// Year in footer
-document.getElementById('year').textContent = new Date().getFullYear();
+// Year in footer (only if the placeholder span exists — currently hard-coded in HTML)
+const yearEl = document.getElementById('year');
+if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 // Mobile menu toggle
 const header = document.querySelector('.site-header');
