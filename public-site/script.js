@@ -59,9 +59,43 @@ form?.addEventListener('submit', (e) => {
   form.reset();
 });
 
-// Pause hero video on tab blur to save battery
+// Hero video — playlist that cycles through every clip you drop into /assets.
+// Just add files named hero-1.mp4, hero-2.mp4, hero-3.mp4 ... and they'll auto-play in order.
 const heroVideo = document.querySelector('.hero-video');
+
 if (heroVideo) {
+  const raw = (heroVideo.dataset.playlist || '').split(',').map((s) => s.trim()).filter(Boolean);
+
+  // Probe each candidate file with HEAD; only keep the ones that actually exist.
+  Promise.all(
+    raw.map((src) =>
+      fetch(src, { method: 'HEAD' })
+        .then((r) => (r.ok ? src : null))
+        .catch(() => null)
+    )
+  ).then((results) => {
+    const playlist = results.filter(Boolean);
+    if (playlist.length === 0) return; // no videos found, leave the gradient fallback
+
+    let idx = 0;
+    const playNext = () => {
+      idx = (idx + 1) % playlist.length;
+      heroVideo.src = playlist[idx];
+      heroVideo.play().catch(() => {});
+    };
+
+    heroVideo.removeAttribute('loop'); // we handle looping manually so 'ended' fires
+    heroVideo.src = playlist[0];
+    heroVideo.play().catch(() => {});
+    heroVideo.addEventListener('ended', playNext);
+
+    // If a clip 404s mid-playlist, skip past it.
+    heroVideo.addEventListener('error', () => {
+      if (playlist.length > 1) playNext();
+    });
+  });
+
+  // Pause on tab blur to save battery
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) heroVideo.pause();
     else heroVideo.play().catch(() => {});
