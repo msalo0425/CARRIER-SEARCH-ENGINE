@@ -254,8 +254,8 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   height: 100%;
   object-fit: cover;
   z-index: -2;
-  /* Subtle background while video loads */
-  background: linear-gradient(135deg, #0b0f0c 0%, #1a2820 100%);
+  /* Lighter, richer green gradient while video loads (or when no video) */
+  background: linear-gradient(135deg, #2a5e3c 0%, #3d8758 60%, #4ea36a 100%);
 }
 
 .hero-overlay {
@@ -263,8 +263,8 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(110deg, rgba(11, 15, 12, 0.85) 0%, rgba(11, 15, 12, 0.55) 55%, rgba(11, 15, 12, 0.35) 100%),
-    radial-gradient(1200px 600px at 80% 30%, rgba(31, 122, 58, 0.22), transparent 60%);
+    linear-gradient(110deg, rgba(20, 50, 32, 0.55) 0%, rgba(20, 50, 32, 0.30) 55%, rgba(20, 50, 32, 0.15) 100%),
+    radial-gradient(1200px 600px at 80% 30%, rgba(78, 163, 106, 0.25), transparent 60%);
 }
 
 .hero h1, .hero p, .hero .eyebrow { color: #fff; }
