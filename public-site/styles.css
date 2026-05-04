@@ -634,6 +634,39 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   box-shadow: 0 0 0 3px rgba(31, 122, 58, 0.15);
 }
 .quote-form textarea { resize: vertical; }
+
+/* City autocomplete dropdown */
+.autocomplete {
+  position: relative;
+}
+.autocomplete-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  max-height: 260px;
+  overflow-y: auto;
+  z-index: 20;
+  font-size: 0.95rem;
+}
+.autocomplete-list li {
+  padding: 0.55rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--ink);
+}
+.autocomplete-list li:hover,
+.autocomplete-list li.active {
+  background: rgba(0, 135, 90, 0.10);
+  color: var(--accent);
+}
 .form-note {
   margin: 0;
   font-size: 0.85rem;

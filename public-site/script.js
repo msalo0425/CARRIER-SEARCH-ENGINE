@@ -72,6 +72,108 @@ form?.addEventListener('submit', async (e) => {
   }
 });
 
+// City autocomplete — suggests "City, ST" as the user types.
+// Uses the free Photon (Komoot) geocoding API, no key required.
+const US_STATES = {
+  'Alabama':'AL','Alaska':'AK','Arizona':'AZ','Arkansas':'AR','California':'CA',
+  'Colorado':'CO','Connecticut':'CT','Delaware':'DE','District of Columbia':'DC',
+  'Florida':'FL','Georgia':'GA','Hawaii':'HI','Idaho':'ID','Illinois':'IL',
+  'Indiana':'IN','Iowa':'IA','Kansas':'KS','Kentucky':'KY','Louisiana':'LA',
+  'Maine':'ME','Maryland':'MD','Massachusetts':'MA','Michigan':'MI','Minnesota':'MN',
+  'Mississippi':'MS','Missouri':'MO','Montana':'MT','Nebraska':'NE','Nevada':'NV',
+  'New Hampshire':'NH','New Jersey':'NJ','New Mexico':'NM','New York':'NY',
+  'North Carolina':'NC','North Dakota':'ND','Ohio':'OH','Oklahoma':'OK','Oregon':'OR',
+  'Pennsylvania':'PA','Rhode Island':'RI','South Carolina':'SC','South Dakota':'SD',
+  'Tennessee':'TN','Texas':'TX','Utah':'UT','Vermont':'VT','Virginia':'VA',
+  'Washington':'WA','West Virginia':'WV','Wisconsin':'WI','Wyoming':'WY'
+};
+
+function setupCityAutocomplete(input) {
+  const wrap = input.closest('.autocomplete');
+  if (!wrap) return;
+  const list = wrap.querySelector('.autocomplete-list');
+  let timer;
+  let activeIndex = -1;
+  let currentHits = [];
+
+  const hide = () => {
+    list.hidden = true;
+    list.innerHTML = '';
+    activeIndex = -1;
+    currentHits = [];
+  };
+
+  const setActive = (i) => {
+    const items = list.querySelectorAll('li');
+    activeIndex = i;
+    items.forEach((li, idx) => li.classList.toggle('active', idx === i));
+  };
+
+  input.addEventListener('input', () => {
+    clearTimeout(timer);
+    const q = input.value.trim();
+    if (q.length < 2) { hide(); return; }
+    timer = setTimeout(async () => {
+      try {
+        const url = `https://photon.komoot.io/api/?q=${encodeURIComponent(q)}&limit=10&layer=city&layer=town&layer=village`;
+        const res = await fetch(url);
+        const json = await res.json();
+        const seen = new Set();
+        const hits = [];
+        for (const f of json.features || []) {
+          const p = f.properties || {};
+          if (p.countrycode !== 'US') continue;
+          const state = US_STATES[p.state] || '';
+          if (!state) continue;
+          const label = `${p.name}, ${state}`;
+          if (seen.has(label)) continue;
+          seen.add(label);
+          hits.push(label);
+          if (hits.length >= 6) break;
+        }
+        if (hits.length === 0) { hide(); return; }
+        currentHits = hits;
+        list.innerHTML = hits.map((h, i) =>
+          `<li role="option" data-i="${i}">${h}</li>`
+        ).join('');
+        list.hidden = false;
+        activeIndex = -1;
+        list.querySelectorAll('li').forEach((li, i) => {
+          li.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            input.value = currentHits[i];
+            hide();
+          });
+        });
+      } catch (err) { hide(); }
+    }, 220);
+  });
+
+  input.addEventListener('keydown', (e) => {
+    if (list.hidden) return;
+    const items = list.querySelectorAll('li');
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setActive((activeIndex + 1) % items.length);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      setActive((activeIndex - 1 + items.length) % items.length);
+    } else if (e.key === 'Enter' && activeIndex >= 0) {
+      e.preventDefault();
+      input.value = currentHits[activeIndex];
+      hide();
+    } else if (e.key === 'Escape') {
+      hide();
+    }
+  });
+
+  input.addEventListener('blur', () => {
+    setTimeout(hide, 180);
+  });
+}
+
+document.querySelectorAll('[data-city-autocomplete]').forEach(setupCityAutocomplete);
+
 // Hero video — playlist that cycles through every clip you drop into /assets.
 // Just add files named hero-1.mp4, hero-2.mp4, hero-3.mp4 ... and they'll auto-play in order.
 const heroVideo = document.querySelector('.hero-video');

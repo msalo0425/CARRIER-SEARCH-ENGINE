@@ -282,11 +282,17 @@
           <div class="form-row">
             <label>
               <span>Origin (city, state)</span>
-              <input type="text" name="origin" placeholder="Atlanta, GA" />
+              <div class="autocomplete">
+                <input type="text" name="origin" placeholder="Start typing a city..." autocomplete="off" data-city-autocomplete />
+                <ul class="autocomplete-list" hidden></ul>
+              </div>
             </label>
             <label>
               <span>Destination (city, state)</span>
-              <input type="text" name="destination" placeholder="Dallas, TX" />
+              <div class="autocomplete">
+                <input type="text" name="destination" placeholder="Start typing a city..." autocomplete="off" data-city-autocomplete />
+                <ul class="autocomplete-list" hidden></ul>
+              </div>
             </label>
           </div>
           <label>
