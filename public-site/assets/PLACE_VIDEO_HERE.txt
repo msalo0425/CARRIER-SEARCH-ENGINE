@@ -1,0 +1,10 @@
+Drop your hero video here:
+
+  trucks-highway.mp4    (required — H.264 MP4, 1920x1080, 8-15s loop, muted)
+  trucks-highway.webm   (optional — VP9 WebM for smaller file size)
+  hero-poster.jpg       (static fallback frame shown while the video loads)
+
+See ../README.md ("Hero background video") for ffmpeg commands and free sources
+(Pexels, Pixabay, Coverr, Mixkit).
+
+You can delete this file once your video is in place.
