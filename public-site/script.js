@@ -153,6 +153,18 @@ function setupCityAutocomplete(input) {
         }
         if (hits.length === 0) { hide(); return; }
         currentHits = hits;
+
+        // Auto-fill the state field with the best (first) match — user
+        // doesn't have to click; they can still pick a different suggestion
+        // to change it.
+        const stateFieldName = input.dataset.stateField;
+        if (stateFieldName) {
+          const stateInput = document.getElementById(stateFieldName)
+            || document.querySelector(`[name="${stateFieldName}"]`);
+          const [, bestState] = hits[0].split(',').map(s => s.trim());
+          if (stateInput && bestState) stateInput.value = bestState;
+        }
+
         list.innerHTML = hits.map((h, i) =>
           `<li role="option" data-i="${i}">${h}</li>`
         ).join('');
