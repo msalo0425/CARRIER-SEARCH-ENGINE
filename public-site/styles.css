@@ -603,8 +603,27 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
+.form-row-3 {
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 1rem;
+}
+.form-row-3 .span-2 {
+  grid-column: span 2;
+}
 @media (max-width: 600px) {
   .form-row { grid-template-columns: 1fr; }
+  .form-row-3 { grid-template-columns: 2fr 1fr; }
+  .form-row-3 .span-2 { grid-column: span 2; }
+}
+
+/* readonly state field looks distinct */
+.quote-form input[readonly] {
+  background: #f0f3ee;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-align: center;
 }
 .quote-form label {
   display: flex;

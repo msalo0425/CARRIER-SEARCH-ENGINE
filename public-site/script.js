@@ -30,13 +30,18 @@ form?.addEventListener('submit', async (e) => {
   status.textContent = '';
 
   const data = new FormData(form);
+  const join = (city, state) => {
+    city = (city || '').toString().trim();
+    state = (state || '').toString().trim();
+    return city && state ? `${city}, ${state}` : (city || state || '');
+  };
   const payload = {
     name: (data.get('name') || '').toString().trim(),
     company: (data.get('company') || '').toString().trim(),
     email: (data.get('email') || '').toString().trim(),
     phone: (data.get('phone') || '').toString().trim(),
-    origin: (data.get('origin') || '').toString().trim(),
-    destination: (data.get('destination') || '').toString().trim(),
+    origin: join(data.get('origin_city'), data.get('origin_state')),
+    destination: join(data.get('destination_city'), data.get('destination_state')),
     service: (data.get('service') || '').toString().trim(),
     message: (data.get('message') || '').toString().trim(),
   };
@@ -109,6 +114,20 @@ function setupCityAutocomplete(input) {
     items.forEach((li, idx) => li.classList.toggle('active', idx === i));
   };
 
+  // Splits "Atlanta, GA" — fills the city input with just the city,
+  // and fills the linked state field (data-state-field="origin_state") with the state.
+  const applyChoice = (label) => {
+    const [city, state] = label.split(',').map(s => s.trim());
+    input.value = city || label;
+    const stateFieldName = input.dataset.stateField;
+    if (stateFieldName) {
+      const stateInput = document.getElementById(stateFieldName)
+        || document.querySelector(`[name="${stateFieldName}"]`);
+      if (stateInput) stateInput.value = state || '';
+    }
+    hide();
+  };
+
   input.addEventListener('input', () => {
     clearTimeout(timer);
     const q = input.value.trim();
@@ -141,8 +160,7 @@ function setupCityAutocomplete(input) {
         list.querySelectorAll('li').forEach((li, i) => {
           li.addEventListener('mousedown', (e) => {
             e.preventDefault();
-            input.value = currentHits[i];
-            hide();
+            applyChoice(currentHits[i]);
           });
         });
       } catch (err) { hide(); }
@@ -160,8 +178,7 @@ function setupCityAutocomplete(input) {
       setActive((activeIndex - 1 + items.length) % items.length);
     } else if (e.key === 'Enter' && activeIndex >= 0) {
       e.preventDefault();
-      input.value = currentHits[activeIndex];
-      hide();
+      applyChoice(currentHits[activeIndex]);
     } else if (e.key === 'Escape') {
       hide();
     }

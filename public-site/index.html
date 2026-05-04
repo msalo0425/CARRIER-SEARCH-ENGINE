@@ -279,20 +279,30 @@
               <input type="tel" name="phone" autocomplete="tel" />
             </label>
           </div>
-          <div class="form-row">
-            <label>
-              <span>Origin (city, state)</span>
+          <div class="form-row form-row-3">
+            <label class="span-2">
+              <span>Origin city</span>
               <div class="autocomplete">
-                <input type="text" name="origin" placeholder="Start typing a city..." autocomplete="off" data-city-autocomplete />
+                <input type="text" name="origin_city" placeholder="Start typing a city..." autocomplete="off" data-city-autocomplete data-state-field="origin_state" />
                 <ul class="autocomplete-list" hidden></ul>
               </div>
             </label>
             <label>
-              <span>Destination (city, state)</span>
+              <span>State</span>
+              <input type="text" name="origin_state" id="origin_state" placeholder="auto" maxlength="2" readonly />
+            </label>
+          </div>
+          <div class="form-row form-row-3">
+            <label class="span-2">
+              <span>Destination city</span>
               <div class="autocomplete">
-                <input type="text" name="destination" placeholder="Start typing a city..." autocomplete="off" data-city-autocomplete />
+                <input type="text" name="destination_city" placeholder="Start typing a city..." autocomplete="off" data-city-autocomplete data-state-field="destination_state" />
                 <ul class="autocomplete-list" hidden></ul>
               </div>
+            </label>
+            <label>
+              <span>State</span>
+              <input type="text" name="destination_state" id="destination_state" placeholder="auto" maxlength="2" readonly />
             </label>
           </div>
           <label>
