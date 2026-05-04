@@ -147,15 +147,12 @@ p { margin: 0 0 1em; color: var(--ink-soft); }
   width: auto;
   display: block;
   object-fit: contain;
-  /* Drops the white PNG background on light areas. */
-  mix-blend-mode: multiply;
 }
 
-/* Footer / dark backgrounds — invert + screen drops the white background. */
+/* Footer / dark backgrounds — invert the black logo to render white */
 .brand-logo-inverted {
   filter: invert(1);
   height: 192px;
-  mix-blend-mode: screen;
 }
 
 .brand-text {
